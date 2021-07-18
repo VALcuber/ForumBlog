@@ -8,7 +8,7 @@ class Page_allModel extends Model {
 
         $resultpageall = array();
 
-        $sql = "SELECT `Sub_category` FROM `".$env['forumblog']."-certain-category` WHERE `Category` = '".$env['subcategory']."' ";
+        $sql = "SELECT `Sub_category` FROM `".$env['forum-blog']."-certain-category` WHERE `Category` = '".$env['subcategory']."' ";
 
         $ppageall = $this->db->prepare($sql);
 
@@ -30,7 +30,7 @@ class Page_allModel extends Model {
 
         $resultpage = array();
 
-        $sql = "SELECT `Category` FROM `".$env['forumblog']."-certain-category` WHERE `Category` = '".$env['subcategory']."' ";
+        $sql = "SELECT `Category` FROM `".$env['forum-blog']."-certain-category` WHERE `Category` = '".$env['subcategory']."' ";
 
         $ppagealltitles = $this->db->prepare($sql);
 

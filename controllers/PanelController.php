@@ -13,7 +13,7 @@ class PanelController extends Controller {
 	public function index() {
 		global $env;
 
-		if($_SESSION['status'] != 'admin'){
+		if($_COOKIE["user_id"]['status'] != 'admin'){
 			header("Location: /");
 		}
 

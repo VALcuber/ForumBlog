@@ -85,8 +85,6 @@
 
             <form method="post">
 
-              <!--<input type="hidden" name="user_id"  value="<?=$_SESSION['user_id'] ?>">-->
-
               <div class="form-group row">
 
                 <label for="email" class="col-3 col-form-label">email</label>

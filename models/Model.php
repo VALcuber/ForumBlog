@@ -47,7 +47,7 @@ class Model
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
-        $result_chk_user = array();
+        $resultchkuser = array();
 
         $sql = "SELECT `id`,`First name`,`Last name`,`status` FROM `users` WHERE `email` = :email and `pass` = :password ";
 
@@ -59,18 +59,18 @@ class Model
         $resc=$smtpc->fetch(PDO::FETCH_ASSOC);
 
         if ($smtpc->rowCount() == 0){
-            $result_chk_user['user_id'] = '';
-            $_SESSION['user_id'] = $result_chk_user;
-            return $result_chk_user;
+            $resultchkuser['user_id'] = '';
+            $_SESSION['user_id'] = $resultchkuser;
+            return $resultchkuser;
         }
         else {
-            $result_chk_user['user_id'] = $resc['id'];
-            //$_SESSION['user_id'] = $resc['id'];
-            $result_chk_user['first-name'] = $resc['First name'];
-            $result_chk_user['last-name'] = $resc['Last name'];
-            $result_chk_user['status'] = $resc['status'];
+            $resultchkuser['user_id'] = $resc['id'];
+            $_SESSION['user_id'] = $resc['id'];
+            $_SESSION['first-name'] = $resc['First name'];
+            $_SESSION['last-name'] = $resc['Last name'];
+            $_SESSION['status'] = $resc['status'];
 
-            return $result_chk_user;
+            return $resultchkuser;
         }
 
     }
@@ -83,6 +83,7 @@ class Model
         $last_name = $env['last-name'];
         $birthday = $env['birthday'];
         $password = $env['password'];
+        $crypt = $env['crypt'];
 
         $sql = "SELECT `id` FROM `users` WHERE `email`= :email";
 
@@ -99,13 +100,15 @@ class Model
 
         elseif($ress == NULL){
 
-            $sql = "INSERT INTO `users` (`First name`,`Last name`,`birthday`,`email`,`pass` ) VALUES (:first_name,:last_name,:birthday,:email,:password)";
+            $sql = "INSERT INTO `users` (`First name`,`Last name`,`birthday`,`email`,`pass`, `crypt` ) VALUES (:first_name,:last_name,:birthday,:email,:password, :crypt)";
 
             $smtpr = $this->db->prepare($sql);
             $smtpr->bindValue(":first_name", $first_name, PDO::PARAM_STR);
             $smtpr->bindValue(":last_name", $last_name, PDO::PARAM_STR);
+            $smtpr->bindValue(":birthday", $birthday, PDO::PARAM_STR);
             $smtpr->bindValue(":email", $email, PDO::PARAM_STR);
             $smtpr->bindValue(":password", $password, PDO::PARAM_STR);
+            $smtpr->bindValue(":crypt", $crypt, PDO::PARAM_STR);
             $smtpr->execute();
 
             $resr=$smtps->fetch(PDO::FETCH_ASSOC);

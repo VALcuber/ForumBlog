@@ -27,7 +27,7 @@ class IndexModel extends Model {
 		
 		$smtpn = $this->db->prepare($sql);
 		$smtpn->execute();
-		
+
         while($resnews=$smtpn->fetch(PDO::FETCH_ASSOC)){
             array_push($resultnews,$resnews);
         }

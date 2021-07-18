@@ -1,12 +1,12 @@
 <?php
 
-class Pageall_allcategoriesController extends Controller {
+class Page_all_all_categoriesController extends Controller {
 
-    private $pageTpl = '/templates/page_all_allcategories.tpl';
+    private $pageTpl = '/templates/page_all_all_categories.tpl';
 
     public function __construct() {
 
-        $this->model = new Pageall_allcategoriesModel();
+        $this->model = new Page_all_all_categoriesModel();
 
         $this->view = new View();
 
@@ -15,7 +15,7 @@ class Pageall_allcategoriesController extends Controller {
     public function index() {
 
         $this->controller();
-        $this->pageData['pagealltitles'] = $this->echo_pagealltitles();
+        $this->pageData['page_all_titles'] = $this->echo_pagealltitles();
         $this->pageData['slash'] = "";
 
         $this->view->render($this->pageTpl, $this->pageData);
@@ -26,20 +26,20 @@ class Pageall_allcategoriesController extends Controller {
 
         global $env;
 
-        $alltitles = $this->model->getpagealltitles();
-        $counttitles = count($alltitles);
+        $all_titles = $this->model->getpagealltitles();
+        $count_titles = count($all_titles);
 
 //-------------------------------------
 
-        $pageallecho2 = "</ul></nav></div></div>";
+        $page_all_echo_2 = "</ul></nav></div></div>";
 
-        $pageallecho0 = '<div class="row px-4 py-2">
+        $page_all_echo_0 = '<div class="row px-4 py-2">
 
                     <div class="col-8 px-0">
 
                       <h4><b>';
 
-        $pageallecho1 = '</b></h4>
+        $page_all_echo_1 = '</b></h4>
 
                     </div>
 
@@ -77,17 +77,17 @@ class Pageall_allcategoriesController extends Controller {
 
  //-----------------------------------------------------------
 
-        $someresultall = "";
+        $some_result_all = "";
 
 //-----------------------------------------------------------
 
-        for ($i = 0; $i < $counttitles; $i++) {
+        for ($i = 0; $i < $count_titles; $i++) {
 
-            $someresultdescriptionsall = "";
+            $some_result_descriptions_all = "";
 
-            $category = $alltitles[$i]['title'];
+            $category = $all_titles[$i]['title'];
 
-            $env['alltitle'] = $category;
+            $env['all_title'] = $category;
 
             $alltitles2 = $this->model->getpageall();
 
@@ -108,15 +108,15 @@ class Pageall_allcategoriesController extends Controller {
 
 EOT;
 
-                $someresultdescriptionsall .= $subcategories;
+                $some_result_descriptions_all .= $subcategories;
 
             }
 
-            $someresultall .= $pageallecho0.$category.$pageallecho1.$someresultdescriptionsall.$pageallecho2;
+            $some_result_all .= $page_all_echo_0.$category.$page_all_echo_1.$some_result_descriptions_all.$page_all_echo_2;
 
         }
 
-        return $someresultall;
+        return $some_result_all;
 
     }
 

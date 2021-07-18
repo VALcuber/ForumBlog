@@ -1,5 +1,5 @@
 <?php
-//session_start();
+session_start();
 class Routing {
 
 	public static function buildRoute() {
@@ -9,14 +9,21 @@ class Routing {
 		$controllerName = "IndexController";
 		$modelName = "IndexModel";
 		$action = "index";
-		$envire = $env['alltitle'];
 
 		$route = explode("/", $_SERVER['REQUEST_URI']);
+
+        if(isset($route[1])) {
+            $route1 = strtok($route[1], '-');
+            $env['route1'] = $route1;
+        }
+
         if(isset($route[2])) {
             $route2 = strtok($route[2], '-');
+            $env['route2'] = $route2;
         }
 
         /*Определяем контроллер*/
+
         if(isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum' || $route[1] == 'news') ) {
 
             $controllerName = "Blog_forum_news_Controller";
@@ -39,7 +46,8 @@ class Routing {
                 $controllerName = "PageController";
                 $modelName = "PageModel";
 
-                $env['temporary'] = explode("-", $route[2]);
+                $env['temporary'] = $route[2];
+                //var_export($env['temporary']);
 
             }
 		}
@@ -62,15 +70,15 @@ class Routing {
 
             $route3 = strtok($route[2], '_');
 
-			$env['titlecategory'] = $route[1];
-			$env['forumblog'] = lcfirst($route3);
+			$env['title_category'] = $route[1];
+			$env['forum_blog'] = lcfirst($route3);
 			$env['subcategory'] = $route[2];
 
 		}
 
 		elseif(isset($route[1]) && $route[1] == 'all'){
-            $controllerName = "Pageall_allcategoriesController";
-            $modelName = "Pageall_allcategoriesModel";
+            $controllerName = "Page_all_all_categoriesController";
+            $modelName = "Page_all_all_categoriesModel";
         }
 
         elseif($route[1] != '') {

@@ -36,7 +36,7 @@ class IndexController extends Controller {
 			$htmlblog = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				<h5 class="card-title">$blogName</h5>
-				<a href="/"" class="card-link">Go to category</a>
+				<a href="/blog/$blogName"" class="card-link">Go to category</a>
 			  </div>
 			  <p class="card-text flex-grow-1">$blogContent</p>
 EOT;
@@ -59,25 +59,31 @@ EOT;
 	}
 	
 	public function echo_news() { //Ф-я для вывода новостей
-		$resulthtmlnews = "";  
+
+	    $resulthtmlnews = "";
 		$news = $this->model->news();
 
-		$reversearray = array_reverse($news);
+		$reversearray0 = array_reverse($news);
+
 
 			for($i = 0; $i < 7; $i++){
-				$newsName=$reversearray[$i]["name"];
-				$newsContent=$reversearray[$i]["content"];
 
-				$htmlnews = <<<"EOT"
+				$newsName=$reversearray0[$i]["name"];
+				$newsContent=$reversearray0[$i]["content"];
+
+                $reversearray = $this->translit($newsName);
+
+                $htmlnews = <<<"EOT"
 				<div class="d-flex justify-content-between align-items-center flex-grow-1">
 				  <h5 class="card-title">$newsName</h5>
-				  <a href="/" class="card-link">Go to news</a>
+				  <a href="/news/$reversearray" class="card-link">Go to news</a>
 				</div>
 				<p class="card-text flex-grow-1">$newsContent</p>
 EOT;
 
 				$resulthtmlnews=$resulthtmlnews.$htmlnews;
 			}
+
 		return $resulthtmlnews;
 	}
 
@@ -95,7 +101,7 @@ EOT;
 			$htmlforum = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				<h5 class="card-title">$forumName</h5>
-				<a href="#" class="card-link">Go to category</a>
+				<a href="/forum/$forumName" class="card-link">Go to category</a>
 			  </div>
 			  <p class="card-text flex-grow-1">$forumContent</p>
 EOT;

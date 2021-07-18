@@ -86,8 +86,6 @@
 
             <form method="post">
 
-			  <!--<input type="hidden" name="user_id"  value="<?=$_SESSION['user_id'] ?>">-->
-
               <div class="form-group row">
 
                 <label for="email" class="col-3 col-form-label">email</label>
@@ -112,11 +110,11 @@
 
               </div>
 
-              <div class="d-flex justify-content-end">
+              <div class="d-flex justify-content-between">
 
                 <input type="submit" class="btn btn-primary btn-lg" name="act" value="Exit">
 
-                <button type="button" class="btn btn-secondary mr-4">Registration</button>
+                <button type="button" class="btn btn-secondary">Registration</button>
 
                 <input type="submit" class="btn btn-primary" name="act" value="Login"/>
 
@@ -156,7 +154,7 @@
 
           <div class="container-fluid">
 
-            <form action ="index.php" method="post">
+            <form method="post">
 
               <div class="form-group row">
 

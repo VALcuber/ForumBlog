@@ -19,11 +19,11 @@ $env['email'] = $_POST['email'] ?? '';
 $env['password'] = $_POST['password'] ?? ''; //Не забыть экранировать пароль
 $env['act'] = $_POST['act']?? '';
 $env['active'] = '';
-$env['alltitle'] = '';
+$env['all_title'] = '';
 $env['subcategory'] = '';
-$env['titlecategory'] = '';
+$env['title_category'] = '';
 $env['route3'] = '';
-$nv['forumblog'] = '';
+$env['forum_blog'] = '';
 $env['route'] = '';
 
 //$_SESSION['user_id'] = '0';
