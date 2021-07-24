@@ -109,7 +109,8 @@
 
               </div>
 
-              <div class="d-flex justify-content-end">
+              <div class="d-flex justify-content-between">
+                <input type="submit" class="btn btn-primary btn-lg" name="act" value="Exit">
 
                 <button type="button" class="btn btn-secondary mr-4">Registration</button>
 
