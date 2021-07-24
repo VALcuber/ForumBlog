@@ -30,7 +30,7 @@ class Page_allController extends Controller {
 
         $routecategory = $env['subcategory'];
 
-        $routetitle = $env['title category'];
+        $routetitle = $env['title_category'];
 
 
         $all = $this->model->getpageall();
