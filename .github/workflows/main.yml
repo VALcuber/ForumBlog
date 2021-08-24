@@ -14,6 +14,6 @@ jobs:
           server: ftpupload.net
           username: epiz_29514382
           password: ZiJeJilj7dF
-          server-dir: ./htdocs
           exclude:
             - /.git
+          server-dir: ./htdocs
