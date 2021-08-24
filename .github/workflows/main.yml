@@ -15,4 +15,4 @@ jobs:
           username: epiz_29514382
           password: ZiJeJilj7dF
           exclude:
-          server-dir: ./htdocs
+          server-dir: ./htdocs/
