@@ -15,5 +15,5 @@ jobs:
           username: epiz_29514382
           password: ZiJeJilj7dF
           exclude:
-            - */.git
+            - .git
           server-dir: ./htdocs
