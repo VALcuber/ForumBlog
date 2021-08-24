@@ -13,3 +13,9 @@ jobs:
           FTP_USERNAME: epiz_29514382
           FTP_PASSWORD: ZiJeJilj7dF
           REMOTE_DIR: ./htdocs
+        exclude:
+          - **/.git*
+          - **/.git*/**
+          - **/.github/**
+          - **/.github**
+          - .gitignore
