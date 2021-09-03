@@ -60,7 +60,7 @@ class Routing {
             $route3 = strtok($route[2], '_');
 
 			$env['route3'] = $route[3];
-			$env['route'] = lcfirst($route3);;
+			$env['route'] = lcfirst($route3);
 		}
 		
 		elseif(isset($route2) && $route2 != 'all' ){
