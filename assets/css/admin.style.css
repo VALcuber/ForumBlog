@@ -1,16 +1,1 @@
-body, html {
-  height: 100%;
-}
-
-body {
-  display: flex;
-}
-
-.main {
-  flex-grow: 1;
-  background-color: #fff;
-}
-
-#actions-panel > * {
-  cursor: pointer;
-}
+body, html {  height: 100%;}body {  display: flex;}.main {  flex-grow: 1;  background-color: #fff;}.list-group-item {  background-color: rgba(0,0,0,.03);}.col-8{  padding: 1rem!important;  border: 1px solid rgba(0,0,0,.125);}#actions-panel > * {  cursor: pointer;}#users {  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;  border-collapse: collapse;  width: 100%;}#users td, #users th {  border: 1px solid #ddd;  padding: 8px;  text-align: center !important;}#users tr:nth-child(even){background-color: #f2f2f2;}#users tr:hover {background-color: #ddd;}#users th {  padding-top: 12px;  padding-bottom: 12px;  text-align: left;  background-color: #17a2b8;  color: white;}

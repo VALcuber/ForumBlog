@@ -2,7 +2,7 @@
 
 class IndexController extends Controller {
 
-	private $pageTpl = '/templates/main.tpl';
+	private $pageTpl = '/templates/index.tpl';
 
 	public function __construct() {
 		$this->model = new IndexModel();
@@ -18,6 +18,7 @@ class IndexController extends Controller {
         $this->pageData['slash'] = "";
 
 		$this->view->render($this->pageTpl, $this->pageData);
+
 	}
 
 	public function echo_blog() { //Ф-я для вывода блога

@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.addEventListener('click', onToggleMenuHadler);
 
     document.getElementById('signinModal').onclick = function(e){
-      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Registration'){
+      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Sign In'){
         $('#signinModal').modal('hide');
         setTimeout(()=>{
           $('#registrationModal').modal('show');
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     document.getElementById('registrationModal').onclick = function(e){
-      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Sign In'){
+      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Registration'){
         $('#registrationModal').modal('hide');
         setTimeout(()=>{
           $('#signinModal').modal('show');

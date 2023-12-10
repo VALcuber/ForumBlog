@@ -15,5 +15,20 @@ class PanelModel extends Model {
 		return($smtpi);
 	}
 
+    public function GetUsers(){
+        $resultusers=array();
+
+	    $sql = "SELECT `First name`, `Last name`, `status`  FROM `epiz_27717656_forumblog`.`users`";
+
+        $smtp = $this->db->prepare($sql);
+        $smtp->execute();
+
+        while($res=$smtp->fetch(PDO::FETCH_ASSOC)){
+            array_push($resultusers,$res);
+        }
+
+        return $resultusers;
+    }
+
 	
 }

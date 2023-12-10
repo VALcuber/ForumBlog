@@ -1,7 +1,8 @@
 <?php
 
 	class Controller{
-		public $model;
+
+        public $model;
 		public $view;
 		public $env;
 		protected $pageData = array();
@@ -9,26 +10,24 @@
 		public function __construct() {
 			$this->view = new View();
 			$this->model = new Model();
-			$PageData1 = array();
 		}
 
         public function controller(){
             global $env;
 
-            if($env['act'] == 'Admin Panel'){
-                header("Location: /panel");
-            }
-
             $env['active'] = 'active';
             $active = $env['active'];
 
             if(($env['act'] == 'Login') && ($_POST['email'] != '') && ($_POST['password'] != '')){
+
                 $resultchkuser = $this->model->checkUser();
+
                 if($resultchkuser['user_id'] == ''){
                     header("Location: /wrong");
                 }
+
             }
-            elseif(($env['act'] == 'Login') && ($_POST['email']=='') && ($_POST['password']=='')){
+            elseif(($_SESSION['act'] == 'Login') && ($_POST['email']=='') && ($_POST['password']=='')){
                 header("Location: /wrong");
             }
 
@@ -39,11 +38,16 @@
 
                 $result_Fn_Ln_arr = $Fn['0'].$Ln['0'];
 
+                $this->pageData['page'] = $this->echo_form_exit();
+
                 if($_SESSION['status'] == 'admin'){
                     $adminPanel =
                         '<form method="post">
 							<input type="submit" name="act" class="btn btn-primary btn-lg" value="Admin Panel">
 						</form>';
+                    if($env['act'] == 'Admin Panel'){
+                        header("Location: /panel");
+                    }
                 }
 
                 else{
@@ -52,15 +56,15 @@
 
             }
             else{
-                $result_Fn_Ln_arr = 'No';
+                $result_Fn_Ln_arr = '?';
                 $adminPanel = '';
                 $_SESSION['status'] = 'user';
                 $_SESSION['user_id'] = '';
+                $this->pageData['page'] = $this->echo_form_signin();
             }
 
             if($env['act'] == 'Exit'){
-                $_SESSION['status'] = 'user';
-                $_SESSION['user_id'] = '';
+                session_destroy();
                 header("Refresh:0");
             }
 
@@ -335,4 +339,36 @@ EOT;
             return $translit_reverse; // возвращаем результат
         }
 
+        public function echo_form_signin(){
+
+            $form_signin = <<<"EOT"
+          <h1>This is user page</h1>
+          <div class="d-flex justify-content-between">
+          <form method="post">
+
+            <button type="button" class="btn btn-secondary">Registration</button>
+
+            <input type="submit" class="btn btn-primary" name="act" value="Login"/>
+          </form>
+
+          </div>
+EOT;
+
+            return $form_signin;
+        }
+
+        public function echo_form_exit(){
+
+            $form_exit = <<<"EOT"
+          <h1>This is user page</h1>
+          <div class="d-flex justify-content-between">
+          <form method="post">
+            <input type="submit" class="btn btn-primary btn-lg" name="act" value="Exit">
+          </form>
+
+          </div>
+EOT;
+
+            return $form_exit;
+        }
 	}

@@ -1,7 +1,7 @@
 <?php
 
-class Model
-{
+class Model{
+
     protected $db = null;
 
     public function __construct()
@@ -11,7 +11,6 @@ class Model
 
     public function gettopic()
     {
-
         $categories = array();
 
         $sql = "SELECT `id`,`name`,`structure` FROM `blog`UNION ALL SELECT `id`,`name`,`structure` FROM `forum`  ORDER BY `id` DESC LIMIT 12";

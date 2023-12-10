@@ -4,8 +4,9 @@ class DB{
 
 	const USER = "root";
 	const PASS = "";
-	const HOST = "127.0.0.1";
-	const DB   = "epiz_27717656_Forumblog";
+	const HOST = '127.0.0.1';
+	const DB   = 'epiz_27717656_forumblog';
+	//const CHARSET = "utf8mb4";
 
 	public static function connToDB() {
 
@@ -13,15 +14,20 @@ class DB{
 		$pass = self::PASS;
 		$host = self::HOST;
 		$db   = self::DB;
-
-		$conn = new PDO("mysql:dbname=$db;host=$host;charset=utf8mb4", $user, $pass);
-
-		if(!$conn){
-		    echo 'Неудалось связаться с базой данных';
-		    exit;
+		//$charset = self::CHARSET;
+        try {
+            $conn = new PDO('mysql:host='.$host,  $user, $pass);
+            $sql = "CREATE DATABASE IF NOT EXISTS $db";
+            $conn->query($sql);
+            $conn = null;
+            $dbh = new PDO('mysql:host='.$host.';dbname='.$db,  $user, $pass);
+            $sql = "CREATE TABLE if not exists `users` (`Id` INT, `First name` TEXT, `Last name` TEXT, `birthday` TEXT, `email` TEXT, `pass` TEXT, `status` VARCHAR (5) DEFAULT 'user')";
+            $dbh->query($sql);
+            return $dbh;
         }
-		else
-		    return $conn;
-
+        catch (PDOException $e) {
+            print "Error!: " . $e->getMessage() ."<br/><br/>";
+            die();
+        }
 	}
 }

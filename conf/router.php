@@ -46,8 +46,8 @@ class Routing {
                 $controllerName = "PageController";
                 $modelName = "PageModel";
 
-                $env['temporary'] = $route[2];
-                //var_export($env['temporary']);
+                //$env['temporary'] = $route[2];
+                //var_export($env);
 
             }
 		}
@@ -96,7 +96,9 @@ class Routing {
 
 		$controller = new $controllerName();
 		$controller->$action();
+
 	}
+
 	/*
 	public function errorPage() {
 
