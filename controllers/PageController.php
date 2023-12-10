@@ -13,7 +13,7 @@ class PageController extends Controller {
 
         $this->controller();
         $this->pageData['page'] = $this->echo_page();
-        $this->pageData['slash'] = "../";
+        $this->pageData['slash'] = "/";
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
