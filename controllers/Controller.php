@@ -37,6 +37,7 @@
                 $Ln = str_split($_SESSION['last-name']);
 
                 $result_Fn_Ln_arr = $Fn['0'].$Ln['0'];
+                $signin_modal_winwow = 'data-toggle="modal" data-target="#profileModal"';
 
                 $this->pageData['page'] = $this->echo_form_exit();
 
@@ -56,10 +57,11 @@
 
             }
             else{
-                $result_Fn_Ln_arr = '?';
+                $result_Fn_Ln_arr = 'Log in';
                 $adminPanel = '';
                 $_SESSION['status'] = 'user';
                 $_SESSION['user_id'] = '';
+                $signin_modal_winwow = 'data-toggle="modal" data-target="#signinModal"';
                 $this->pageData['page'] = $this->echo_form_signin();
             }
 
@@ -75,6 +77,7 @@
             $this->pageData['title'] = "Forum-blog";
             $this->pageData['panel'] = $adminPanel;
             $this->pageData['check'] = $result_Fn_Ln_arr;
+            $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['active'] = $active;
             $this->pageData['topmenu'] = $this->echo_topmenu();
             $this->pageData['burger'] = $this->echo_burger();

@@ -62,22 +62,24 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.addEventListener('click', onToggleMenuHadler);
 
     document.getElementById('signinModal').onclick = function(e){
-      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Sign In'){
-        $('#signinModal').modal('hide');
+      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Log In'){
+        $('#signinModal').modal('show');
         setTimeout(()=>{
-          $('#registrationModal').modal('show');
-        },300)      
+          $('#registrationModal').modal('hide');
+        },300)
       }
     }
 
     document.getElementById('registrationModal').onclick = function(e){
       if(e.target.classList.contains('btn') && e.target.innerHTML === 'Registration'){
-        $('#registrationModal').modal('hide');
+        $('#registrationModal').modal('show');
         setTimeout(()=>{
           $('#signinModal').modal('show');
-        },300)      
+
+        },300)
       }
     }
+
     categoriesBtn.onclick = function () {
       if (categoriesIsActive) {
         separator.style.display = 'none';
@@ -92,10 +94,10 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 });
 
-function removeAdd(){
+/*function removeAdd(){
   document.body.children[document.body.children.length-1].remove();
   document.body.children[document.body.children.length-1].remove();
-}
+}*/
 
 function resizeHeaderNavigations() {
   const maxWidth = document.documentElement.clientWidth;
