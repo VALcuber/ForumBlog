@@ -18,7 +18,7 @@
             $env['active'] = 'active';
             $active = $env['active'];
 
-            if(($env['act'] == 'Login') && ($_POST['email'] != '') && ($_POST['password'] != '')){
+            if(($env['act'] == 'Log In') && ($_POST['email'] != '') && ($_POST['password'] != '')){
 
                 $resultchkuser = $this->model->checkUser();
 
@@ -37,7 +37,7 @@
                 $Ln = str_split($_SESSION['last-name']);
 
                 $result_Fn_Ln_arr = $Fn['0'].$Ln['0'];
-                $signin_modal_winwow = 'data-toggle="modal" data-target="#profileModal"';
+                //$signin_modal_winwow = 'data-toggle="modal" data-target="#profileModal"';
 
                 $this->pageData['page'] = $this->echo_form_exit();
 

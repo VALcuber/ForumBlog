@@ -61,25 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleBtn.addEventListener('click',onToggleMenuHadler);
     overlay.addEventListener('click', onToggleMenuHadler);
 
-    document.getElementById('signinModal').onclick = function(e){
-      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Log In'){
-        $('#signinModal').modal('show');
-        setTimeout(()=>{
-          $('#registrationModal').modal('hide');
-        },300)
-      }
-    }
-
-    document.getElementById('registrationModal').onclick = function(e){
-      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Registration'){
-        $('#registrationModal').modal('show');
-        setTimeout(()=>{
-          $('#signinModal').modal('show');
-
-        },300)
-      }
-    }
-
     categoriesBtn.onclick = function () {
       if (categoriesIsActive) {
         separator.style.display = 'none';
@@ -93,11 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   })();
 });
-
-/*function removeAdd(){
-  document.body.children[document.body.children.length-1].remove();
-  document.body.children[document.body.children.length-1].remove();
-}*/
 
 function resizeHeaderNavigations() {
   const maxWidth = document.documentElement.clientWidth;
@@ -125,3 +101,27 @@ function resizeHeaderNavigations() {
     NavItemsColection[NavItemsColection.length - 2].remove();
   }
 }
+/*
+    document.getElementById('signinModal').onclick = function(e){
+      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Log In'){
+        $('#signinModal').modal('show');
+        setTimeout(()=>{
+          $('#registrationModal').modal('hide');
+        },300)
+      }
+    }
+
+    document.getElementById('registrationModal').onclick = function(e){
+      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Registration'){
+        $('#registrationModal').modal('show');
+        setTimeout(()=>{
+          $('#signinModal').modal('show');
+
+        },300)
+      }
+    }
+*/
+/*function removeAdd(){
+  document.body.children[document.body.children.length-1].remove();
+  document.body.children[document.body.children.length-1].remove();
+}*/

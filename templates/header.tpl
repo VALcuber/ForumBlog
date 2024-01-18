@@ -32,7 +32,7 @@
 
                 <input type="text" class="header__search px-3 mr-sm-4 border-0 rounded-pill d-block" placeholder="Search...">
 
-                <a href="#" class="header__profile text-center d-none d-sm-block rounded-circle" <?= $pageData['signin_modal_winwow'] ?>><?= $pageData['check'] ?></a> <!--userprofile-->
+                <a href="/userprofile" class="header__profile text-center d-none d-sm-block rounded-circle" <?= $pageData['signin_modal_winwow'] ?>><?= $pageData['check'] ?></a> <!--userprofile-->
 
             </div>
 
@@ -112,12 +112,9 @@
 
                                 <input type="submit" class="btn btn-primary btn-lg" name="act" value="Exit">
 
-                                <button type="button" data-toggle="modal" data-target="#registrationModal" class="btn btn-secondary">Registration</button>
+                                <button type="button" data-toggle="modal" data-target="#registrationModal" data-dismiss="modal" class="btn btn-secondary">Registration</button>
 
                                 <input type="submit" class="btn btn-primary btn-lg" name="act" value="Log In">
-
-                                <!--<input type="submit" class="btn btn btn-secondary" name="act" value="Registration">-->
-
 
                             </div>
 
@@ -219,7 +216,7 @@
 
                             <div class="d-flex justify-content-end">
 
-                                <input type="submit" class="btn btn-primary" name="act" value="Register"/>
+                                <input type="submit" class="btn btn-primary" data-dismiss="modal" name="act" value="Registration"/>
 
                             </div>
 
