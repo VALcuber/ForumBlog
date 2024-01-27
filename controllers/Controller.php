@@ -37,7 +37,7 @@
                 $Ln = str_split($_SESSION['last-name']);
 
                 $result_Fn_Ln_arr = $Fn['0'].$Ln['0'];
-                //$signin_modal_winwow = 'data-toggle="modal" data-target="#profileModal"';
+                //$signin_modal_winwow = 'data-toggle="modal" data-target="#profileModal" data-backdrop="false"';
 
                 $this->pageData['page'] = $this->echo_form_exit();
 
@@ -68,6 +68,10 @@
             if($env['act'] == 'Exit'){
                 session_destroy();
                 header("Refresh:0");
+            }
+
+            if($env['act'] == 'User Profile'){
+                header("Location: /userprofile");
             }
 
             if($env['act']=='Register'){

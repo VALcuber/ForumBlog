@@ -1,3 +1,4 @@
+/*
 const toggleBtn = document.querySelector('.btn-add');
 const addArticleMenu = document.querySelector('.add-article-menu');
 const closeMenuBtn = document.querySelector('.add-article-menu__close-btn');
@@ -46,3 +47,4 @@ const windowResizeHandler = () => {
 toggleBtn.onclick = toggleMenuHandler;
 closeMenuBtn.onclick = toggleMenuHandler;
 window.onresize = windowResizeHandler;
+*/

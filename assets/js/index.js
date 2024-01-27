@@ -1,3 +1,4 @@
+/*
 window.onresize = () => {
   resizeHeaderNavigations();
 }
@@ -125,3 +126,5 @@ function resizeHeaderNavigations() {
   document.body.children[document.body.children.length-1].remove();
   document.body.children[document.body.children.length-1].remove();
 }*/
+
+//----------------------------------------------------------------------------//
