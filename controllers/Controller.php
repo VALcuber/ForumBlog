@@ -65,9 +65,16 @@
                 $this->pageData['page'] = $this->echo_form_signin();
             }
 
+            if (isset($env['route1']) && $env['route1'] == '') {
+                $active = 'active';
+            }
+            else{
+                $active = '';
+            }
+
             if($env['act'] == 'Exit'){
                 session_destroy();
-                header("Refresh:0");
+                header("Location: /");
             }
 
             if($env['act'] == 'User Profile'){

@@ -1,7 +1,10 @@
-/*
+
 const toggleBtn = document.querySelector('.btn-add');
+
 const addArticleMenu = document.querySelector('.add-article-menu');
+
 const closeMenuBtn = document.querySelector('.add-article-menu__close-btn');
+
 const getBtnCoordinates = function(){
   let elem = toggleBtn;
   const coordinates = {
@@ -17,7 +20,8 @@ const getBtnCoordinates = function(){
     if (!isNaN(elem.offsetTop)) {
       coordinates.top += elem.offsetTop;
     }
-  } while (elem = elem.offsetParent);
+  }
+  while (elem = elem.offsetParent);
 
   return coordinates;
 };
@@ -30,7 +34,7 @@ const toggleMenuHandler  = () => {
     const modalMenuIndentation = 4;
 
     addArticleMenu.style.top = coord.top + toggleBtn.offsetHeight + modalMenuIndentation +'px';
-    addArticleMenu.style.left = coord.left - addArticleMenu.offsetWidth +toggleBtn.offsetWidth/2 + 'px'; 
+    addArticleMenu.style.left = coord.left - addArticleMenu.offsetWidth +toggleBtn.offsetWidth/2 + 'px';
   }
 };
 
@@ -47,4 +51,4 @@ const windowResizeHandler = () => {
 toggleBtn.onclick = toggleMenuHandler;
 closeMenuBtn.onclick = toggleMenuHandler;
 window.onresize = windowResizeHandler;
-*/
+

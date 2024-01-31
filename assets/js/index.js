@@ -1,4 +1,3 @@
-/*
 window.onresize = () => {
   resizeHeaderNavigations();
 }
@@ -102,6 +101,14 @@ function resizeHeaderNavigations() {
     NavItemsColection[NavItemsColection.length - 2].remove();
   }
 }
+
+/*function removeAdd(){
+  document.body.children[document.body.children.length-1].remove();
+  document.body.children[document.body.children.length-1].remove();
+}*/
+
+//----------------------------------------------------------------------------//
+
 /*
     document.getElementById('signinModal').onclick = function(e){
       if(e.target.classList.contains('btn') && e.target.innerHTML === 'Log In'){
@@ -122,9 +129,3 @@ function resizeHeaderNavigations() {
       }
     }
 */
-/*function removeAdd(){
-  document.body.children[document.body.children.length-1].remove();
-  document.body.children[document.body.children.length-1].remove();
-}*/
-
-//----------------------------------------------------------------------------//
