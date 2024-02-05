@@ -73,7 +73,8 @@ EOT;
 				$newsContent=$reversearray0[$i]["content"];
 
                 $reversearray = $this->translit($newsName);
-
+                if($news != NULL){
+                    echo 1;
                 $htmlnews = <<<"EOT"
 				<div class="d-flex justify-content-between align-items-center flex-grow-1">
 				  <h5 class="card-title">$newsName</h5>
@@ -81,7 +82,10 @@ EOT;
 				</div>
 				<p class="card-text flex-grow-1">$newsContent</p>
 EOT;
-
+                }
+                else{
+                    $htmlnews = '';
+                    }
 				$resulthtmlnews=$resulthtmlnews.$htmlnews;
 			}
 
