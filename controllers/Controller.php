@@ -47,7 +47,7 @@
 							<input type="submit" name="act" class="btn btn-primary btn-lg" value="Admin Panel">
 						</form>';
                     if($env['act'] == 'Admin Panel'){
-                        header("Location:/panel");
+                        header("Location: /panel");
                     }
                 }
 

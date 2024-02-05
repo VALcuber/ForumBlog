@@ -84,9 +84,9 @@ class Routing {
             $modelName = ucfirst($route[1]. "Model");
         }
 
-        elseif($route[0] == 'panel'){
-            $controllerName = "PanelController";
-            $modelName = "PanelModel";
+        elseif($route[1] == 'panel'){
+            $controllerName = ucfirst($route[1]. "Controller");
+            $modelName = ucfirst($route[1]. "Model");
         }
 
 		include PATH_C . $controllerName . ".php"; //IndexController.php
