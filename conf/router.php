@@ -12,6 +12,7 @@ class Routing {
 
 		$route = explode("/", $_SERVER['REQUEST_URI']);
 
+
         if(isset($route[1])) {
             $route1 = strtok($route[1], '-');
             $env['route1'] = $route1;
@@ -83,7 +84,7 @@ class Routing {
             $modelName = ucfirst($route[1]. "Model");
         }
 
-        elseif($route[1] == 'panel'){
+        elseif($route[0] == 'panel'){
             $controllerName = "PanelController";
             $modelName = "PanelModel";
         }

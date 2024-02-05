@@ -82,7 +82,7 @@ class Model{
         $last_name = $env['last-name'];
         $birthday = $env['birthday'];
         $password = $env['password'];
-        $crypt = $env['crypt'];
+        //$crypt = $env['crypt'];
 
         $sql = "SELECT `id` FROM `users` WHERE `email`= :email";
 
@@ -99,7 +99,7 @@ class Model{
 
         elseif($ress == NULL){
 
-            $sql = "INSERT INTO `users` (`First name`,`Last name`,`birthday`,`email`,`pass`, `crypt` ) VALUES (:first_name,:last_name,:birthday,:email,:password, :crypt)";
+            $sql = "INSERT INTO `users` (`First name`,`Last name`,`birthday`,`email`,`pass` ) VALUES (:first_name,:last_name,:birthday,:email,:password)";
 
             $smtpr = $this->db->prepare($sql);
             $smtpr->bindValue(":first_name", $first_name, PDO::PARAM_STR);
@@ -107,7 +107,6 @@ class Model{
             $smtpr->bindValue(":birthday", $birthday, PDO::PARAM_STR);
             $smtpr->bindValue(":email", $email, PDO::PARAM_STR);
             $smtpr->bindValue(":password", $password, PDO::PARAM_STR);
-            $smtpr->bindValue(":crypt", $crypt, PDO::PARAM_STR);
             $smtpr->execute();
 
             $resr=$smtps->fetch(PDO::FETCH_ASSOC);

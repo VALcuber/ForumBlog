@@ -27,6 +27,7 @@
                 }
 
             }
+
             elseif(($_SESSION['act'] == 'Login') && ($_POST['email']=='') && ($_POST['password']=='')){
                 header("Location: /wrong");
             }
@@ -37,7 +38,6 @@
                 $Ln = str_split($_SESSION['last-name']);
 
                 $result_Fn_Ln_arr = $Fn['0'].$Ln['0'];
-                //$signin_modal_winwow = 'data-toggle="modal" data-target="#profileModal" data-backdrop="false"';
 
                 $this->pageData['page'] = $this->echo_form_exit();
 
@@ -47,7 +47,7 @@
 							<input type="submit" name="act" class="btn btn-primary btn-lg" value="Admin Panel">
 						</form>';
                     if($env['act'] == 'Admin Panel'){
-                        header("Location: /panel");
+                        header("Location:/panel");
                     }
                 }
 
@@ -92,6 +92,7 @@
             $this->pageData['active'] = $active;
             $this->pageData['topmenu'] = $this->echo_topmenu();
             $this->pageData['burger'] = $this->echo_burger();
+
 
         }
 

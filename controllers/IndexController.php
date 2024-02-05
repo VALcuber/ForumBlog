@@ -25,11 +25,15 @@ class IndexController extends Controller {
 		
 		$resultHTML = "";  
 		$blog = $this->model->blog();
-		
-		$resultblog = $this->makeRandomArrayblog(5,$blog);
-	
+
+		if($blog != NULL) {
+            $resultblog = $this->makeRandomArrayblog(5, $blog);
+
 		  $arrSize = count($resultblog);
-		  
+        }
+        else
+            $resultblog = '';
+
 		  for($i = 0; $i < $arrSize; $i++){
 			$blogName=$resultblog[$i]["name"];
 			$blogContent=$resultblog[$i]["blog_content"];
@@ -93,12 +97,18 @@ EOT;
 	}
 
 	public function echo_forum() { //Ф-я для вывода блога
-			$resulthtmlforum = "";
-			$forum = $this->model->forum();
-			
-		  $resultforum = $this->makeRandomArrayforum(5,$forum);
-			
-		  $arrSize = count($resultforum);
+
+	    $resulthtmlforum = "";
+
+	    $forum = $this->model->forum();
+		if($forum != NULL) {
+            $resultforum = $this->makeRandomArrayforum(5, $forum);
+
+            $arrSize = count($resultforum);
+        }
+		else
+            $resultforum = '';
+
 		  for($i = 0; $i < $arrSize; $i++){
 			$forumName=$resultforum[$i]["name"];
 			$forumContent=$resultforum[$i]["forum_content"];
