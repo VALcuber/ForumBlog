@@ -35,17 +35,24 @@ class IndexController extends Controller {
             $resultblog = '';
 
 		  for($i = 0; $i < $arrSize; $i++){
-			$blogName=$resultblog[$i]["name"];
-			$blogContent=$resultblog[$i]["blog_content"];
 
-			$htmlblog = <<<"EOT"
+              if($i >= 7){
+                  break;
+              }
+              else {
+
+                  $blogName = $resultblog[$i]["name"];
+                  $blogContent = $resultblog[$i]["blog_content"];
+
+                  $htmlblog = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				<h5 class="card-title">$blogName</h5>
 				<a href="/blog/$blogName"" class="card-link">Go to category</a>
 			  </div>
 			  <p class="card-text flex-grow-1">$blogContent</p>
 EOT;
-            $resultHTML = $resultHTML.$htmlblog;
+                  $resultHTML = $resultHTML . $htmlblog;
+              }
 		  }
 		  
 		  return $resultHTML;
@@ -68,29 +75,36 @@ EOT;
 	    $resulthtmlnews = "";
 		$news = $this->model->news();
 
+		$count = count($news);
+
 		$reversearray0 = array_reverse($news);
 
+			for($i = 0; $i < $count; $i++){
 
-			for($i = 0; $i < 7; $i++){
-
-				$newsName=$reversearray0[$i]["name"];
-				$newsContent=$reversearray0[$i]["content"];
-
-                $reversearray = $this->translit($newsName);
-                if($news != NULL){
-                    echo 1;
-                $htmlnews = <<<"EOT"
-				<div class="d-flex justify-content-between align-items-center flex-grow-1">
-				  <h5 class="card-title">$newsName</h5>
-				  <a href="/news/$reversearray" class="card-link">Go to news</a>
-				</div>
-				<p class="card-text flex-grow-1">$newsContent</p>
-EOT;
+                if($i >= 7){
+                    break;
                 }
-                else{
-                    $htmlnews = '';
+                else {
+                    $newsName = $reversearray0[$i]["name"];
+                    $newsContent = $reversearray0[$i]["content"];
+
+                    $reversearray = $this->translit($newsName);
+                    if ($news != NULL) {
+
+                        $htmlnews = <<<"EOT"
+                    <div class="d-flex justify-content-between align-items-center flex-grow-1">
+                      <h5 class="card-title">$newsName</h5>
+                      <a href="/news/$reversearray" class="card-link">Go to news</a>
+                    </div>
+                    <p class="card-text flex-grow-1">$newsContent</p>
+EOT;
                     }
-				$resulthtmlnews=$resulthtmlnews.$htmlnews;
+                    else {
+                        $htmlnews = '';
+                    }
+                    $resulthtmlnews = $resulthtmlnews . $htmlnews;
+                }
+
 			}
 
 		return $resulthtmlnews;
@@ -101,6 +115,7 @@ EOT;
 	    $resulthtmlforum = "";
 
 	    $forum = $this->model->forum();
+
 		if($forum != NULL) {
             $resultforum = $this->makeRandomArrayforum(5, $forum);
 
@@ -110,10 +125,15 @@ EOT;
             $resultforum = '';
 
 		  for($i = 0; $i < $arrSize; $i++){
-			$forumName=$resultforum[$i]["name"];
-			$forumContent=$resultforum[$i]["forum_content"];
 
-			$htmlforum = <<<"EOT"
+              if($i >= 7){
+                  break;
+              }
+              else {
+                  $forumName = $resultforum[$i]["name"];
+                  $forumContent = $resultforum[$i]["forum_content"];
+
+                  $htmlforum = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				<h5 class="card-title">$forumName</h5>
 				<a href="/forum/$forumName" class="card-link">Go to category</a>
@@ -121,7 +141,8 @@ EOT;
 			  <p class="card-text flex-grow-1">$forumContent</p>
 EOT;
 
-			$resulthtmlforum = $resulthtmlforum.$htmlforum;
+                  $resulthtmlforum = $resulthtmlforum . $htmlforum;
+              }
 		  }
 			return $resulthtmlforum;
 	}
