@@ -42,10 +42,7 @@
                 $this->pageData['page'] = $this->echo_form_exit();
 
                 if($_SESSION['status'] == 'admin'){
-                    $adminPanel =
-                        '<form method="post">
-							<input type="submit" name="act" class="btn btn-primary btn-lg" value="Admin Panel">
-						</form>';
+                    $adminPanel = $this->admin_panel();
                     if($env['act'] == 'Admin Panel'){
                         header("Location: /panel");
                     }
@@ -96,6 +93,95 @@
 
         }
 
+        public function admin_panel(){
+            $adminPanel = <<<"EOT"
+                <div class="admin_navbar">
+                
+                  <div class="admin_dropdown">
+                  
+                    <button class="dropbtn"> News
+                    
+                      <i class="fa fa-caret-down"></i>
+                      
+                    </button>
+                    
+                    <div class="dropdown-content">
+                    
+                      <a href="#">Add News</a>
+                      
+                      <a href="#">Ссылка 2</a>
+                      
+                      <a href="#">Ссылка 3</a>
+                      
+                    </div>
+                    
+                  </div>
+                  
+                  <div class="admin_dropdown">
+                  
+                    <button class="dropbtn"> Blog
+                    
+                      <i class="fa fa-caret-down"></i>
+                      
+                    </button>
+                    
+                    <div class="dropdown-content">
+                    
+                      <a href="#">Create Topic</a>
+                      
+                      <a href="#">Ссылка 2</a>
+                      
+                      <a href="#">Ссылка 3</a>
+                      
+                    </div>
+                    
+                    </div>
+                    
+                  <div class="admin_dropdown">
+                  
+                    <button class="dropbtn"> Forum
+                    
+                      <i class="fa fa-caret-down"></i>
+                      
+                    </button>
+                    
+                    <div class="dropdown-content">
+                    
+                      <a href="#">Create Topic</a>
+                      
+                      <a href="#">Ссылка 2</a>
+                      
+                      <a href="#">Ссылка 3</a>
+                      
+                    </div>
+                    
+                  </div>
+                  
+                  <div class="admin_dropdown">
+                  
+                    <button class="dropbtn"> Users
+                    
+                      <i class="fa fa-caret-down"></i>
+                      
+                    </button>
+                    
+                    <div class="dropdown-content">
+                    
+                      <a href="#">Manage users</a>
+                      
+                      <a href="#">Ссылка 2</a>
+                      
+                      <a href="#">Ссылка 3</a>
+                      
+                    </div>
+                    
+                  </div> 
+                  
+                </div>
+EOT;
+            return $adminPanel;
+        }
+
         public function echo_topmenu(){
             global $env;
 
@@ -105,40 +191,46 @@
 
             $arrSize = count($category);
 
-            for($i = 0; $i < $arrSize; $i++){
+            if($arrSize > 1) {
 
-                $categories = $category[$i]['name'];
-                $structure = $category[$i]['structure'];
-                $Name = $category[$i]['name'];
+                for ($i = 0; $i < $arrSize; $i++) {
 
-                $activist = '';
-                $active = $activist;
+                    $categories = $category[$i]['name'];
+                    $structure = $category[$i]['structure'];
+                    $Name = $category[$i]['name'];
 
-                if(isset($env['route2'])) {
+                    $activist = '';
+                    $active = $activist;
 
-                    if(isset($env['route1']) && $env['route1'] == $structure && $env['route2'] == $Name) {
-                        $activist = 'active';
+                    if (isset($env['route2'])) {
+
+                        if (isset($env['route1']) && $env['route1'] == $structure && $env['route2'] == $Name) {
+                            $activist = 'active';
+                        }
+
                     }
 
-                }
-                else{
-                    if (isset($env['route1']) && $env['route1'] == 'all') {
-                        $active = 'active';
-                    }
-                }
-
-                $htmlcategory = <<<"EOT"
+                    $htmlcategory = <<<"EOT"
 				<li class= "nav-item">
 				    <a href="/$structure/$Name" class="nav-link $activist categories__link text-nowrap">$categories</a>
 				</li>
 EOT;
-                $resulthtmlcategory =  $resulthtmlcategory.$htmlcategory;
-            }
-            $buttonall = '<li class="nav-item">
-                    <a href="/all" class="nav-link '.$active.' categories__link text-nowrap">All</a>
+                    $resulthtmlcategory = $resulthtmlcategory . $htmlcategory;
+                }
+
+
+                if (isset($env['route1']) && $env['route1'] == 'all') {
+                    $active = 'active';
+                }
+
+                $buttonall = '<li class="nav-item">
+                    <a href="/all" class="nav-link ' . $active . ' categories__link text-nowrap">All</a>
                 </li>';
-            $resulthtmlcategory = $resulthtmlcategory.$buttonall;
-            return $resulthtmlcategory;
+                $resulthtmlcategory = $resulthtmlcategory . $buttonall;
+                return $resulthtmlcategory;
+            }
+            else
+                return '';
         }
 
         public function echo_burger(){
@@ -387,3 +479,12 @@ EOT;
             return $form_exit;
         }
 	}
+/*
+                $adminPanel =
+                    '<form method="post">
+                        <input type="submit" name="act" class="btn btn-primary btn-lg" value="Admin Panel">
+                    </form>';
+                if($env['act'] == 'Admin Panel'){
+                    header("Location: /panel");
+                }
+*/

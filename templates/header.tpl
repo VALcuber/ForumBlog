@@ -1,4 +1,6 @@
-<body xmlns="http://www.w3.org/1999/html">
+<body>
+
+    <?= $pageData['panel']?>
 
 <header class="header">
 
@@ -28,7 +30,7 @@
 
             <div class="header__column d-flex align-items-center justify-content-end">
 
-                <?= $pageData['panel']?>
+
 
                 <input type="text" class="header__search px-3 mr-sm-4 border-0 rounded-pill d-block" placeholder="Search...">
 

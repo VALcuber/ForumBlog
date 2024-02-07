@@ -101,6 +101,7 @@ function resizeHeaderNavigations() {
     NavItemsColection[NavItemsColection.length - 2].remove();
   }
 }
+//------------------------------------------------------------------------------------//
 
 /*function removeAdd(){
   document.body.children[document.body.children.length-1].remove();
