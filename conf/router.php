@@ -21,6 +21,7 @@ class Routing {
         if(isset($route[2])) {
             $route2 = strtok($route[2], '-');
             $env['route2'] = $route2;
+            $env['route-2'] = $route[2];
         }
 
         /*Определяем контроллер*/
@@ -49,6 +50,11 @@ class Routing {
 
             }
 		}
+
+        elseif (isset($route[1])&& $route[1] == 'manage_users'){
+            $controllerName = "ManageUsersController";
+            $modelName = "ManageUsersModel";
+        }
 
 		elseif(isset($route[3])) {
 
@@ -97,9 +103,17 @@ class Routing {
 
 	}
 
-	/*
-	public function errorPage() {
 
+	public function errorPage() {
+        $controllerName = "WrongController";
+        $modelName = "WrongModel";
+        $action = "wrong";
+
+        include PATH_C . $controllerName . ".php"; //WrongController.php
+        include PATH_M . $modelName . ".php"; //WrongModel.php
+
+        $controller = new $controllerName();
+        $controller->$action();
 	}
-	*/
+
 }

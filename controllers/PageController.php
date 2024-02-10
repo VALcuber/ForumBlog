@@ -21,9 +21,10 @@ class PageController extends Controller {
 	public function echo_page(){
 		global $env;
 
+        $env['temporary'] = $env['route-2'];
+
 		if($env['route'] == 'blog'){
-			
-			//$temporary = $env['temporary'][0];
+
             $temporary = $this->translit_reverse($env['temporary'][0]);
 			$smtppage = $this->model->getpage($temporary);
 	
@@ -44,7 +45,7 @@ class PageController extends Controller {
                   </div>
                 </div>
 EOT;
-			return ($html_page_blog);
+			return $html_page_blog;
 		}
 
         if($env['route'] == 'news'){
@@ -70,7 +71,7 @@ EOT;
                   </div>
                 </div>
 EOT;
-            return ($html_page_news);
+            return $html_page_news;
         }
 		
 		if($env['route'] == 'forum'){
@@ -97,7 +98,7 @@ EOT;
                   </div>
                 </div>
 EOT;
-			return ($html_page_forum);
+			return $html_page_forum;
 		}
 
 

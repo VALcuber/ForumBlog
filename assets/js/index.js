@@ -32,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleBtn.style.left = coordinates.left + 'px';
         menu.classList.add('menu_opened');
         document.body.append(overlay);    
-      } else {
+      }
+      else {
         barsArr[1].style.opacity = "";
         barsArr[0].style.width = "";
         barsArr[0].style.transform = "";
@@ -81,16 +82,19 @@ function resizeHeaderNavigations() {
   const categories = document.getElementById('categories');
   const categoriesList = document.getElementById('categories-list');
   let NavItemsColection;
-  
-  if(resizeHeaderNavigations.clonedCollection) {
+
+  if (resizeHeaderNavigations.clonedCollection) {
     NavItemsColection = resizeHeaderNavigations.clonedCollection;
     categoriesList.innerHTML = '';
 
-    while(NavItemsColection.length > 0) {
+    while (NavItemsColection.length > 0) {
       categoriesList.appendChild(NavItemsColection[0]);
     }
   }
-  
+
+
+//------------------------------------------------------------------------------------//
+  /*
   NavItemsColection = categoriesList.children;
   resizeHeaderNavigations.clonedCollection = categoriesList.cloneNode(true).children;
 
@@ -99,11 +103,10 @@ function resizeHeaderNavigations() {
       break;
     }
     NavItemsColection[NavItemsColection.length - 2].remove();
-  }
+  }*/
 }
-//------------------------------------------------------------------------------------//
-
-/*function removeAdd(){
+/*
+function removeAdd(){
   document.body.children[document.body.children.length-1].remove();
   document.body.children[document.body.children.length-1].remove();
 }*/

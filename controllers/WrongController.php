@@ -10,7 +10,7 @@ class WrongController extends Controller {
 		$this->view = new View_Admin();
 	}
 	
-	public function index() {
+	public function wrong() {
 		global $env;
 		
 		if(($env['act'] == 'Login') && ($_POST['email'] != '')&&($_POST['password'] != '')){

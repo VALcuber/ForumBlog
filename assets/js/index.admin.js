@@ -15,11 +15,10 @@ AdminPanelMenu.addEventListener('click',function(event){
   target.classList.add('bg-secondary');
   target.classList.add('text-white');
   adminContainer.lastElementChild.innerHTML = templatesMap.get(target.dataset.action);
-}); 
-
+});
+/*
 function removeAdd(){
   document.body.children[document.body.children.length-1].remove();
   document.body.children[document.body.children.length-1].remove();
 }
-
-
+*/

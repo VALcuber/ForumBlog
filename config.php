@@ -11,6 +11,7 @@ include ("conf/db.php");
 include ("conf/router.php");
 
 // инициализация
+$env['id'] = $_POST['userid'] ?? '';
 $env['user_id'] = $_POST['user_id'] ?? '';
 $env['first-name'] = $_POST['first-name'] ?? '';
 $env['last-name'] = $_POST['last-name'] ?? '';
@@ -25,6 +26,7 @@ $env['title_category'] = '';
 $env['route3'] = '';
 $env['forum_blog'] = '';
 $env['route'] = '';
+$env['status'] = $_POST['userid'] ?? '';
 
 //$_SESSION['user_id'] = '0';
 // загрузка настроек

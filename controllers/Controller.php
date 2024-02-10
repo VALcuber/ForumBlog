@@ -23,6 +23,7 @@
                 $resultchkuser = $this->model->checkUser();
 
                 if($resultchkuser['user_id'] == ''){
+                    //$this->errorPage();
                     header("Location: /wrong");
                 }
 
@@ -81,13 +82,16 @@
             if($env['act']=='Register'){
                 $this->model->SingIn();
             }
+            if(isset($env['route1']) && $env['route1'] != 'manage_users'){
+                $this->pageData['topmenu'] = $this->echo_topmenu();
+            }
 
             $this->pageData['title'] = "Forum-blog";
             $this->pageData['panel'] = $adminPanel;
             $this->pageData['check'] = $result_Fn_Ln_arr;
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['active'] = $active;
-            $this->pageData['topmenu'] = $this->echo_topmenu();
+
             $this->pageData['burger'] = $this->echo_burger();
 
 
@@ -167,7 +171,7 @@
                     
                     <div class="dropdown-content">
                     
-                      <a href="#">Manage users</a>
+                      <a href="/manage_users">Manage users</a>
                       
                       <a href="#">Ссылка 2</a>
                       
@@ -191,7 +195,26 @@ EOT;
 
             $arrSize = count($category);
 
+
+
             if($arrSize > 1) {
+
+                if (isset($env['route1']) && $env['route1'] == '') {
+                    $active = 'active';
+                }
+
+                $homebutton = '
+                    <div class="row px-4 py-4">
+
+                        <nav class="categories flex-grow-1" id="categories">
+
+                        <ul class="nav nav-pills nav-fill flex-nowrap" id="categories-list">
+                        
+                            <li class="nav-item ">
+
+                                <a href="/" class="nav-link ' .$active . ' categories__link text-nowrap">Home</a>
+
+                            </li>';
 
                 for ($i = 0; $i < $arrSize; $i++) {
 
@@ -225,8 +248,14 @@ EOT;
 
                 $buttonall = '<li class="nav-item">
                     <a href="/all" class="nav-link ' . $active . ' categories__link text-nowrap">All</a>
-                </li>';
-                $resulthtmlcategory = $resulthtmlcategory . $buttonall;
+                </li>
+                </ul>
+
+            </nav>
+
+        </div>
+        ';
+                $resulthtmlcategory = $homebutton . $resulthtmlcategory . $buttonall;
                 return $resulthtmlcategory;
             }
             else

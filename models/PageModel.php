@@ -8,19 +8,19 @@ class PageModel extends Model {
 
 		if($env['route1'] == 'forum'){
 
-			$sql = "SELECT `name`,`forum_content` FROM `".$env['route']."` WHERE `name` = '".$env['route2']."' ";
+			$sql = "SELECT `name`,`forum_content` FROM `".$env['route1']."` WHERE `name` = '".$env['route2']."' ";
 
 		}
 
 		elseif ($env['route1'] == 'news'){
 
-            $sql = "SELECT `name`,`content` FROM `".$env['route']."` WHERE `name` = '$temporary'";
-
+            $sql = "SELECT `name`,`content` FROM `".$env['route1']."` WHERE `name` = '$temporary'";
+//var_export($sql);
         }
 
 		elseif($env['route1'] == 'blog'){
 
-            $sql = "SELECT `name`,`blog_content` FROM `".$env['route']."` WHERE `name` = '".$env['route2']."' ";
+            $sql = "SELECT `name`,`blog_content` FROM `".$env['route1']."` WHERE `name` = '".$env['route2']."' ";
 
 		}
 

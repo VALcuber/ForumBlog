@@ -40,25 +40,7 @@
 
         </div>
 
-        <div class="row px-4 py-4">
-
-            <nav class="categories flex-grow-1" id="categories">
-
-                <ul class="nav nav-pills nav-fill flex-nowrap" id="categories-list">
-
-                    <li class="nav-item ">
-
-                        <a href="/" class="nav-link <?=$pageData['active']?> categories__link text-nowrap">Home</a>
-
-                    </li>
-
                     <?= $pageData['topmenu']?>
-
-                </ul>
-
-            </nav>
-
-        </div>
 
     </div>
 
