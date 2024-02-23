@@ -12,22 +12,21 @@ class IndexController extends Controller {
 	public function index() {
 
         $this->controller();
-        $this->pageData['blog'] = $this->echo_blog();
-        $this->pageData['news'] = $this->echo_news();
-        $this->pageData['forum'] = $this->echo_forum();
+        $this->pageData['blog'] = $this->echo_random_blog_topics();
+        $this->pageData['news'] = $this->echo_latest_news();
+        $this->pageData['forum'] = $this->echo_random_forum_topics();
         $this->pageData['slash'] = "";
 
 		$this->view->render($this->pageTpl, $this->pageData);
-
 	}
 
-	public function echo_blog() { //Ф-я для вывода блога
+	public function echo_random_blog_topics() { //Ф-я для вывода блога
 		
 		$resultHTML = "";  
 		$blog = $this->model->blog();
 
 		if($blog != NULL) {
-            $resultblog = $this->makeRandomArrayblog(5, $blog);
+            $resultblog = $this->make_Random_Array_blog(5, $blog);
 
 		  $arrSize = count($resultblog);
         }
@@ -58,7 +57,7 @@ EOT;
 		  return $resultHTML;
 	}
 	
-	public function makeRandomArrayblog($amount,$array){
+	public function make_Random_Array_blog($amount, $array){
 
 			$randomArrayblog = array();
 			$randKeys = array_rand($array,$amount);
@@ -68,9 +67,9 @@ EOT;
 			}
 
 			return $randomArrayblog;
-	}
+	} //Функция для случайного отображения елементов в массиве
 	
-	public function echo_news() { //Ф-я для вывода новостей
+	public function echo_latest_news() { //Ф-я для вывода новостей
 
 	    $resulthtmlnews = "";
 		$news = $this->model->news();
@@ -110,14 +109,14 @@ EOT;
 		return $resulthtmlnews;
 	}
 
-	public function echo_forum() { //Ф-я для вывода блога
+	public function echo_random_forum_topics() { //Ф-я для вывода форума
 
 	    $resulthtmlforum = "";
 
 	    $forum = $this->model->forum();
 
 		if($forum != NULL) {
-            $resultforum = $this->makeRandomArrayforum(5, $forum);
+            $resultforum = $this->make_Random_Array_forum(5, $forum);
 
             $arrSize = count($resultforum);
         }
@@ -147,7 +146,7 @@ EOT;
 			return $resulthtmlforum;
 	}
 	
-	public function makeRandomArrayforum($amount,$array){
+	public function make_Random_Array_forum($amount, $array){
 
 		  $randomArrayforum = array();
 		  $randKeys = array_rand($array,$amount);
@@ -157,5 +156,5 @@ EOT;
 		  }
 
 		  return $randomArrayforum;
-	}
+	} //Функция для случайного отображения елементов в массиве 
 }

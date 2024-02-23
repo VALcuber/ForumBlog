@@ -44,9 +44,6 @@
 
                 if($_SESSION['status'] == 'admin'){
                     $adminPanel = $this->admin_panel();
-                    if($env['act'] == 'Admin Panel'){
-                        header("Location: /panel");
-                    }
                 }
 
                 else{
@@ -76,14 +73,19 @@
             }
 
             if($env['act'] == 'User Profile'){
-                header("Location: /userprofile");
+                header("Location: /user_profile");
             }
 
             if($env['act']=='Register'){
                 $this->model->SingIn();
             }
-            if(isset($env['route1']) && $env['route1'] != 'manage_users'){
+
+            if(isset($env['route1']) && $env['route1'] != 'manage_users' && $env['route1'] != 'forum'){
                 $this->pageData['topmenu'] = $this->echo_topmenu();
+            }
+
+            if($env['route1'] == 'blog' || $env['route1'] == 'forum'){
+                $this->pageData['script_category'] = $this->script_category();
             }
 
             $this->pageData['title'] = "Forum-blog";
@@ -94,7 +96,13 @@
 
             $this->pageData['burger'] = $this->echo_burger();
 
+        }
 
+        public function script_category(){
+
+            $script_category = '<script src="../assets/js/category.js"></script>';
+
+            return $script_category;
         }
 
         public function admin_panel(){
@@ -195,15 +203,11 @@ EOT;
 
             $arrSize = count($category);
 
+            if (isset($env['route1']) && $env['route1'] == '') {
+                $active = 'active';
+            }
 
-
-            if($arrSize > 1) {
-
-                if (isset($env['route1']) && $env['route1'] == '') {
-                    $active = 'active';
-                }
-
-                $homebutton = '
+            $homebutton = '
                     <div class="row px-4 py-4">
 
                         <nav class="categories flex-grow-1" id="categories">
@@ -215,6 +219,8 @@ EOT;
                                 <a href="/" class="nav-link ' .$active . ' categories__link text-nowrap">Home</a>
 
                             </li>';
+
+            if($arrSize > 1) {
 
                 for ($i = 0; $i < $arrSize; $i++) {
 
@@ -259,7 +265,7 @@ EOT;
                 return $resulthtmlcategory;
             }
             else
-                return '';
+                return $homebutton;
         }
 
         public function echo_burger(){
@@ -508,12 +514,3 @@ EOT;
             return $form_exit;
         }
 	}
-/*
-                $adminPanel =
-                    '<form method="post">
-                        <input type="submit" name="act" class="btn btn-primary btn-lg" value="Admin Panel">
-                    </form>';
-                if($env['act'] == 'Admin Panel'){
-                    header("Location: /panel");
-                }
-*/

@@ -1,6 +1,6 @@
 <?php
 
-class UserprofileModel extends Model {
+class User_profileModel extends Model {
 
 	public function getpage($temporary){
 

@@ -26,22 +26,27 @@ class Routing {
 
         /*Определяем контроллер*/
 
-        if(isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum' || $route[1] == 'news') ) {
+        if($route[1] == 'blog'){
+            $env['route'] = 'blog';
+        }
+
+        if($route[1] == 'forum'){
+            $env['route'] = 'forum';
+        }
+
+        if($route[1] == 'news'){
+            $env['route'] = 'news';
+        }
+
+        if(isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')){
+            $controllerName = "ForumController";
+            $modelName = "ForumModel";
+            }
+
+        if(isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news') ) {
 
             $controllerName = "Blog_forum_news_Controller";
             $modelName = "Blog_forum_news_Model";
-
-            if($route[1] == 'blog'){
-                $env['route'] = 'blog';
-            }
-
-            if($route[1] == 'forum'){
-                $env['route'] = 'forum';
-            }
-
-            if($route[1] == 'news'){
-                $env['route'] = 'news';
-            }
 
 			if(isset($route2)){
 
@@ -103,17 +108,9 @@ class Routing {
 
 	}
 
-
+/*
 	public function errorPage() {
-        $controllerName = "WrongController";
-        $modelName = "WrongModel";
-        $action = "wrong";
 
-        include PATH_C . $controllerName . ".php"; //WrongController.php
-        include PATH_M . $modelName . ".php"; //WrongModel.php
-
-        $controller = new $controllerName();
-        $controller->$action();
 	}
-
+*/
 }

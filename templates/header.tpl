@@ -34,7 +34,7 @@
 
                 <input type="text" class="header__search px-3 mr-sm-4 border-0 rounded-pill d-block" placeholder="Search...">
 
-                <a href="/userprofile" class="header__profile text-center d-none d-sm-block rounded-circle" <?= $pageData['signin_modal_winwow'] ?>><?= $pageData['check'] ?></a>
+                <a href="/user_profile" class="header__profile text-center d-none d-sm-block rounded-circle" <?= $pageData['signin_modal_winwow'] ?>><?= $pageData['check'] ?></a>
 
             </div>
 
