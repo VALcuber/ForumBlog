@@ -34,8 +34,6 @@
 
                 <button data-state = "closed" class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" <?= $pageData['signin_modal_winwow'] ?> > <?= $pageData['check'] ?> </button>
 
-           <!--     <a class="header__profile text-center d-none d-sm-block rounded-circle" data-backdrop="false" <?= $pageData['signin_modal_winwow'] ?> > <?= $pageData['check'] ?> </a>   -->
-
             </div>
 
         </div>

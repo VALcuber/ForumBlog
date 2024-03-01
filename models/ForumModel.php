@@ -65,4 +65,20 @@ class ForumModel extends Model{
         }
     }
 
+    public function latest_forum_posts(){
+
+        $result_forum = array();
+
+        $sql = "SELECT `Topic` FROM `forum` ORDER BY id DESC LIMIT 2";
+
+        $request = $this->db->prepare($sql);
+        $request->execute();
+
+        while($res_forum = $request->fetch(PDO::FETCH_ASSOC)){
+            array_push($result_forum,$res_forum);
+        }
+
+        return $result_forum;
+    }
+
 }

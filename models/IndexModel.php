@@ -32,7 +32,7 @@ class IndexModel extends Model {
         $smtp = $this->db->prepare($sql);
         $smtp->execute();
 
-        $sql = "SELECT * FROM `news`";
+        $sql = "SELECT * FROM `news` ORDER BY id DESC LIMIT 7";
 		
 		$smtpn = $this->db->prepare($sql);
 		$smtpn->execute();

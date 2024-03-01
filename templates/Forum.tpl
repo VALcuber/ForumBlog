@@ -11,7 +11,7 @@
 
             </div>
 
-            <div class="col-4">
+            <div class="col-3">
 
                 <aside>
 
@@ -19,24 +19,8 @@
 
                         <div class="card-body">
 
-                            <h5 class="card-title mb-4">RECENT FORUM NEWS</h5>
-
-                            <h5 class="card-title">Interface</h5>
-
-                            <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita rerum voluptatibus dignissimos asperiores sapiente, quo dolorum inventore fugiat commodi dicta.</p>
-
-                            <h5 class="card-title">UX</h5>
-
-                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae veniam unde velit sunt, assumenda esse magni ab veritatis vel doloribus?</p>
-
-                            <h5 class="card-title">UI</h5>
-
-                            <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugit alias omnis optio animi magnam illo ipsum obcaecati tenetur quidem sunt.</p>
-
-                            <h5 class="card-title">Interface</h5>
-
-                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere consequuntur error dolore sapiente distinctio nostrum voluptas praesentium dicta facilis repellendus.</p>
-
+                            <h5 class="card-title mb-4">RECENT FORUM POSTS</h5>
+                            <?=$pageData['echo_latest_forum_posts']?>
                         </div>
 
                     </div>

@@ -19,7 +19,7 @@ class ForumController extends Controller{
             $this->model->add_forum_content();
 
         $this->pageData['forum_titles'] = $this->echo_page_titles();
-
+        $this->pageData['echo_latest_forum_posts'] = $this->echo_latest_forum_posts();
         $this->view->render($this->pageTpl, $this->pageData);
 
     }
@@ -96,7 +96,7 @@ EOT;
 
               <div class="row px-4 py-2">
 
-                <div class="col-8 px-0">
+                <div class="col-9 px-0">
 
                   <nav>
 
@@ -109,6 +109,40 @@ EOT;
 
         return $titles.$pageallecho.$this->echo_page_content().$ul_nav;
 
+    }
+
+    public function echo_latest_forum_posts(){
+        global $env;
+
+        //$result = "";
+
+        $route_title =$env['route'];
+
+        $latest_forum_posts = $this->model->latest_forum_posts();
+
+        $count = count($latest_forum_posts);
+
+        if ($count != NULL) {
+
+            for ($i = 0; $i < 2; $i++) {
+
+                $echo_latest_forum_posts = $latest_forum_posts[$i]["Topic"];
+
+                $echo_latest_forum_posts_translit = $this->translit($echo_latest_forum_posts);
+
+                $subcategoryes = <<<"EOT"
+                    <li class="py-2 forum_topics">
+                        <a href="/$route_title/$echo_latest_forum_posts_translit">$echo_latest_forum_posts</a>
+                    </li>
+EOT;
+
+                $result = $result . $subcategoryes;
+            }
+        }
+        else
+            $result = '';
+
+        return $result;
     }
 
 }

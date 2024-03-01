@@ -47,7 +47,7 @@ class IndexController extends Controller {
                   $htmlblog = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				<h5 class="card-title">$blogName</h5>
-				<a href="/blog/$blogName"" class="card-link">Go to category</a>
+				<a href="/blog/$blogName" class="card-link">Go to category</a>
 			  </div>
 			  <p class="card-text flex-grow-1">$blogContent</p>
 EOT;
@@ -77,16 +77,14 @@ EOT;
 
 		$count = count($news);
 
-		$reversearray0 = array_reverse($news);
-
 			for($i = 0; $i < $count; $i++){
 
                 if($i >= 7){
                     break;
                 }
                 else {
-                    $newsName = $reversearray0[$i]["name"];
-                    $newsContent = $reversearray0[$i]["content"];
+                    $newsName = $news[$i]["name"];
+                    $newsContent = $news[$i]["content"];
 
                     $reversearray = $this->translit($newsName);
                     if ($news != NULL) {
