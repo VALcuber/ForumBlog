@@ -21,12 +21,13 @@ class IndexController extends Controller {
 	}
 
 	public function echo_random_blog_topics() { //Ф-я для вывода блога
-		
-		$resultHTML = "";  
+
 		$blog = $this->model->blog();
 
+		$blog_count = count($blog);
+
 		if($blog != NULL) {
-            $resultblog = $this->make_Random_Array_blog(5, $blog);
+            $resultblog = $this->make_Random_Array_blog($blog_count, $blog);
 
 		  $arrSize = count($resultblog);
         }
@@ -58,7 +59,7 @@ EOT;
 	}
 	
 	public function make_Random_Array_blog($amount, $array){
-
+        $amount = $amount -1;
 			$randomArrayblog = array();
 			$randKeys = array_rand($array,$amount);
 
@@ -111,47 +112,48 @@ EOT;
 
 	public function echo_random_forum_topics() { //Ф-я для вывода форума
 
-	    $resulthtmlforum = "";
-
 	    $forum = $this->model->forum();
 
+	    $forum_count = count($forum);
+
 		if($forum != NULL) {
-            $resultforum = $this->make_Random_Array_forum(5, $forum);
+            $resultforum = $this->make_Random_Array_forum($forum_count, $forum);
 
             $arrSize = count($resultforum);
         }
 		else
             $resultforum = '';
 
-		  for($i = 0; $i < $arrSize; $i++){
+		for($i = 0; $i < $arrSize; $i++){
+		    if($i >= 7){
+		        break;
+		    }
+            else {
+                $forumName = $resultforum[$i]["Topic"];
 
-              if($i >= 7){
-                  break;
-              }
-              else {
-                  $forumName = $resultforum[$i]["name"];
-                  $forumContent = $resultforum[$i]["forum_content"];
+                $forumContent = $resultforum[$i]["Title"];
 
-                  $htmlforum = <<<"EOT"
+                $htmlforum = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				<h5 class="card-title">$forumName</h5>
 				<a href="/forum/$forumName" class="card-link">Go to category</a>
 			  </div>
 			  <p class="card-text flex-grow-1">$forumContent</p>
 EOT;
-
-                  $resulthtmlforum = $resulthtmlforum . $htmlforum;
-              }
-		  }
+                $resulthtmlforum = $resulthtmlforum . $htmlforum;
+            }
+		}
 			return $resulthtmlforum;
 	}
 	
 	public function make_Random_Array_forum($amount, $array){
-
+        $amount = $amount -1;
 		  $randomArrayforum = array();
 		  $randKeys = array_rand($array,$amount);
 
+
 		  for($i = 0; $i < count($randKeys); $i++){
+
 			  array_push($randomArrayforum,$array[$randKeys[$i]]);
 		  }
 

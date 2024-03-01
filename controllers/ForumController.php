@@ -32,7 +32,9 @@ class ForumController extends Controller{
 
         $route_title =$env['route'];
 
-        $all = $this->model->get_page_titles();
+        $all_titles = $this->model->get_page_titles();
+
+        $all = array_reverse($all_titles);
 
         $count = count($all);
 

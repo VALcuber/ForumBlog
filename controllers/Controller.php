@@ -24,7 +24,7 @@
 
                 if($resultchkuser['user_id'] == ''){
                     //$this->errorPage();
-                    header("Location: /wrong");
+                    header("Location: /");
                 }
 
             }
@@ -41,6 +41,8 @@
                 $result_Fn_Ln_arr = $Fn['0'].$Ln['0'];
 
                 $this->pageData['page'] = $this->echo_form_exit();
+
+                $user_menu_winwow = 'user-menu';
 
                 if($_SESSION['status'] == 'admin'){
                     $adminPanel = $this->admin_panel();
@@ -71,16 +73,16 @@
                 session_destroy();
                 header("Location: /");
             }
-
+/*
             if($env['act'] == 'User Profile'){
                 header("Location: /user_profile");
             }
-
+*/
             if($env['act']=='Register'){
                 $this->model->SingIn();
             }
 
-            if(isset($env['route1']) && $env['route1'] != 'manage_users' && $env['route1'] != 'forum'){
+            if(isset($env['route1']) && $env['route1'] != 'manage_users'){
                 $this->pageData['topmenu'] = $this->echo_topmenu();
             }
 
@@ -92,6 +94,7 @@
             $this->pageData['panel'] = $adminPanel;
             $this->pageData['check'] = $result_Fn_Ln_arr;
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
+            $this->pageData['$user_menu_winwow'] = $user_menu_winwow;
             $this->pageData['active'] = $active;
 
             $this->pageData['burger'] = $this->echo_burger();
@@ -195,6 +198,7 @@ EOT;
         }
 
         public function echo_topmenu(){
+
             global $env;
 
             $resulthtmlcategory ="";
@@ -261,11 +265,12 @@ EOT;
 
         </div>
         ';
-                $resulthtmlcategory = $homebutton . $resulthtmlcategory . $buttonall;
+                $resulthtmlcategory = $resulthtmlcategory . $buttonall;
                 return $resulthtmlcategory;
             }
-            else
-                return $homebutton;
+           // else
+           //     return $homebutton;
+
         }
 
         public function echo_burger(){

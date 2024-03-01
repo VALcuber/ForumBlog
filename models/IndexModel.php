@@ -53,7 +53,7 @@ class IndexModel extends Model {
         $smtp = $this->db->prepare($sql);
         $smtp->execute();
 
-        $sql = "SELECT * FROM `forum`";
+        $sql = "SELECT `Topic`, `Title` FROM `forum`";
 		
 		$smtpf = $this->db->prepare($sql);
 		$smtpf->execute();

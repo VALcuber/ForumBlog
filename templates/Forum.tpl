@@ -19,7 +19,7 @@
 
                         <div class="card-body">
 
-                            <h5 class="card-title mb-4">RECENT NEWS BY THIS CATEGORY</h5>
+                            <h5 class="card-title mb-4">RECENT FORUM NEWS</h5>
 
                             <h5 class="card-title">Interface</h5>
 

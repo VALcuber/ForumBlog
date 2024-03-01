@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const separator = document.querySelector('.menu__separator');
     const categoriesMenu = document.querySelector('.menu__categories');
     const toggleBtn = document.querySelector('.toggle-btn');
+    const toggleBtns = document.querySelector('.toggle-btns');
     const onToggleMenuHadler = function() {
       const barsArr = Array.from(document.querySelectorAll('.toggle-btn__bar'));
       const menu = document.getElementById('burger-menu');
@@ -54,6 +55,35 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     };
+    const onToggleMenuHadlers = function() {
+      const menu = document.getElementById('user-menu');
+
+      if (this.dataset.state === 'closed') {
+        toggleBtns.dataset.state = 'opened'
+        toggleBtns.style.zIndex = '2';
+        //toggleBtns.style.position = 'fixed';
+        //toggleBtns.style.top = coordinates.top + 'px';
+        //toggleBtns.style.left = coordinates.left + 'px';
+        menu.classList.add('menu_opened');
+        document.body.append(overlay);
+      }
+      else {
+        toggleBtns.dataset.state = 'closed'
+        toggleBtns.style.zIndex = '';
+        toggleBtns.style.position = '';
+        toggleBtns.style.top = '';
+        toggleBtns.style.left = '';
+        menu.classList.remove('menu_opened');
+        overlay.remove();
+
+        if (categoriesIsActive) {
+          console.log (3);
+          separator.style.display = 'none';
+          categoriesMenu.style.display = 'none';
+          categoriesIsActive = false;
+        }
+      }
+    };
     let categoriesIsActive = false;
 
     overlay.classList.add('overlay');
@@ -61,6 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     toggleBtn.addEventListener('click',onToggleMenuHadler);
     overlay.addEventListener('click', onToggleMenuHadler);
+
+    toggleBtns.addEventListener('click',onToggleMenuHadlers);
+    overlay.addEventListener('click', onToggleMenuHadlers);
 
     categoriesBtn.onclick = function () {
       if (categoriesIsActive) {

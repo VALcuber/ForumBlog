@@ -33,7 +33,6 @@ $env['status'] = $_POST['userid'] ?? '';
 
 include PATH_M. 'Model.php';
 include PATH_V. 'View.php';
-include PATH_V. 'View_Admin.php';
 include PATH_C. 'Controller.php'; // Подключаем контроллер
 
 Routing::buildRoute();
