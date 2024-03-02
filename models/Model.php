@@ -13,7 +13,7 @@ class Model{
     {
         $categories = array();
 
-        $sql = "SELECT `id`,`name`,`structure` FROM `blog`UNION ALL SELECT `id`,`name`,`structure` FROM `forum`  ORDER BY `id` DESC LIMIT 12";
+        $sql = "SELECT `id`,`name`,`structure` FROM `blog`UNION ALL SELECT `id`,`Topic`,`Title` FROM `forum`  ORDER BY `id` DESC LIMIT 12";
 
         $smtpt = $this->db->prepare($sql);
         $smtpt->execute();

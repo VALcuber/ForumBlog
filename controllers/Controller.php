@@ -263,8 +263,7 @@ EOT;
 
             </nav>
 
-        </div>
-        ';
+        </div>';
                 $result_html_category = $resulthtmlcategory . $buttonall;
                 return $result_html_category;
             }
