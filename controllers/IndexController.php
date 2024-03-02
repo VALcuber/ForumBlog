@@ -21,7 +21,7 @@ class IndexController extends Controller {
 	}
 
 	public function echo_random_blog_topics() { //Ф-я для вывода блога
-
+        $resultHTML = '';
 		$blog = $this->model->blog();
 
 		$blog_count = count($blog);
@@ -113,6 +113,7 @@ EOT;
 	    $forum = $this->model->forum();
 
 	    $forum_count = count($forum);
+        $resulthtmlforum = '';
 
 		if($forum != NULL) {
             $resultforum = $this->make_Random_Array_forum($forum_count, $forum);

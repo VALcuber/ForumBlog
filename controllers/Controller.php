@@ -257,16 +257,16 @@ EOT;
                 }
 
                 $buttonall = '<li class="nav-item">
-                    <a href="/all" class="nav-link ' . $active . ' categories__link text-nowrap">All</a>
-                </li>
+                        <a href="/all" class="nav-link ' . $active . ' categories__link text-nowrap">All</a>
+                    </li>
                 </ul>
 
             </nav>
 
         </div>
         ';
-                $resulthtmlcategory = $resulthtmlcategory . $buttonall;
-                return $resulthtmlcategory;
+                $result_html_category = $resulthtmlcategory . $buttonall;
+                return $result_html_category;
             }
            // else
            //     return $homebutton;

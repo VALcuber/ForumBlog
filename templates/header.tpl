@@ -106,6 +106,11 @@
             </div>
 
         </div>
+        <div class="row px-4 py-4">
+
+            <nav class="categories flex-grow-1" id="categories">
+
+                <ul class="nav nav-pills nav-fill flex-nowrap" id="categories-list">
                     <?= $pageData['topmenu']?>
 
     </div>
