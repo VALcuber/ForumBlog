@@ -45,7 +45,7 @@ class ForumController extends Controller{
             $subcategory_translit = $this->translit($subcategory);
 
             $subcategoryes = <<<"EOT"
-                <li class="py-2">
+                <li class="py-2 col d-flex justify-content-center">
                     <a href="/$route_title/$subcategory_translit">$subcategory</a>
                 </li>
 EOT;
@@ -100,7 +100,7 @@ EOT;
 
                   <nav>
 
-                    <ul class=" p-0 forum_topics">
+                    <ul class="p-0 forum_topics row row-cols-3">
 EOT;
         $ul_nav = '   
                 </ul>
@@ -124,14 +124,14 @@ EOT;
 
         if ($count != NULL) {
 
-            for ($i = 0; $i < 2; $i++) {
+            for ($i = 0; $i < $count; $i++) {
 
                 $echo_latest_forum_posts = $latest_forum_posts[$i]["Topic"];
 
                 $echo_latest_forum_posts_translit = $this->translit($echo_latest_forum_posts);
 
                 $subcategoryes = <<<"EOT"
-                    <li class="py-2 forum_topics">
+                    <li class="py-2">
                         <a href="/$route_title/$echo_latest_forum_posts_translit">$echo_latest_forum_posts</a>
                     </li>
 EOT;

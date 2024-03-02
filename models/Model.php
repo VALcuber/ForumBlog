@@ -29,7 +29,7 @@ class Model{
 
         $categories = array();
 
-        $sql = "SELECT `id`,`name`,`structure` FROM `blog`UNION ALL SELECT `id`,`name`,`structure` FROM `forum`  ORDER BY `id` DESC LIMIT 49";
+        $sql = "SELECT `id`,`name`,`structure` FROM `blog`UNION ALL SELECT `id`,`Topic`,`structure` FROM `forum`  ORDER BY `id` DESC LIMIT 49";
 
         $smtpt = $this->db->prepare($sql);
         $smtpt->execute();
