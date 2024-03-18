@@ -15,7 +15,7 @@ class PageModel extends Model {
 		elseif ($env['route1'] == 'news'){
 
             $sql = "SELECT `name`,`content` FROM `".$env['route1']."` WHERE `name` = '$temporary'";
-//var_export($sql);
+
         }
 
 		elseif($env['route1'] == 'blog'){
@@ -33,4 +33,8 @@ class PageModel extends Model {
 		return($rower);
 		
 	}
+
+	public function forum_commit(){
+
+    }
 }

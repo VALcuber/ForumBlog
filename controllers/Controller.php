@@ -89,7 +89,7 @@
             if(($env['route1'] == 'blog' || $env['route1'] == 'forum') && !isset($env['route2'])){
                 $this->pageData['script_category'] = $this->script_category();
             }
-
+            var_dump($_POST);
             $this->pageData['title'] = "Forum-blog";
             $this->pageData['panel'] = $adminPanel;
             $this->pageData['check'] = $result_Fn_Ln_arr;

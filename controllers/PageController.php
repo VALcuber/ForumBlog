@@ -13,6 +13,8 @@ class PageController extends Controller {
 
         $this->controller();
         $this->pageData['page'] = $this->echo_page();
+        $this->pageData['comments'] = $this->echo_comments();
+
 
 
 		$this->view->render($this->pageTpl, $this->pageData);
@@ -76,7 +78,7 @@ EOT;
 		
 		if($env['route'] == 'forum'){
 
-			$temporary = $env['temporary'][0];
+			//$temporary = $env['temporary'][0];
             $temporary = $this->translit_reverse($env['temporary'][0]);
 			
 			$smtppage = $this->model->getpage($temporary);
@@ -103,4 +105,10 @@ EOT;
 
 
 	}
+
+	public function echo_comments(){
+        global $env;
+
+        return '<p class="col-lg-10 col-md-12 mx-auto my-2">Some comments<br>Some comments<br>Some comments</p>';
+    }
 }
