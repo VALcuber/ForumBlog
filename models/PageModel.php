@@ -8,7 +8,7 @@ class PageModel extends Model {
 
 		if($env['route1'] == 'forum'){
 
-			$sql = "SELECT `name`,`forum_content` FROM `".$env['route1']."` WHERE `name` = '".$env['route2']."' ";
+			$sql = "SELECT `Title`,`Description` FROM `".$env['route1']."` WHERE `Title` = '".$env['route2']."' ";
 
 		}
 

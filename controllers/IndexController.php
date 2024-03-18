@@ -15,7 +15,6 @@ class IndexController extends Controller {
         $this->pageData['blog'] = $this->echo_random_blog_topics();
         $this->pageData['news'] = $this->echo_latest_news();
         $this->pageData['forum'] = $this->echo_random_forum_topics();
-        $this->pageData['slash'] = "";
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
@@ -135,7 +134,7 @@ EOT;
                 $htmlforum = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				<h5 class="card-title">$forumName</h5>
-				<a href="/forum/$forumName" class="card-link">Go to category</a>
+				<a href="/forum/$forumName" class="card-link">Go to post</a>
 			  </div>
 			  <p class="card-text flex-grow-1">$forumContent</p>
 EOT;

@@ -1,4 +1,3 @@
-<body>
 
   <main class="main">
 

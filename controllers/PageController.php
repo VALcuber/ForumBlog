@@ -13,7 +13,7 @@ class PageController extends Controller {
 
         $this->controller();
         $this->pageData['page'] = $this->echo_page();
-        $this->pageData['slash'] = "/";
+
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
@@ -76,13 +76,13 @@ EOT;
 		
 		if($env['route'] == 'forum'){
 
-			//$temporary = $env['temporary'][0];
+			$temporary = $env['temporary'][0];
             $temporary = $this->translit_reverse($env['temporary'][0]);
 			
 			$smtppage = $this->model->getpage($temporary);
 
-			$pageName=$smtppage["name"];
-			$pageContent=$smtppage["forum_content"];
+			$pageName=$smtppage["Title"];
+			$pageContent=$smtppage["Description"];
 
             $html_page_forum = <<<"EOT"
                 <div class="card">

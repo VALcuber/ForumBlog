@@ -86,7 +86,7 @@
                 $this->pageData['topmenu'] = $this->echo_topmenu();
             }
 
-            if($env['route1'] == 'blog' || $env['route1'] == 'forum'){
+            if(($env['route1'] == 'blog' || $env['route1'] == 'forum') && !isset($env['route2'])){
                 $this->pageData['script_category'] = $this->script_category();
             }
 
@@ -96,6 +96,7 @@
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['$user_menu_winwow'] = $user_menu_winwow;
             $this->pageData['active'] = $active;
+            $this->pageData['slash'] = "../";
 
             $this->pageData['burger'] = $this->echo_burger();
 

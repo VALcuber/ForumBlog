@@ -23,7 +23,6 @@ class Routing {
             $env['route2'] = $route2;
             $env['route-2'] = $route[2];
         }
-
         /*Определяем контроллер*/
 
         if($route[1] == 'blog'){
@@ -38,22 +37,23 @@ class Routing {
             $env['route'] = 'news';
         }
 
-        if(isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')){
+        if((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news' || $route[1] == 'forum')) && isset($route2)){
+            $controllerName = "PageController";
+            $modelName = "PageModel";
+
+        }
+
+        elseif(isset($route[1]) && ($route[1] == 'forum')){
             $controllerName = "ForumController";
             $modelName = "ForumModel";
-            }
 
-        if(isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news') ) {
+        }
+
+        elseif(isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news') ) {
 
             $controllerName = "Blog_forum_news_Controller";
             $modelName = "Blog_forum_news_Model";
 
-			if(isset($route2)){
-
-                $controllerName = "PageController";
-                $modelName = "PageModel";
-
-            }
 		}
 
         elseif (isset($route[1])&& $route[1] == 'manage_users'){
@@ -71,7 +71,7 @@ class Routing {
 			$env['route3'] = $route[3];
 			$env['route'] = lcfirst($route3);
 		}
-		
+	/*
 		elseif(isset($route2) && $route2 != 'all' ){
 
 			$controllerName = "Page_allController";
@@ -84,18 +84,13 @@ class Routing {
 			$env['subcategory'] = $route[2];
 
 		}
-
+*/
 		elseif(isset($route[1]) && $route[1] == 'all'){
             $controllerName = "Page_all_all_categoriesController";
             $modelName = "Page_all_all_categoriesModel";
         }
 
         elseif($route[1] != '') {
-            $controllerName = ucfirst($route[1]. "Controller");
-            $modelName = ucfirst($route[1]. "Model");
-        }
-
-        elseif($route[1] == 'panel'){
             $controllerName = ucfirst($route[1]. "Controller");
             $modelName = ucfirst($route[1]. "Model");
         }
