@@ -86,17 +86,17 @@
                 $this->pageData['topmenu'] = $this->echo_topmenu();
             }
 
-            if(($env['route1'] == 'blog' || $env['route1'] == 'forum') && !isset($env['route2'])){
+            if((($env['route1'] == 'blog' || $env['route1'] == 'forum') && !isset($env['route2']) || $env['route1'] == 'all')){
                 $this->pageData['script_category'] = $this->script_category();
             }
-            var_dump($_POST);
+
             $this->pageData['title'] = "Forum-blog";
             $this->pageData['panel'] = $adminPanel;
             $this->pageData['check'] = $result_Fn_Ln_arr;
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['$user_menu_winwow'] = $user_menu_winwow;
             $this->pageData['active'] = $active;
-            $this->pageData['slash'] = "../";
+            //$this->pageData['slash'] = "../";
 
             $this->pageData['burger'] = $this->echo_burger();
 
@@ -206,6 +206,8 @@ EOT;
 
             $category = $this->model->gettopic();
 
+            $route_title = $env['route'];
+
             $arrSize = count($category);
 
             if (isset($env['route1']) && $env['route1'] == '') {
@@ -231,14 +233,14 @@ EOT;
 
                     $categories = $category[$i]['name'];
                     $structure = $category[$i]['structure'];
-                    $Name = $category[$i]['name'];
+                    //$Name = $category[$i]['name'];
 
                     $activist = '';
                     $active = $activist;
 
                     if (isset($env['route2'])) {
 
-                        if (isset($env['route1']) && $env['route1'] == $structure && $env['route2'] == $Name) {
+                        if (isset($env['route1']) && isset($env['route3']) && $env['route1'] == $route_title && $env['route2'] == $categories && $env['route3'] ==$structure) {
                             $activist = 'active';
                         }
 
@@ -246,7 +248,7 @@ EOT;
 
                     $htmlcategory = <<<"EOT"
 				<li class= "nav-item">
-				    <a href="/$structure/$Name" class="nav-link $activist categories__link text-nowrap">$categories</a>
+				    <a href="/$route_title/$categories/$structure" class="nav-link $activist categories__link text-nowrap">$categories</a>
 				</li>
 EOT;
                     $resulthtmlcategory = $resulthtmlcategory . $htmlcategory;

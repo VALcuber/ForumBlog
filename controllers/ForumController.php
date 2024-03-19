@@ -30,9 +30,9 @@ class ForumController extends Controller{
 
         $result = "";
 
-        $route_title =$env['route'];
+        $route_title = $env['route'];
 
-        $all_titles = $this->model->get_page_titles();
+        $all_titles = $this->model->get_page_topic();
 
         $all = array_reverse($all_titles);
 
@@ -114,7 +114,7 @@ EOT;
     public function echo_latest_forum_posts(){
         global $env;
 
-        //$result = "";
+        $result = "";
 
         $route_title =$env['route'];
 

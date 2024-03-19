@@ -19,8 +19,10 @@ class Model{
         $smtpt->execute();
 
         while ($row = $smtpt->fetch(PDO::FETCH_ASSOC)) {
+
             array_push($categories, $row);
         }
+
         return $categories;
     }
 

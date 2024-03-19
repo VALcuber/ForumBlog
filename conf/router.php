@@ -12,7 +12,6 @@ class Routing {
 
 		$route = explode("/", $_SERVER['REQUEST_URI']);
 
-
         if(isset($route[1])) {
             $route1 = strtok($route[1], '-');
             $env['route1'] = $route1;
@@ -37,9 +36,18 @@ class Routing {
             $env['route'] = 'news';
         }
 
-        if((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news' || $route[1] == 'forum')) && isset($route2)){
+        if(isset($route[3])) {
+
             $controllerName = "PageController";
             $modelName = "PageModel";
+
+            $env['route3'] = $route[3];
+
+        }
+
+        elseif((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news' || $route[1] == 'forum')) && isset($route2)){
+            $controllerName = "TopicController";
+            $modelName = "TopicModel";
 
         }
 
@@ -56,21 +64,11 @@ class Routing {
 
 		}
 
-        elseif (isset($route[1])&& $route[1] == 'manage_users'){
+        elseif (isset($route[1]) && $route[1] == 'manage_users'){
             $controllerName = "ManageUsersController";
             $modelName = "ManageUsersModel";
         }
 
-		elseif(isset($route[3])) {
-
-			$controllerName = "Certain_TopicController";
-			$modelName = "Certain_TopicModel";
-
-            $route3 = strtok($route[2], '_');
-
-			$env['route3'] = $route[3];
-			$env['route'] = lcfirst($route3);
-		}
 	/*
 		elseif(isset($route2) && $route2 != 'all' ){
 
@@ -84,10 +82,10 @@ class Routing {
 			$env['subcategory'] = $route[2];
 
 		}
-*/
+    */
 		elseif(isset($route[1]) && $route[1] == 'all'){
-            $controllerName = "Page_all_all_categoriesController";
-            $modelName = "Page_all_all_categoriesModel";
+            $controllerName = "";
+            $modelName = "";
         }
 
         elseif($route[1] != '') {

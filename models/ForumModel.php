@@ -4,7 +4,7 @@
 class ForumModel extends Model{
 
 
-    public function get_page_titles(){
+    public function get_page_topic(){
 
         global $env;
 

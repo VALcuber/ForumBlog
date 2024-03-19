@@ -2,13 +2,13 @@
 
 class PageModel extends Model {
 
-	public function getpage($temporary){
+	public function get_page($temporary){
 
 		global $env;
 
 		if($env['route1'] == 'forum'){
 
-			$sql = "SELECT `Title`,`Description` FROM `".$env['route1']."` WHERE `Title` = '".$env['route2']."' ";
+			$sql = "SELECT `Title`,`Description` FROM `".$env['route1']."` WHERE `Title` = '".$env['route3']."' ";
 
 		}
 
@@ -33,8 +33,9 @@ class PageModel extends Model {
 		return($rower);
 		
 	}
-
+/*
 	public function forum_commit(){
 
     }
+*/
 }

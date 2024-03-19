@@ -16,7 +16,7 @@ class Page_all_all_categoriesController extends Controller {
 
         $this->controller();
         $this->pageData['page_all_titles'] = $this->echo_pagealltitles();
-        $this->pageData['slash'] = "";
+
 
         $this->view->render($this->pageTpl, $this->pageData);
 
@@ -30,8 +30,6 @@ class Page_all_all_categoriesController extends Controller {
         $count_titles = count($all_titles);
 
 //-------------------------------------
-
-        $page_all_echo_2 = "</ul></nav></div></div>";
 
         $page_all_echo_0 = '<div class="row px-4 py-2">
 
@@ -75,6 +73,8 @@ class Page_all_all_categoriesController extends Controller {
 
                         <ul class="category-list p-0">';
 
+        $page_all_echo_2 = "</ul></nav></div></div>";
+
  //-----------------------------------------------------------
 
         $some_result_all = "";
@@ -86,7 +86,7 @@ class Page_all_all_categoriesController extends Controller {
             $some_result_descriptions_all = "";
 
             $category = $all_titles[$i]['title'];
-
+var_dump($category);
             $env['all_title'] = $category;
 
             $alltitles2 = $this->model->getpageall();

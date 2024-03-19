@@ -134,7 +134,7 @@ EOT;
                 $htmlforum = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				<h5 class="card-title">$forumName</h5>
-				<a href="/forum/$forumName" class="card-link">Go to post</a>
+				<a href="/forum/$forumName/$forumContent" class="card-link">Go to post</a>
 			  </div>
 			  <p class="card-text flex-grow-1">$forumContent</p>
 EOT;

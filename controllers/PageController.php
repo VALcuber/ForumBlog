@@ -12,10 +12,9 @@ class PageController extends Controller {
 	public function index() {
 
         $this->controller();
+        $this->pageData['slash'] = "../";
         $this->pageData['page'] = $this->echo_page();
         $this->pageData['comments'] = $this->echo_comments();
-
-
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
@@ -78,10 +77,11 @@ EOT;
 		
 		if($env['route'] == 'forum'){
 
-			//$temporary = $env['temporary'][0];
-            $temporary = $this->translit_reverse($env['temporary'][0]);
-			
-			$smtppage = $this->model->getpage($temporary);
+			$temporary = $env['temporary'];
+
+            //$temporary = $this->translit_reverse($temporary);
+
+			$smtppage = $this->model->get_page($temporary);
 
 			$pageName=$smtppage["Title"];
 			$pageContent=$smtppage["Description"];
