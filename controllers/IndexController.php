@@ -26,43 +26,42 @@ class IndexController extends Controller {
 		$blog_count = count($blog);
 
 		if($blog != NULL) {
-            $resultblog = $this->make_Random_Array_blog($blog_count, $blog);
+		    if($blog_count != 1)
+                $resultblog = $this->make_Random_Array_blog($blog_count, $blog);
+            else
+                $resultblog = $blog;
+		    $arrSize = count($resultblog);
 
-		  $arrSize = count($resultblog);
         }
-        else
+        else {
             $resultblog = '';
+        }
 
-		  for($i = 0; $i < $arrSize; $i++){
+        for($i = 0; $i < $arrSize; $i++){
 
-              if($i >= 7){
-                  break;
-              }
-              else {
+                 $blogName = $resultblog[$i]["Topic"];
+                 $blogContent = $resultblog[$i]["blog_content"];
 
-                  $blogName = $resultblog[$i]["name"];
-                  $blogContent = $resultblog[$i]["blog_content"];
-
-                  $htmlblog = <<<"EOT"
-			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
-				<h5 class="card-title">$blogName</h5>
-				<a href="/blog/$blogName" class="card-link">Go to category</a>
-			  </div>
-			  <p class="card-text flex-grow-1">$blogContent</p>
+                 $htmlblog = <<<"EOT"
+		        	  <div class="d-flex justify-content-between align-items-center flex-grow-1">
+				        <h5 class="card-title">$blogName</h5>
+				        <a href="/blog/$blogName" class="card-link">Go to category</a>
+			          </div>
+			          <p class="card-text flex-grow-1">$blogContent</p>
 EOT;
-                  $resultHTML = $resultHTML . $htmlblog;
-              }
-		  }
+                 $resultHTML = $resultHTML . $htmlblog;
+
+		 }
 		  
 		  return $resultHTML;
 	}
 	
 	public function make_Random_Array_blog($amount, $array){
-        $amount = $amount -1;
+        //$amount = $amount -1;
 			$randomArrayblog = array();
-			$randKeys = array_rand($array,$amount);
+			$randKeys = array_rand($array, $amount);
 
-			for($i = 0; $i < count($randKeys); $i++){
+			for($i = 0; $i < $amount; $i++){
 				array_push($randomArrayblog,$array[$randKeys[$i]]);
 			}
 

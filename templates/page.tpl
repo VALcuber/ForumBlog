@@ -13,7 +13,7 @@
 
       </div>
 
-      <div class="row px-5">
+      <div class="row px-5 message">
         <?= $pageData['comments'] ?>
       </div>
 
@@ -40,3 +40,4 @@
     </div>
 
   </main>
+  <?= $pageData['forum_comments'] ?>

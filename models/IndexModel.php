@@ -6,12 +6,12 @@ class IndexModel extends Model {
 		
 		$resultblog=array();
 
-        $sql = "CREATE TABLE if not exists `blog` (`Id` INT, `name` TEXT, `blog_content` TEXT, `structure` VARCHAR (4))";
+        $sql = "CREATE TABLE if not exists `blog` (`Id` INT, `Topic` TEXT, `blog_content` TEXT, `Title` VARCHAR (20))";
 		
 		$smtp = $this->db->prepare($sql);
 		$smtp->execute();
 
-        $sql = "SELECT * FROM `blog`";
+        $sql = "SELECT * FROM `blog` ORDER BY id DESC LIMIT 7";
         $smtp = $this->db->prepare($sql);
         $smtp->execute();
 

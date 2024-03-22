@@ -20,7 +20,7 @@ class PageModel extends Model {
 
 		elseif($env['route1'] == 'blog'){
 
-            $sql = "SELECT `name`,`blog_content` FROM `".$env['route1']."` WHERE `name` = '".$env['route2']."' ";
+            $sql = "SELECT `Title`,`blog_content` FROM `".$env['route1']."` WHERE `Title` = '".$env['route3']."' ";
 
 		}
 
@@ -33,9 +33,24 @@ class PageModel extends Model {
 		return($rower);
 		
 	}
-/*
-	public function forum_commit(){
 
+	public function forum_commit($forumpage){
+
+        //global $env;
+
+        $comment=array();
+
+        $sql = "SELECT `Comment` FROM `forum_comments` WHERE `Forum_page` = '$forumpage'";
+
+        $smtppage = $this->db->prepare($sql);
+
+        $smtppage->execute();
+
+        while($commentsforum=$smtppage->fetch(PDO::FETCH_ASSOC)){
+
+            array_push($comment,$commentsforum);
+        }
+
+        return($comment);
     }
-*/
 }

@@ -4,16 +4,15 @@ class Model{
 
     protected $db = null;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->db = DB::connToDB();
     }
 
-    public function gettopic()
-    {
+    public function gettopic(){
+
         $categories = array();
 
-        $sql = "SELECT `id`,`name`,`structure` FROM `blog`UNION ALL SELECT `id`,`Topic`,`Title` FROM `forum`  ORDER BY `id` DESC LIMIT 12";
+        $sql = "SELECT 'blog' AS `tablename`, `id`, `Topic`, `Title` from `blog` UNION ALL SELECT 'forum' AS `tablename`, `id`, `Topic`, `Title` FROM `forum` ORDER BY `id` DESC LIMIT 12";
 
         $smtpt = $this->db->prepare($sql);
         $smtpt->execute();
@@ -45,7 +44,9 @@ class Model{
 
     public function checkUser () {
 
-        $email = $_POST['email'] ?? '';
+        /** @noinspection PhpLanguageLevelInspection */
+        $email = '' ?? $_POST['email'];
+        /** @noinspection PhpLanguageLevelInspection */
         $password = $_POST['password'] ?? '';
 
         $resultchkuser = array();
@@ -122,5 +123,26 @@ class Model{
             }
         }
     }
+
+    public function forum_commit($forumpage){
+
+        //global $env;
+
+        $comment=array();
+
+        $sql = "SELECT `Comment` FROM `forum_comments` WHERE `Forum_page` = '$forumpage'";
+
+        $smtppage = $this->db->prepare($sql);
+
+        $smtppage->execute();
+
+        while($commentsforum=$smtppage->fetch(PDO::FETCH_ASSOC)){
+
+            array_push($comment,$commentsforum);
+        }
+
+        //return($comment);
+    }
+
 }
 

@@ -90,6 +90,8 @@
                 $this->pageData['script_category'] = $this->script_category();
             }
 
+            //$this->forum_commit();
+
             $this->pageData['title'] = "Forum-blog";
             $this->pageData['panel'] = $adminPanel;
             $this->pageData['check'] = $result_Fn_Ln_arr;
@@ -206,8 +208,6 @@ EOT;
 
             $category = $this->model->gettopic();
 
-            $route_title = $env['route'];
-
             $arrSize = count($category);
 
             if (isset($env['route1']) && $env['route1'] == '') {
@@ -231,8 +231,9 @@ EOT;
 
                 for ($i = 0; $i < $arrSize; $i++) {
 
-                    $categories = $category[$i]['name'];
-                    $structure = $category[$i]['structure'];
+                    $route_title = $category[$i]['tablename'];
+                    $categories = $category[$i]['Topic'];
+                    $structure = $category[$i]['Title'];
                     //$Name = $category[$i]['name'];
 
                     $activist = '';
@@ -520,4 +521,16 @@ EOT;
 
             return $form_exit;
         }
+
+        public function forum_commit(){
+            global $env;
+            $forumpage = $env['route3'];
+		    $result = $this->model->forum_commit($forumpage);
+
+		    foreach($result as $item){
+		        echo $item['Comment'].'<br>';
+            }
+            //echo json_encode($result);
+            //return $result;
+		}
 	}
