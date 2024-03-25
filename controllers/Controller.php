@@ -23,7 +23,6 @@
                 $resultchkuser = $this->model->checkUser();
 
                 if($resultchkuser['user_id'] == ''){
-                    //$this->errorPage();
                     header("Location: /");
                 }
 
@@ -89,8 +88,6 @@
             if((($env['route1'] == 'blog' || $env['route1'] == 'forum') && !isset($env['route2']) || $env['route1'] == 'all')){
                 $this->pageData['script_category'] = $this->script_category();
             }
-
-            //$this->forum_commit();
 
             $this->pageData['title'] = "Forum-blog";
             $this->pageData['panel'] = $adminPanel;
@@ -522,15 +519,4 @@ EOT;
             return $form_exit;
         }
 
-        public function forum_commit(){
-            global $env;
-            $forumpage = $env['route3'];
-		    $result = $this->model->forum_commit($forumpage);
-
-		    foreach($result as $item){
-		        echo $item['Comment'].'<br>';
-            }
-            //echo json_encode($result);
-            //return $result;
-		}
 	}

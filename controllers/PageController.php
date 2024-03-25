@@ -11,11 +11,11 @@ class PageController extends Controller {
 
 	public function index() {
 
-        //$this->controller();
+        $this->controller();
         $this->pageData['slash'] = "../";
         $this->pageData['forum_comments'] = '<script src="../../assets/js/forum.comments.js"></script>';
         $this->pageData['page'] = $this->echo_page();
-        $this->pageData['comments'] = $this->echo_comments();
+
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}

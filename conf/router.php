@@ -69,23 +69,13 @@ class Routing {
             $modelName = "ManageUsersModel";
         }
 
-	/*
-		elseif(isset($route2) && $route2 != 'all' ){
-
-			$controllerName = "Page_allController";
-			$modelName = "Page_allModel";
-
-            $route3 = strtok($route[2], '_');
-
-			$env['title_category'] = $route[1];
-			$env['forum_blog'] = lcfirst($route3);
-			$env['subcategory'] = $route[2];
-
-		}
-    */
 		elseif(isset($route[1]) && $route[1] == 'all'){
             $controllerName = "";
             $modelName = "";
+        }
+        elseif(isset($route[1]) && $route[1] == 'CommentController'){
+            $controllerName = "CommentController";
+            $modelName = "CommentModel";
         }
 
         elseif($route[1] != '') {
@@ -101,9 +91,24 @@ class Routing {
 
 	}
 
+}
+
 /*
 	public function errorPage() {
 
 	}
 */
-}
+/*
+    elseif(isset($route2) && $route2 != 'all' ){
+
+        $controllerName = "Page_allController";
+        $modelName = "Page_allModel";
+
+        $route3 = strtok($route[2], '_');
+
+        $env['title_category'] = $route[1];
+        $env['forum_blog'] = lcfirst($route3);
+        $env['subcategory'] = $route[2];
+
+    }
+*/

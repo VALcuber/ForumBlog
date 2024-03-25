@@ -44,9 +44,7 @@ class Model{
 
     public function checkUser () {
 
-        /** @noinspection PhpLanguageLevelInspection */
-        $email = '' ?? $_POST['email'];
-        /** @noinspection PhpLanguageLevelInspection */
+        $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
         $resultchkuser = array();
@@ -124,25 +122,6 @@ class Model{
         }
     }
 
-    public function forum_commit($forumpage){
-
-        //global $env;
-
-        $comment=array();
-
-        $sql = "SELECT `Comment` FROM `forum_comments` WHERE `Forum_page` = '$forumpage'";
-
-        $smtppage = $this->db->prepare($sql);
-
-        $smtppage->execute();
-
-        while($commentsforum=$smtppage->fetch(PDO::FETCH_ASSOC)){
-
-            array_push($comment,$commentsforum);
-        }
-
-        //return($comment);
-    }
 
 }
 
