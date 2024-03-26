@@ -11,11 +11,13 @@ class CommentController extends Controller {
         try {
             $response = $this->model->forum_comment();
             header('Content-Type: application/json; charset=utf-8');
-            echo json_encode($response);
+            //echo json_encode($response);
         }
         catch (PDOException $e){
             echo 'Error json';
         }
+
+
 
     }
 }

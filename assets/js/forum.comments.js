@@ -5,12 +5,12 @@ $(document).ready(function(){
     setInterval(loadMessages, 1000);
 
     function loadMessages() {
-        if(start != start) {
+        //if(start != start) {
             $.ajax({
-                method: 'POST',
+                method: 'post',
                 url: "../../CommentController",
-
                 dataType: 'json',
+                data: {start:start},
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log(XMLHttpRequest);
                 }
@@ -23,10 +23,10 @@ $(document).ready(function(){
                         console.log(start);
                     })
                 });
-        }
-        else{
+        //}
+        //else{
 
-        }
+        //}
 
 
     }

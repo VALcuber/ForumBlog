@@ -37,11 +37,11 @@ class Routing {
         }
 
         if(isset($route[3])) {
-
+            $route3 = urldecode($route[3]);
             $controllerName = "PageController";
             $modelName = "PageModel";
 
-            $env['route3'] = $route[3];
+            $env['route3'] = $route3;
 
         }
 

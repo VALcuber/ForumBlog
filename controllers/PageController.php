@@ -105,33 +105,4 @@ EOT;
 		}
 
 	}
-
-	public function echo_comments(){
-
-        global $env;
-
-            $resultHTML = '';
-
-            $forumpage = $env['route3'];
-
-            $comments = $this->model->forum_commit($forumpage);
-
-            foreach($comments as $item){
-                echo $item['Comment'].'<br>';
-            }
-/*
-            $arrSize = count($comments);
-
-            for($i = 0; $i < $arrSize; $i++){
-
-                $blogName = $comments[$i]["Comment"];
-
-                $htmlblog = <<<"EOT"
-                    <p class="col-lg-10 col-md-12 mx-auto my-2">$blogName</p>
-EOT;
-                $resultHTML = $resultHTML . $htmlblog;
-            }
-*/
-            return $comments;
-	}
 }

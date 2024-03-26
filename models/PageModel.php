@@ -2,8 +2,7 @@
 
 class PageModel extends Model{
 
-    public function get_page($temporary)
-    {
+    public function get_page($temporary){
 
         global $env;
 
@@ -29,26 +28,6 @@ class PageModel extends Model{
 
         return ($rower);
 
-    }
-
-    public function forum_commit($forumpage){
-
-        //global $env;
-
-        $comment = array();
-
-        $sql = "SELECT `Comment` FROM `forum_comments` ";//WHERE `Forum_page` = '$forumpage'\"
-
-        $smtppage = $this->db->prepare($sql);
-
-        $smtppage->execute();
-
-        while ($commentsforum = $smtppage->fetchall(PDO::FETCH_ASSOC)) {
-
-            array_push($comment, $commentsforum);
-        }
-
-        return ($comment);
     }
 
 }

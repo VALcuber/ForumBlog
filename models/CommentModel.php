@@ -4,9 +4,9 @@ class CommentModel extends Model{
 
     public function forum_comment(){
 
-        $start = ($_POST['start']) ? $_POST['start'] : 0;
+        //$start = ($_POST['start']) ? $_POST['start'] : 0;
 
-        $sql = "SELECT `id`, `Comment` FROM `forum_comments` WHERE  `id` > '.$start.' LIMIT 100";
+        $sql = "SELECT `Comment` FROM `forum_comments` LIMIT 100";
 
         $smtppage = $this->db->prepare($sql);
 
