@@ -1,33 +1,29 @@
 $(document).ready(function(){
 
-    let start = 0;
+    let comments = [];
 
     setInterval(loadMessages, 1000);
 
     function loadMessages() {
-        //if(start != start) {
+
             $.ajax({
                 method: 'post',
                 url: "../../CommentController",
                 dataType: 'json',
-                data: {start:start},
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log(XMLHttpRequest);
                 }
             })
                 .done(function (data) {
                     //console.log(data);
-                    data.forEach(item => {
+                    const filteredComments = data.filter(element => {
+                        return comments.every(comment => comment.id !== element.id);
+                    });
+                    filteredComments.forEach(item => {
                         $(".message").append(renderMessage(item));
-                        start = item.id;
-                        console.log(start);
+
                     })
                 });
-        //}
-        //else{
-
-        //}
-
 
     }
 });
