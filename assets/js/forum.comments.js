@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     let comments = [];
 
-    setInterval(loadMessages, 1000);
+    setInterval(loadMessages, 15000);
 
     function loadMessages() {
 
@@ -23,6 +23,7 @@ $(document).ready(function(){
                         $(".message").append(renderMessage(item));
 
                     })
+                    comments = data;
                 });
 
     }
