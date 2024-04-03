@@ -14,7 +14,7 @@
 
         public function controller(){
             global $env;
-
+//var_dump($env['page_id']);
             $env['active'] = 'active';
             $active = $env['active'];
 

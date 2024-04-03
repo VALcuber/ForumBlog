@@ -2,17 +2,31 @@ $(document).ready(function(){
 
     let comments = [];
 
-    setInterval(loadMessages, 15000);
+    //setTimeout(loadMessages, 1000);
+
+    let delay = 1000;
+
+    let timerId = setTimeout(function request() {
+
+
+        if (!loadMessages()) {
+            // увеличить интервал для следующего запроса
+            delay *= 2;
+        }
+
+        timerId = setTimeout(request, delay);
+
+    }, delay);
 
     function loadMessages() {
 
             $.ajax({
                 method: 'post',
-                url: "../../CommentController",
+                url: "../CommentController",
                 dataType: 'json',
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    console.log(XMLHttpRequest);
-                }
+                /*error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //console.log(XMLHttpRequest);
+                }*/
             })
                 .done(function (data) {
                     //console.log(data);

@@ -14,7 +14,6 @@ class ForumController extends Controller{
         global $env;
 
         $this->controller();
-
         if($env['act'] == 'Post')
             $this->model->add_forum_content();
 

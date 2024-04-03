@@ -8,15 +8,15 @@ class PageModel extends Model{
 
         if ($env['route1'] == 'forum') {
 
-            $sql = "SELECT `Title`,`Description` FROM `" . $env['route1'] . "` WHERE `Title` = '" . $env['route3'] . "' ";
+            $sql = "SELECT `id`,`Title`,`Description` FROM `" . $env['route1'] . "` WHERE `Title` = '" . $env['route3'] . "' ";
 
         } elseif ($env['route1'] == 'news') {
 
-            $sql = "SELECT `name`,`content` FROM `" . $env['route1'] . "` WHERE `name` = '$temporary'";
+            $sql = "SELECT `id`,`name`,`content` FROM `" . $env['route1'] . "` WHERE `name` = '$temporary'";
 
         } elseif ($env['route1'] == 'blog') {
 
-            $sql = "SELECT `Title`,`blog_content` FROM `" . $env['route1'] . "` WHERE `Title` = '" . $env['route3'] . "' ";
+            $sql = "SELECT `id`,`Title`,`blog_content` FROM `" . $env['route1'] . "` WHERE `Title` = '" . $env['route3'] . "' ";
 
         }
 
@@ -25,6 +25,8 @@ class PageModel extends Model{
         $smtppage->execute();
 
         $rower = $smtppage->fetch(PDO::FETCH_ASSOC);
+
+        $_SESSION["page_id"] = $rower['id'];
 
         return ($rower);
 

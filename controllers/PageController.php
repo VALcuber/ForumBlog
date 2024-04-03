@@ -13,8 +13,8 @@ class PageController extends Controller {
 
         $this->controller();
         $this->pageData['slash'] = "../";
-        $this->pageData['forum_comments'] = '<script src="../../assets/js/forum.comments.js"></script>';
         $this->pageData['page'] = $this->echo_page();
+        $this->pageData['forum_comments'] = '<script src="../../assets/js/forum.comments.js"></script>';
 
 
 		$this->view->render($this->pageTpl, $this->pageData);
@@ -24,32 +24,7 @@ class PageController extends Controller {
 		global $env;
 
         $env['temporary'] = $env['route-2'];
-/*
-		if($env['route'] == 'blog'){
 
-            $temporary = $this->translit_reverse($env['temporary'][0]);
-			$smtppage = $this->model->get_page($temporary);
-	
-			$pageName=$smtppage["Title"];
-			$pageContent=$smtppage["blog_content"];
-
-            $html_page_blog = <<<"EOT"
-                <div class="card">
-                  <div class="card-header">
-                    <h2 class="text-center p-2">
-                        $pageName
-                    </h2>
-                  </div>
-                  <div class="card-body">
-                    <p class="p-2">
-            		    $pageContent
-            	    </p>
-                  </div>
-                </div>
-EOT;
-			return $html_page_blog;
-		}
-*/
         if($env['route'] == 'news'){
 
             $temporary = $this->translit_reverse($env['temporary']);
@@ -80,8 +55,6 @@ EOT;
 
 			$temporary = $env['temporary'];
 
-            //$temporary = $this->translit_reverse($temporary);
-
 			$smtppage = $this->model->get_page($temporary);
 
 			$pageName=$smtppage["Title"];
@@ -106,3 +79,29 @@ EOT;
 
 	}
 }
+/*
+		if($env['route'] == 'blog'){
+
+            $temporary = $this->translit_reverse($env['temporary'][0]);
+			$smtppage = $this->model->get_page($temporary);
+
+			$pageName=$smtppage["Title"];
+			$pageContent=$smtppage["blog_content"];
+
+            $html_page_blog = <<<"EOT"
+                <div class="card">
+                  <div class="card-header">
+                    <h2 class="text-center p-2">
+                        $pageName
+                    </h2>
+                  </div>
+                  <div class="card-body">
+                    <p class="p-2">
+            		    $pageContent
+            	    </p>
+                  </div>
+                </div>
+EOT;
+			return $html_page_blog;
+		}
+*/

@@ -20,9 +20,13 @@ class Routing {
         if(isset($route[2])) {
             $route2 = strtok($route[2], '-');
             $env['route2'] = $route2;
-            $env['route-2'] = $route[2];
+            //$env['route-2'] = $route[2];
         }
-        /*Определяем контроллер*/
+
+        if(isset($route[3])) {
+            $route3 = urldecode($route[3]);
+            $env['route3'] = $route3;
+        }
 
         if($route[1] == 'blog'){
             $env['route'] = 'blog';
@@ -36,18 +40,21 @@ class Routing {
             $env['route'] = 'news';
         }
 
+        /*Определяем контроллер*/
+
         if(isset($route[3])) {
-            $route3 = urldecode($route[3]);
             $controllerName = "PageController";
             $modelName = "PageModel";
-
-            $env['route3'] = $route3;
-
         }
 
-        elseif((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news' || $route[1] == 'forum')) && isset($route2)){
+        elseif((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news' || $route[1] == 'forum')) && isset($route[2])){
             $controllerName = "TopicController";
             $modelName = "TopicModel";
+
+            if(isset($route[2]) && $route[2] == 'CommentController'){
+                $controllerName = "CommentController";
+                $modelName = "CommentModel";
+            }
 
         }
 
@@ -58,7 +65,6 @@ class Routing {
         }
 
         elseif(isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news') ) {
-
             $controllerName = "Blog_forum_news_Controller";
             $modelName = "Blog_forum_news_Model";
 
@@ -72,10 +78,6 @@ class Routing {
 		elseif(isset($route[1]) && $route[1] == 'all'){
             $controllerName = "";
             $modelName = "";
-        }
-        elseif(isset($route[1]) && $route[1] == 'CommentController'){
-            $controllerName = "CommentController";
-            $modelName = "CommentModel";
         }
 
         elseif($route[1] != '') {

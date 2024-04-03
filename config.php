@@ -27,6 +27,7 @@ $env['route3'] = '';
 $env['forum_blog'] = '';
 $env['route'] = '';
 $env['status'] = $_POST['userid'] ?? '';
+$env['page_id'] = '';
 
 //$_SESSION['user_id'] = '0';
 // загрузка настроек

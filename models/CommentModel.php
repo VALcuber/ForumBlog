@@ -4,7 +4,11 @@ class CommentModel extends Model{
 
     public function forum_comment(){
 
-        $sql = "SELECT `id`, `Comment` FROM `forum_comments` LIMIT 100";
+        global $env;
+
+        $page_id = $_SESSION["page_id"];
+
+        $sql = "SELECT `id`, `Comment`, `Forum_page` FROM `forum_comments` WHERE `Forum_page` = '$page_id'";
 
         $smtppage = $this->db->prepare($sql);
 
