@@ -13,17 +13,19 @@
 
       </div>
 
-      <div class="row px-5 message">
-        <?= $pageData['comments'] ?>
+      <div>
+        <ul class=" row px-5 message">
+
+        </ul>
       </div>
 
       <div class="row px-4">
 
-        <form method="post" class="row gy-2 gx-3 align-items-center col-lg-10 col-md-12 mx-auto my-2">
+        <form method="post" id="comments-send" class="row gy-2 gx-3 align-items-center col-lg-10 col-md-12 mx-auto my-2">
 
           <div class="col-10">
 
-            <textarea class="form-control" name="forum_commit"></textarea>
+            <textarea id="comment_text" class="form-control" name="forum_commit" required></textarea>
 
           </div>
 

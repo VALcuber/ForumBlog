@@ -4,7 +4,7 @@ $(document).ready(function(){
 
     //setTimeout(loadMessages, 1000);
 
-    let delay = 1000;
+    let delay = 500;
 
     let timerId = setTimeout(function request() {
 
@@ -24,12 +24,8 @@ $(document).ready(function(){
                 method: 'post',
                 url: "../CommentController",
                 dataType: 'json',
-                /*error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    //console.log(XMLHttpRequest);
-                }*/
             })
                 .done(function (data) {
-                    //console.log(data);
                     const filteredComments = data.filter(element => {
                         return comments.every(comment => comment.id !== element.id);
                     });
@@ -42,6 +38,24 @@ $(document).ready(function(){
 
     }
 });
+
 function renderMessage(item) {
-    return`<p class="col-lg-10 col-md-12 mx-auto my-2">${item.Comment}</p>`
+    return`<li class="col-lg-10 col-md-12 mx-auto my-2">
+                <div><u>${item.name}</u></div>
+                <div>
+                    <p>${item.Comment}</p>
+                </div>
+            </li>`
 }
+
+//Adding comments
+$('#comments-send').submit(function (e) {
+
+    $.ajax({
+        method: 'post',
+        url: "../CommentController",
+        data: {'action' : 'add_comment',
+               'comment' : $('#comment_text').val()},
+    }).done(function (data) {$('#comment_text').val('')});
+    return false;
+})
