@@ -16,7 +16,7 @@ class PageModel extends Model{
 
         } elseif ($env['route1'] == 'blog') {
 
-            $sql = "SELECT `id`,`Title`,`blog_content` FROM `" . $env['route1'] . "` WHERE `Title` = '" . $env['route3'] . "' ";
+            $sql = "SELECT `id`,`Title`,`Description` FROM `" . $env['route1'] . "` WHERE `Title` = '" . $env['route3'] . "' ";
 
         }
 

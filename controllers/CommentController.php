@@ -14,8 +14,10 @@ class CommentController extends Controller{
         if(!$_POST['action'] == 'add_comment') {
             try {
                 $response = $this->model->forum_comment();
+
                 header('Content-Type: application/json; charset=utf-8');
                 echo json_encode($response);
+
             } catch (PDOException $e) {
                 echo 'Error json';
             }

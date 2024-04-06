@@ -64,9 +64,9 @@ class Routing {
 
         }
 
-        elseif(isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news') ) {
-            $controllerName = "Blog_forum_news_Controller";
-            $modelName = "Blog_forum_news_Model";
+        elseif(isset($route[1]) && ($route[1] == 'blog') ) {
+            $controllerName = "BlogController";
+            $modelName = "BlogModel";
 
 		}
 

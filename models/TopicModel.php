@@ -6,7 +6,7 @@ class TopicModel extends Model {
 
         global $env;
 
-        if ($env['route1'] == 'forum') {
+        if ($env['route1'] == 'forum' || $env['route1'] == 'blog') {
 
             $sql = "SELECT `Topic`, `Title` FROM `" . $env['route1'] . "` WHERE `Topic` = '" . $env['route2'] . "' ";
 
