@@ -2,23 +2,21 @@ $(document).ready(function(){
 
     let comments = [];
 
-    //setTimeout(loadMessages, 1000);
-
-    let delay = 500;
+    let delay = 1000;
 
     let timerId = setTimeout(function request() {
 
-
-        if (!loadMessages()) {
-            // увеличить интервал для следующего запроса
-            delay *= 2;
-        }
-
-        timerId = setTimeout(request, delay);
+        loadMessages(
+            function () {
+                // увеличить интервал для следующего запроса
+                delay *= 2;
+        },  function () {
+                timerId = setTimeout(request, delay);
+        })
 
     }, delay);
 
-    function loadMessages() {
+    function loadMessages(errorCb, alwaysCb) {
 
             $.ajax({
                 method: 'post',
@@ -26,15 +24,19 @@ $(document).ready(function(){
                 dataType: 'json',
             })
                 .done(function (data) {
-                    const filteredComments = data.filter(element => {
+                    const addedComments = data.filter(element => {
                         return comments.every(comment => comment.id !== element.id);
                     });
-                    filteredComments.forEach(item => {
-                        $(".message").append(renderMessage(item));
-
-                    })
+                    const indexesToRemove = comments.flatMap((comment, index) => {
+                        const isNeedToRemove = data.every(dataItem => dataItem.id !== comment.id);
+                        return isNeedToRemove ? index : [];
+                    });
+                    removeMessages(indexesToRemove);
+                    addedComments.forEach(comment => renderMessage(comment));
                     comments = data;
-                });
+                })
+                .fail(errorCb)
+                .always(alwaysCb);
 
     }
 });
@@ -48,6 +50,17 @@ function renderMessage(item) {
             </li>`
 }
 
+function removeMessages(messageIndexes) {
+    const messagesContainer = document.querySelector('.message');
+    const messagesList = messagesContainer.children;
+    const messagesArray = Array.from(messagesList);
+    messagesArray
+        .filter((message, index) => {
+            return messageIndexes.some(indexItem => indexItem === index);
+        })
+        .forEach(message => message.remove())
+}
+
 //Adding comments
 $('#comments-send').submit(function (e) {
 
@@ -59,3 +72,15 @@ $('#comments-send').submit(function (e) {
     }).done(function (data) {$('#comment_text').val('')});
     return false;
 })
+
+/*
+                    const filteredComments = data.filter(element => {
+                        return comments.every(comment => comment.id !== element.id);
+                    });
+                    filteredComments.forEach(item => {
+                        $(".message").append(renderMessage(item));
+
+                    })
+                    console.log (filteredComments);
+                    comments = data;
+ */
