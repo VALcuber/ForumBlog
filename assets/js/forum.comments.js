@@ -32,7 +32,7 @@ $(document).ready(function(){
                         return isNeedToRemove ? index : [];
                     });
                     removeMessages(indexesToRemove);
-                    addedComments.forEach(comment => renderMessage(comment));
+                    addedComments.forEach(comment => $(".message").append(renderMessage(comment)));
                     comments = data;
                 })
                 .fail(errorCb)
@@ -72,15 +72,3 @@ $('#comments-send').submit(function (e) {
     }).done(function (data) {$('#comment_text').val('')});
     return false;
 })
-
-/*
-                    const filteredComments = data.filter(element => {
-                        return comments.every(comment => comment.id !== element.id);
-                    });
-                    filteredComments.forEach(item => {
-                        $(".message").append(renderMessage(item));
-
-                    })
-                    console.log (filteredComments);
-                    comments = data;
- */
