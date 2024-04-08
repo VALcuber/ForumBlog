@@ -95,7 +95,6 @@
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['$user_menu_winwow'] = $user_menu_winwow;
             $this->pageData['active'] = $active;
-            //$this->pageData['slash'] = "../";
 
             $this->pageData['burger'] = $this->echo_burger();
 
@@ -122,7 +121,7 @@
                     
                     <div class="dropdown-content">
                     
-                      <a href="#">Add News</a>
+                      <a href="/AddNews">Add News</a>
                       
                       <a href="#">Ссылка 2</a>
                       
@@ -288,9 +287,9 @@ EOT;
 
                 $route = explode("/", $_SERVER['REQUEST_URI']);
 
-                $categories = $category[$i]['name'];
+                $categories = $category[$i]['Title'];
                 $structure = $category[$i]['structure'];
-                $Name = $category[$i]['name'];
+                $Name = $category[$i]['Title'];
 
                 if(isset($route[2])) {
                     if(isset($route[1]) && $route[1] == $structure && $route[2] == $Name) {

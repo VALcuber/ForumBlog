@@ -1,6 +1,5 @@
 <?php
 
-
 class ManageUsersModel extends Model{
 
     public function GetUsers(){

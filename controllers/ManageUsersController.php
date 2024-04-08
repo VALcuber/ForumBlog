@@ -1,6 +1,5 @@
 <?php
 
-
 class ManageUsersController extends Controller{
 
     private $pageTpl = '/templates/ManageUsers.tpl';
@@ -22,19 +21,12 @@ class ManageUsersController extends Controller{
         $this->pageData['users'] = $this->echo_users();
         $this->pageData['slash'] = "";
         $this->pageData['admin-styles'] = '<link rel="stylesheet" href="assets/css/admin.style.css">';
-       /* var_export($_POST);
-        echo '<br>';
-        echo '<br>';
 
-        $keyid = key($_POST['userid']);
-        var_export($keyid);
-        //var_export($env['id']);
-*/
         $this->view->render($this->pageTpl, $this->pageData);
 
     }
 
-    public function echo_users() { //Ф-я для вывода блога
+    public function echo_users() {
 
         $resultHTML = "";
         $users = $this->model->GetUsers();
@@ -81,5 +73,5 @@ EOT;
         }
 
         return $resultHTML;
-    }
+    } // Function for displaying users
 }
