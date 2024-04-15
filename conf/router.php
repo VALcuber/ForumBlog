@@ -47,6 +47,8 @@ class Routing {
             $modelName = "PageModel";
         }
 
+
+
         elseif((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news' || $route[1] == 'forum')) && isset($route[2])){
             $controllerName = "TopicController";
             $modelName = "TopicModel";

@@ -26,7 +26,7 @@ class DB{
             return $dbh;
         }
         catch (PDOException $e) {
-            print "Error!: " . $e->getMessage() ."<br/><br/>";
+            print "Error!: Database not responding";
             die();
         }
 	}

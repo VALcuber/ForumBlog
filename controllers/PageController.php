@@ -10,10 +10,11 @@ class PageController extends Controller {
 	}
 
 	public function index() {
-
+        global $env;
         $this->controller();
         $this->pageData['slash'] = "../";
         $this->pageData['page'] = $this->echo_page();
+        $this->pageData['comments'] = $this->echo_comments();
         $this->pageData['forum_comments'] = '<script src="../../assets/js/forum.comments.js"></script>';
 
 
@@ -104,4 +105,32 @@ EOT;
 		}
 
 	}
+
+	public function echo_comments(){
+	    global $env;
+        $resultHTML = '';
+        if($env['route'] == 'forum') {
+
+            $smtppage = $this->model->get_comments();
+
+            foreach ($smtppage as $item) {
+                $name = $item["name"];
+                $Comment = $item["Comment"];
+                $Commentid = $item["id"];
+
+                $html_comment_forum = <<<"EOT"
+                    <li name="comments_id" class="col-lg-10 col-md-12 mx-auto my-2" data-id="$Commentid">
+                        <div>
+                            <u>$name</u>
+                         </div>
+                        <div>
+                            <p>$Comment</p>
+                        </div >
+                    </li >
+EOT;
+                $resultHTML = $resultHTML . $html_comment_forum;
+            }
+            return $resultHTML;
+        }
+    }
 }

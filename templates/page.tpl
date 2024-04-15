@@ -14,8 +14,8 @@
       </div>
 
       <div>
-        <ul class=" row px-5 message">
-
+        <ul id="messages" class=" row px-5 message">
+          <?= $pageData['comments'] ?>
         </ul>
       </div>
 
@@ -42,4 +42,4 @@
     </div>
 
   </main>
-  <?= $pageData['forum_comments'] ?>
+ <?= $pageData['forum_comments'] ?>

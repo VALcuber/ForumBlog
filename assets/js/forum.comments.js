@@ -1,6 +1,21 @@
 $(document).ready(function(){
 
-    let comments = [];
+    // Получение элементов DOM и извлечение значений data-id
+    var liElements = Array.from(document.querySelectorAll('#messages li[data-id]'));
+    var dataValues = liElements.map(function(liElement) {
+        return liElement.dataset.id;
+    });
+
+    // Создание объекта с вложенными объектами, где ключами будут значения data-id, а значениями будут пустые объекты
+    var mainObject = {};
+
+    dataValues.forEach(function(id, index) {
+        mainObject[index] = { id: id }; // Добавление объекта с ключом index и пустым значением
+    });
+
+
+    let comments = Object.values(mainObject);
+
 
     let delay = 1000;
 
@@ -24,16 +39,22 @@ $(document).ready(function(){
                 dataType: 'json',
             })
                 .done(function (data) {
+                    const lastCommentId = data[data.length - 1].id;
+
                     const addedComments = data.filter(element => {
                         return comments.every(comment => comment.id !== element.id);
                     });
+console.log(addedComments)
                     const indexesToRemove = comments.flatMap((comment, index) => {
                         const isNeedToRemove = data.every(dataItem => dataItem.id !== comment.id);
                         return isNeedToRemove ? index : [];
                     });
+
                     removeMessages(indexesToRemove);
-                    addedComments.forEach(comment => $(".message").append(renderMessage(comment)));
-                    comments = data;
+
+                    addedComments.forEach(comment => $(".message").append(renderMessage(comment, lastCommentId)));
+                    //comments = data;
+
                 })
                 .fail(errorCb)
                 .always(alwaysCb);
@@ -41,8 +62,8 @@ $(document).ready(function(){
     }
 });
 
-function renderMessage(item) {
-    return`<li class="col-lg-10 col-md-12 mx-auto my-2">
+function renderMessage(item, lastCommentId) {
+    return`<li name="comments_id" class="col-lg-10 col-md-12 mx-auto my-2" data-id="${lastCommentId}">
                 <div><u>${item.name}</u></div>
                 <div>
                     <p>${item.Comment}</p>

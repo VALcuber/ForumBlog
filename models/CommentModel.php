@@ -8,13 +8,14 @@ class CommentModel extends Model{
 
         $page_id = $_SESSION["page_id"];
 
-        $sql = "SELECT `forum_comments`.*, `users`.`First name` AS `name` FROM `forum_comments` INNER JOIN `users` ON `forum_comments` . `user_id` = `users`.`Id` WHERE `Forum_page` = ' $page_id ' AND `structure` = '" . $env['route1'] . "' ";
+        $sql = "SELECT `forum_comments`.*, `users`.`First name` AS `name` FROM `forum_comments` INNER JOIN `users` ON `forum_comments` . `user_id` = `users`.`Id` WHERE `forum_comments`.`Forum_page` = ' $page_id ' AND `forum_comments`.`structure` = '" . $env['route1'] . "'";
 
         $smtppage = $this->db->prepare($sql);
 
         $smtppage->execute();
 
         $comment = $smtppage->fetchall(PDO::FETCH_ASSOC);
+
 
         return ($comment);
     }

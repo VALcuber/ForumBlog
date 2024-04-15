@@ -7,10 +7,10 @@ class CommentController extends Controller{
     }
 
     public function index(){
-
         global $env;
-        $this->controller();
 
+        $this->controller();
+        var_export($_POST);
         if(!$_POST['action'] == 'add_comment') {
             try {
                 $response = $this->model->forum_comment();
@@ -18,12 +18,14 @@ class CommentController extends Controller{
                 header('Content-Type: application/json; charset=utf-8');
                 echo json_encode($response);
 
-            } catch (PDOException $e) {
+            }
+            catch (PDOException $e) {
                 echo 'Error json';
             }
         }
 
         elseif ($_POST['action'] == 'add_comment') {
+            echo 1;
             $this->add_comment();
         }
     }
