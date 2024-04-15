@@ -10,7 +10,7 @@ class CommentController extends Controller{
         global $env;
 
         $this->controller();
-        var_export($_POST);
+
         if(!$_POST['action'] == 'add_comment') {
             try {
                 $response = $this->model->forum_comment();
@@ -25,7 +25,6 @@ class CommentController extends Controller{
         }
 
         elseif ($_POST['action'] == 'add_comment') {
-            echo 1;
             $this->add_comment();
         }
     }

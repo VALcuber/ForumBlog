@@ -1,16 +1,14 @@
 $(document).ready(function(){
 
-    // Получение элементов DOM и извлечение значений data-id
     var liElements = Array.from(document.querySelectorAll('#messages li[data-id]'));
     var dataValues = liElements.map(function(liElement) {
         return liElement.dataset.id;
     });
 
-    // Создание объекта с вложенными объектами, где ключами будут значения data-id, а значениями будут пустые объекты
     var mainObject = {};
 
     dataValues.forEach(function(id, index) {
-        mainObject[index] = { id: id }; // Добавление объекта с ключом index и пустым значением
+        mainObject[index] = { id: id };
     });
 
 
@@ -23,7 +21,6 @@ $(document).ready(function(){
 
         loadMessages(
             function () {
-                // увеличить интервал для следующего запроса
                 delay *= 2;
         },  function () {
                 timerId = setTimeout(request, delay);
@@ -44,7 +41,7 @@ $(document).ready(function(){
                     const addedComments = data.filter(element => {
                         return comments.every(comment => comment.id !== element.id);
                     });
-console.log(addedComments)
+
                     const indexesToRemove = comments.flatMap((comment, index) => {
                         const isNeedToRemove = data.every(dataItem => dataItem.id !== comment.id);
                         return isNeedToRemove ? index : [];
@@ -52,8 +49,11 @@ console.log(addedComments)
 
                     removeMessages(indexesToRemove);
 
-                    addedComments.forEach(comment => $(".message").append(renderMessage(comment, lastCommentId)));
-                    //comments = data;
+                    addedComments.forEach(comment => {
+                        const newIndex = Object.keys(mainObject).length;
+                        mainObject[newIndex] = { id: comment.id };
+                        $(".message").append(renderMessage(comment, lastCommentId));
+                    });
 
                 })
                 .fail(errorCb)
@@ -61,7 +61,7 @@ console.log(addedComments)
 
     }
 });
-
+//Add messages from db
 function renderMessage(item, lastCommentId) {
     return`<li name="comments_id" class="col-lg-10 col-md-12 mx-auto my-2" data-id="${lastCommentId}">
                 <div><u>${item.name}</u></div>
@@ -70,7 +70,7 @@ function renderMessage(item, lastCommentId) {
                 </div>
             </li>`
 }
-
+//Remove messages if they removed in db
 function removeMessages(messageIndexes) {
     const messagesContainer = document.querySelector('.message');
     const messagesList = messagesContainer.children;

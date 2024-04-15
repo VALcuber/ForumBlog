@@ -25,7 +25,7 @@
 
           <div class="col-10">
 
-            <textarea id="comment_text" class="form-control" name="forum_commit" required></textarea>
+            <input  type="text" id="comment_text" class="form-control" name="forum_commit" required>
 
           </div>
 
