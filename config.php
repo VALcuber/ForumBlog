@@ -28,8 +28,9 @@ $env['forum_blog'] = '';
 $env['route'] = '';
 $env['status'] = $_POST['userid'] ?? '';
 $env['page_id'] = '';
+$env['action'] = $_POST['action'] ?? '';
 
-//$_SESSION['user_id'] = '0';
+//$_SESSION['user_id'] = '';
 // загрузка настроек
 
 include PATH_M. 'Model.php';

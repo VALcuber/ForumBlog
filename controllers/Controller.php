@@ -14,9 +14,9 @@
 
         public function controller(){
             global $env;
-
-            $env['active'] = 'active';
+            $signin_modal_winwow = '';
             $active = $env['active'];
+            $env['active'] = 'active';
 
             if(($env['act'] == 'Log In') && ($_POST['email'] != '') && ($_POST['password'] != '')){
 
@@ -28,7 +28,7 @@
 
             }
 
-            elseif(($_SESSION['act'] == 'Login') && ($_POST['email']=='') && ($_POST['password']=='')){
+            elseif(($env['act'] == 'Login') && ($_POST['email']=='') && ($_POST['password']=='')){
                 header("Location: /wrong");
             }
 
@@ -88,6 +88,9 @@
             if((($env['route1'] == 'blog' || $env['route1'] == 'forum') && !isset($env['route2']) || $env['route1'] == 'all')){
                 $this->pageData['script_category'] = $this->script_category();
             }
+            elseif (!(($env['route1'] == 'blog' || $env['route1'] == 'forum') && !isset($env['route2']) || $env['route1'] == 'all')){
+                $this->pageData['script_category'] = '';
+            }
 
             $this->pageData['title'] = "Forum-blog";
             $this->pageData['panel'] = $adminPanel;
@@ -95,6 +98,7 @@
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['$user_menu_winwow'] = $user_menu_winwow;
             $this->pageData['active'] = $active;
+            $this->pageData['admin-styles'] = '';
 
             $this->pageData['burger'] = $this->echo_burger();
 
@@ -205,6 +209,8 @@ EOT;
             $category = $this->model->gettopic();
 
             $arrSize = count($category);
+
+            $active = '';
 
             if (isset($env['route1']) && $env['route1'] == '') {
                 $active = 'active';

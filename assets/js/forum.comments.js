@@ -39,12 +39,11 @@ $(document).ready(function(){
                     const lastCommentId = data[data.length - 1].id;
 
                     const addedComments = data.filter(element => {
-                        return comments.every(comment => comment.id !== element.id);
+                        return Object.values(mainObject).every(comment => comment.id !== element.id);
                     });
 
-                    const indexesToRemove = comments.flatMap((comment, index) => {
-                        const isNeedToRemove = data.every(dataItem => dataItem.id !== comment.id);
-                        return isNeedToRemove ? index : [];
+                    const indexesToRemove = Object.keys(mainObject).filter(index => {
+                        return data.every(dataItem => dataItem.id !== mainObject[index].id);
                     });
 
                     removeMessages(indexesToRemove);

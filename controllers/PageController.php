@@ -24,7 +24,7 @@ class PageController extends Controller {
 	public function echo_page(){
 		global $env;
 
-        $env['temporary'] = $env['route-2'];
+        $env['temporary'] = $env['route2'];
 
         if($env['route'] == 'blog'){
 

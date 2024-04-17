@@ -40,7 +40,7 @@ class IndexController extends Controller {
         for($i = 0; $i < $arrSize; $i++){
 
                  $blogName = $resultblog[$i]["Topic"];
-                 $blogContent = $resultblog[$i]["blog_content"];
+                 $blogContent = $resultblog[$i]["Title"];
 
                  $htmlblog = <<<"EOT"
 		        	  <div class="d-flex justify-content-between align-items-center flex-grow-1">

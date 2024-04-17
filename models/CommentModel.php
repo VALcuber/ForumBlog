@@ -22,15 +22,26 @@ class CommentModel extends Model{
 
     public function add_comments(){
         global $env;
+
         $comment_text = ($_POST['comment']) ? $_POST['comment'] : '';
         $page_id = $_SESSION["page_id"];
         $userid = $_SESSION['user_id'];
+        $rout_1 = $env['route1'];
 
-        $sql = "INSERT INTO `forum_comments` (`Comment`, `Forum_page`, `user_id`, `structure`) VALUES ('$comment_text','$page_id','$userid','" . $env['route1'] . "')";
+        $sql = "INSERT INTO `forum_comments` (`Comment`, `Forum_page`, `user_id`, `structure`) VALUES ('$comment_text','$page_id','$userid','$rout_1')";
 
         $smtppage = $this->db->prepare($sql);
-
         $smtppage->execute();
 
+        $errorInfo = $smtppage->errorInfo();
+        if ($errorInfo[0] !== '00000') {
+            // Обработка ошибок
+            $result = ("Error: " . $errorInfo[2]);
+        }
+        else {
+            $result = 'Request done';
+        }
+
+        return $result;
     }
 }
