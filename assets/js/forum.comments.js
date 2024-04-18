@@ -11,75 +11,70 @@ $(document).ready(function(){
         mainObject[index] = { id: id };
     });
 
-
     let comments = Object.values(mainObject);
-
 
     let delay = 1000;
 
     let timerId = setTimeout(function request() {
-
         loadMessages(
             function () {
                 delay *= 2;
-        },  function () {
+            },  function () {
                 timerId = setTimeout(request, delay);
-        })
-
+            })
     }, delay);
 
     function loadMessages(errorCb, alwaysCb) {
+        $.ajax({
+            method: 'post',
+            url: "../CommentController",
+            dataType: 'json',
+        })
+            .done(function (data) {
+                const removedCommentIds = comments.filter(comment => {
+                    return data.every(dataItem => dataItem.id !== comment.id);
+                }).map(comment => comment.id);
 
-            $.ajax({
-                method: 'post',
-                url: "../CommentController",
-                dataType: 'json',
+                removeMessages(removedCommentIds);
+
+                removedCommentIds.forEach(id => {
+                    comments = comments.filter(comment => comment.id !== id);
+                });
+
+                data.forEach(comment => {
+                    if (!comments.some(c => c.id === comment.id)) {
+                        mainObject[comment.id] = { id: comment.id };
+                        $(".message").append(renderMessage(comment));
+                        comments.push({ id: comment.id });
+                    }
+                });
             })
-                .done(function (data) {
-                    const lastCommentId = data[data.length - 1].id;
-
-                    const addedComments = data.filter(element => {
-                        return Object.values(mainObject).every(comment => comment.id !== element.id);
-                    });
-
-                    const indexesToRemove = Object.keys(mainObject).filter(index => {
-                        return data.every(dataItem => dataItem.id !== mainObject[index].id);
-                    });
-
-                    removeMessages(indexesToRemove);
-
-                    addedComments.forEach(comment => {
-                        const newIndex = Object.keys(mainObject).length;
-                        mainObject[newIndex] = { id: comment.id };
-                        $(".message").append(renderMessage(comment, lastCommentId));
-                    });
-
-                })
-                .fail(errorCb)
-                .always(alwaysCb);
-
+            .fail(errorCb)
+            .always(alwaysCb);
     }
 });
-//Add messages from db
-function renderMessage(item, lastCommentId) {
-    return`<li name="comments_id" class="col-lg-10 col-md-12 mx-auto my-2" data-id="${lastCommentId}">
+
+// Add messages from db
+function renderMessage(item) {
+    return `<li name="comments_id" class="col-lg-10 col-md-12 mx-auto my-2" data-id="${item.id}">
                 <div><u>${item.name}</u></div>
                 <div>
                     <p>${item.Comment}</p>
                 </div>
-            </li>`
+            </li>`;
 }
-//Remove messages if they removed in db
-function removeMessages(messageIndexes) {
+
+// Remove messages if they removed in db
+function removeMessages(commentIds) {
     const messagesContainer = document.querySelector('.message');
-    const messagesList = messagesContainer.children;
-    const messagesArray = Array.from(messagesList);
-    messagesArray
-        .filter((message, index) => {
-            return messageIndexes.some(indexItem => indexItem === index);
-        })
-        .forEach(message => message.remove())
+    commentIds.forEach(id => {
+        const message = messagesContainer.querySelector(`li[data-id="${id}"]`);
+        if (message) {
+            message.remove();
+        }
+    });
 }
+
 
 //Adding comments
 $('#comments-send').submit(function (e) {
