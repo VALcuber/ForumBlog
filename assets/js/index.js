@@ -124,20 +124,40 @@ function resizeHeaderNavigations() {
       categoriesList.appendChild(NavItemsColection[0]);
     }
   }
-
-
-//------------------------------------------------------------------------------------//
-  /*
-  NavItemsColection = categoriesList.children;
-  resizeHeaderNavigations.clonedCollection = categoriesList.cloneNode(true).children;
-
-  while(categories.offsetWidth > maxWidth) {
-    if(categories.offsetWidth <= minWidth) {
-      break;
-    }
-    NavItemsColection[NavItemsColection.length - 2].remove();
-  }*/
 }
+//function for changing user logo
+function previewImage(event) {
+  var reader = new FileReader();
+  reader.onload = function() {
+    var button = document.getElementById('uploadButton');
+    button.style.backgroundImage = "url('" + reader.result + "')";
+    button.classList.add('with-preview'); // Add class for styles with background image
+    button.innerText = ''; // clear text in label
+
+    // Отменяем стандартное действие браузера по умолчанию для отправки формы
+    event.preventDefault();
+
+    // Отправляем форму на сервер
+    var formData = new FormData(document.getElementById('uploadForm'));
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/user_profile', true);
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        alert('File uploaded successfully!');
+      } else {
+        alert('Error uploading file!');
+      }
+    };
+    xhr.send(formData);
+  };
+
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+//Send form after choosing file automatically
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------//
 /*
 function removeAdd(){
   document.body.children[document.body.children.length-1].remove();
@@ -166,3 +186,15 @@ function removeAdd(){
       }
     }
 */
+//------------------------------------------------------------------------------------//
+//from resizeHeaderNavigations
+/*
+NavItemsColection = categoriesList.children;
+resizeHeaderNavigations.clonedCollection = categoriesList.cloneNode(true).children;
+
+while(categories.offsetWidth > maxWidth) {
+  if(categories.offsetWidth <= minWidth) {
+    break;
+  }
+  NavItemsColection[NavItemsColection.length - 2].remove();
+}*/
