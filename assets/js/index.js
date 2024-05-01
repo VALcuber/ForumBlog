@@ -126,6 +126,7 @@ function resizeHeaderNavigations() {
   }
 }
 //function for changing user logo
+/*
 function previewImage(event) {
   var reader = new FileReader();
   reader.onload = function() {
@@ -135,28 +136,37 @@ function previewImage(event) {
     button.innerText = ''; // clear text in label
 
     // Отменяем стандартное действие браузера по умолчанию для отправки формы
-    event.preventDefault();
+    //event.preventDefault();
 
     // Отправляем форму на сервер
     var formData = new FormData(document.getElementById('uploadForm'));
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/user_profile', true);
     xhr.onload = function () {
-      if (xhr.status === 200) {
-        alert('File uploaded successfully!');
-      } else {
+      if (xhr.status != 200) {
         alert('Error uploading file!');
       }
     };
     xhr.send(formData);
+
   };
 
   reader.readAsDataURL(event.target.files[0]);
 }
+*/
+function previewImage(event) {
+  var reader = new FileReader();
+  reader.onload = function() {
+    var button = document.getElementById('uploadButton');
+    button.style.backgroundImage = "url('" + reader.result + "')";
+    button.classList.add('with-preview'); // Add class for styles with background image
+    button.innerText = ''; // clear text in label
 
-//Send form after choosing file automatically
-
-
+    // Отправляем форму на сервер
+    document.getElementById('uploadForm').submit();
+  }
+  reader.readAsDataURL(event.target.files[0]);
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------//
 /*
 function removeAdd(){

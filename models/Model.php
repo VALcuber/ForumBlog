@@ -49,7 +49,7 @@ class Model{
 
         $resultchkuser = array();
 
-        $sql = "SELECT `id`,`First name`,`Last name`,`status` FROM `users` WHERE `email` = :email and `pass` = :password ";
+        $sql = "SELECT `id`,`First name`,`Last name`,`status`, `logo` FROM `users` WHERE `email` = :email and `pass` = :password ";
 
         $smtpc = $this->db->prepare($sql);
         $smtpc->bindValue(":email", $email, PDO::PARAM_STR);
@@ -69,6 +69,7 @@ class Model{
             $_SESSION['first-name'] = $resc['First name'];
             $_SESSION['last-name'] = $resc['Last name'];
             $_SESSION['status'] = $resc['status'];
+            $_SESSION['logo'] = $resc['logo'];
 
             return $resultchkuser;
         }
@@ -110,7 +111,7 @@ class Model{
             $smtpr->bindValue(":password", $password, PDO::PARAM_STR);
             $smtpr->execute();
 
-            $resr=$smtps->fetch(PDO::FETCH_ASSOC);
+            $resr=$smtpr->fetch(PDO::FETCH_ASSOC);
 
             if(!empty($resr)){
                 $query = $this->db->lastInsertId();

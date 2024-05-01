@@ -15,11 +15,12 @@ class User_profileController extends Controller {
         if(isset($_FILES['image'])){
             $this->image_upload();
         }
-
+//var_export($_SESSION['logo']);
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
 
 	public function image_upload(){
+	    global $env;
         // Проверяем, был ли отправлен файл
         if(isset($_FILES['image'])){
             $errors = array();
@@ -43,6 +44,7 @@ class User_profileController extends Controller {
             // Если нет ошибок, перемещаем файл в желаемую директорию
             if(empty($errors)==true){
                 move_uploaded_file($file_tmp,__DIR__ ."/../assets/uploads/".$file_name);
+                $this->model->user_profile_logo($file_name);
                 //echo "Success";
                 return;
             } else {

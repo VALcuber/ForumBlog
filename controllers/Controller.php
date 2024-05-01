@@ -27,17 +27,22 @@
                 }
 
             }
-
+/*
             elseif(($env['act'] == 'Login') && ($_POST['email']=='') && ($_POST['password']=='')){
                 header("Location: /wrong");
             }
-
+*/
             if(isset($_SESSION['user_id']) && $_SESSION['user_id'] !=''){
 
-                $Fn = str_split($_SESSION['first-name']);
-                $Ln = str_split($_SESSION['last-name']);
+                if($_SESSION['logo'] == 'none') {
+                    $Fn = str_split($_SESSION['first-name']);
+                    $Ln = str_split($_SESSION['last-name']);
 
-                $result_Fn_Ln_arr = $Fn['0'].$Ln['0'];
+                    $result_Fn_Ln_arr = $Fn['0'] . $Ln['0'];
+                }
+                else{
+                    $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="'.$this->pageData["slash"].'../assets/uploads/'. $_SESSION['logo'].'">';
+                }
 
                 $this->pageData['page'] = $this->echo_form_exit();
 

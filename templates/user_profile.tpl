@@ -6,7 +6,7 @@
 
           <!-- Do logic on top image-->
           <div class="user_image">
-              <form id="uploadForm" method="post" enctype="multipart/form-data">
+              <form id="uploadForm" method="post" action="/user_profile" enctype="multipart/form-data">
                   <!-- Button for upload image -->
                   <label for="file-upload" id="uploadButton" class="user_image custom-upload-button header__profile d-flex align-items-center justify-content-center rounded-circle"><?= $pageData['check'] ?></label>
                   <!-- Hidden element input, which we use to upload file -->
