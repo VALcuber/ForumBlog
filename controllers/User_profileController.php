@@ -10,12 +10,16 @@ class User_profileController extends Controller {
 	}
 
 	public function index() {
+        global $env;
 
-        $this->controller();
         if(isset($_FILES['image'])){
             $this->image_upload();
+            $logo = $this->model->check_logo();
+            $this->setLogo($logo);
         }
-//var_export($_SESSION['logo']);
+
+        $this->controller();
+
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
 

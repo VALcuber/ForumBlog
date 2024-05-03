@@ -64,12 +64,11 @@ class Model{
             return $resultchkuser;
         }
         else {
-            $resultchkuser['user_id'] = $resc['id'];
+            //$resultchkuser['user_id'] = $resc['id'];
             $_SESSION['user_id'] = $resc['id'];
             $_SESSION['first-name'] = $resc['First name'];
             $_SESSION['last-name'] = $resc['Last name'];
             $_SESSION['status'] = $resc['status'];
-            $_SESSION['logo'] = $resc['logo'];
 
             return $resultchkuser;
         }
@@ -123,6 +122,18 @@ class Model{
         }
     }
 
+    public function check_logo(){
+
+        $user_id = $_SESSION['user_id'];
+
+        $sql = "SELECT `logo` FROM `users` WHERE `id` = '$user_id'";
+        $smtpc = $this->db->prepare($sql);
+        $smtpc->execute();
+
+        $res=$smtpc->fetch(PDO::FETCH_ASSOC);
+        return $res;
+
+    }
 
 }
 

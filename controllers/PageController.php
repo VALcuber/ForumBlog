@@ -1,6 +1,7 @@
 <?php
 
 class PageController extends Controller {
+    protected $pagesData = array("slash" => '../../../');
 
 	private $pageTpl = '/templates/page.tpl';
 
@@ -12,7 +13,7 @@ class PageController extends Controller {
 	public function index() {
         global $env;
         $this->controller();
-        $this->pageData['slash'] = "../";
+        $this->pageData['slash'] = "../../../";
         $this->pageData['page'] = $this->echo_page();
         $this->pageData['comments'] = $this->echo_comments();
         $this->pageData['forum_comments'] = '<script src="../../assets/js/forum.comments.js"></script>';

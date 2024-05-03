@@ -6,7 +6,7 @@ class User_profileModel extends Model {
     global $env;
 	    $id = $_SESSION['user_id'];
 
-        $sql = "UPDATE `users` SET `logo`='$file_name' WHERE  `id`='$id'";
+        $sql = "UPDATE `users` SET `logo`='../assets/uploads/$file_name' WHERE  `id`='$id'";
 
         $smtpt = $this->db->prepare($sql);
         $smtpt->execute();
@@ -19,8 +19,6 @@ class User_profileModel extends Model {
         $resr=$smtpt->fetch(PDO::FETCH_ASSOC);
 
         if(!empty($resr)){
-
-            $_SESSION['logo'] = $resr['logo'];
             return $resr;
         }
         else{

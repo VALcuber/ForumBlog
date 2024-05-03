@@ -11,6 +11,7 @@
                   <label for="file-upload" id="uploadButton" class="user_image custom-upload-button header__profile d-flex align-items-center justify-content-center rounded-circle"><?= $pageData['check'] ?></label>
                   <!-- Hidden element input, which we use to upload file -->
                   <input id="file-upload" type="file" name="image" accept="image/*" onchange="previewImage(event)">
+
               </form>
           </div>
 

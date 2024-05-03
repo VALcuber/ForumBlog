@@ -6,47 +6,56 @@
 		public $view;
 		public $env;
 		protected $pageData = array();
+		protected $pagesData = array('slash' => null);
+        protected $logo;
 
-		public function __construct() {
+        public function __construct() {
 			$this->view = new View();
 			$this->model = new Model();
 		}
+
+        public function setLogo($logo) {
+            $this->logo = $logo;
+        }
 
         public function controller(){
             global $env;
             $signin_modal_winwow = '';
             $active = $env['active'];
             $env['active'] = 'active';
+            $this->pageData["slash"] = null;
 
             if(($env['act'] == 'Log In') && ($_POST['email'] != '') && ($_POST['password'] != '')){
 
-                $resultchkuser = $this->model->checkUser();
+                $this->model->checkUser();
 
-                if($resultchkuser['user_id'] == ''){
+                if($_SESSION['user_id'] == ''){
                     header("Location: /");
                 }
 
             }
-/*
-            elseif(($env['act'] == 'Login') && ($_POST['email']=='') && ($_POST['password']=='')){
-                header("Location: /wrong");
-            }
-*/
+
             if(isset($_SESSION['user_id']) && $_SESSION['user_id'] !=''){
 
-                if($_SESSION['logo'] == 'none') {
+                $users_logo = $this->logo;
+
+                $user_logo = $users_logo ?? $this->model->check_logo();
+
+                if($user_logo['logo'] == 'none') {
+
                     $Fn = str_split($_SESSION['first-name']);
                     $Ln = str_split($_SESSION['last-name']);
 
                     $result_Fn_Ln_arr = $Fn['0'] . $Ln['0'];
                 }
                 else{
-                    $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="'.$this->pageData["slash"].'../assets/uploads/'. $_SESSION['logo'].'">';
+                    $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="'.$this->pagesData["slash"].$user_logo['logo'].'">';
                 }
 
                 $this->pageData['page'] = $this->echo_form_exit();
 
                 $user_menu_winwow = 'user-menu';
+                $this->pageData['user_menu_window'] = $user_menu_winwow;
 
                 if($_SESSION['status'] == 'admin'){
                     $adminPanel = $this->admin_panel();
@@ -75,13 +84,17 @@
 
             if($env['act'] == 'Exit'){
                 session_destroy();
+                // Delete cookie session
+                if (ini_get("session.use_cookies")) {
+                    $params = session_get_cookie_params();
+                    setcookie(session_name(), '', time() - 42000,
+                        $params["path"], $params["domain"],
+                        $params["secure"], $params["httponly"]
+                    );
+                }
                 header("Location: /");
             }
-/*
-            if($env['act'] == 'User Profile'){
-                header("Location: /user_profile");
-            }
-*/
+
             if($env['act']=='Register'){
                 $this->model->SingIn();
             }
@@ -101,9 +114,9 @@
             $this->pageData['panel'] = $adminPanel;
             $this->pageData['check'] = $result_Fn_Ln_arr;
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
-            $this->pageData['$user_menu_winwow'] = $user_menu_winwow;
             $this->pageData['active'] = $active;
             $this->pageData['admin-styles'] = '';
+
 
             $this->pageData['burger'] = $this->echo_burger();
 
@@ -518,12 +531,6 @@ EOT;
 
             $form_exit = <<<"EOT"
           <h1>This is user page</h1>
-          <div class="d-flex justify-content-between">
-          <form method="post">
-            <input type="submit" class="btn btn-primary btn-lg" name="act" value="Exit">
-          </form>
-
-          </div>
 EOT;
 
             return $form_exit;

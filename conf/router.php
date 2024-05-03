@@ -27,7 +27,6 @@ class Routing {
             $route3 = urldecode($route[3]);
             $env['route3'] = $route3;
         }
-
         if($route[1] == 'blog'){
             $env['route'] = 'blog';
         }
