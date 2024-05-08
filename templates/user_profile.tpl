@@ -14,26 +14,26 @@
               </form>
 
           </div>
-          <ul class="user_profile col-6 row align-items-center list-group list-group-horizontal">
+          <ul class="user_profile col-6 align-items-center list-group list-group-horizontal">
 
-                  <li class="col d-flex justify-content-center list-group-item active">
-                      SETTINGS
+                  <li class="user-profile_li">
+                      <button class="col d-flex justify-content-center list-group-item active">SETTINGS</button>
                   </li>
 
-                  <li class="col d-flex justify-content-center list-group-item">
-                      MESSAGES
+                  <li class="user-profile_li">
+                      <button class="col d-flex justify-content-center list-group-item">MESSAGES</button>
                   </li>
 
-                  <li class="col d-flex justify-content-center list-group-item">
-                      BLOG
+                  <li class="user-profile_li">
+                      <button class="col d-flex justify-content-center list-group-item">BLOG</button>
                   </li>
 
-                  <li class="col d-flex justify-content-center list-group-item">
-                      FORUM
+                  <li class="user-profile_li">
+                      <button class="col d-flex justify-content-center list-group-item">FORUM</button>
                   </li>
 
-                  <li class="col d-flex justify-content-center list-group-item">
-                      FRIENDS
+                  <li class="user-profile_li">
+                      <button class="col d-flex justify-content-center list-group-item">FRIENDS</button>
                   </li>
 
           </ul>
@@ -42,18 +42,3 @@
     </div>
   </main>
 <!--<section class="col-lg-10 col-md-12 mx-auto my-2">-->
-<style>
-    /* Стили для горизонтального списка */
-    .list-group-horizontal li {
-        display: inline-block;
-        border: none;
-    }
-
-    /* Убираем границы и подсветку */
-    .list-group-horizontal li.active {
-        background-color: transparent;
-        color: inherit;
-        text-decoration: underline;
-        text-underline-offset: 10px; /* задаем отступ для подчеркивания */
-    }
-</style>
