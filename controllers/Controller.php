@@ -52,8 +52,6 @@
                     $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="'.$this->pagesData["slash"].$user_logo['logo'].'">';
                 }
 
-                $this->pageData['page'] = $this->echo_form_exit();
-
                 $user_menu_winwow = 'user-menu';
                 $this->pageData['user_menu_window'] = $user_menu_winwow;
 
@@ -525,15 +523,6 @@ EOT;
 EOT;
 
             return $form_signin;
-        }
-
-        public function echo_form_exit(){
-
-            $form_exit = <<<"EOT"
-          <h1>This is user page</h1>
-EOT;
-
-            return $form_exit;
         }
 
 	}
