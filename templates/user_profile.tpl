@@ -17,7 +17,7 @@
           <ul class="user_profile col-6 align-items-center list-group list-group-horizontal">
 
                   <li class="user-profile_li">
-                      <button class="col d-flex justify-content-center list-group-item active">SETTINGS</button>
+                      <button class="col d-flex justify-content-center list-group-item">SETTINGS</button>
                   </li>
 
                   <li class="user-profile_li">
@@ -35,7 +35,6 @@
                   <li class="user-profile_li">
                       <button class="col d-flex justify-content-center list-group-item">FRIENDS</button>
                   </li>
-
           </ul>
       </div>
 

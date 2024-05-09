@@ -107,6 +107,20 @@ document.addEventListener("DOMContentLoaded", () => {
       categoriesIsActive = !categoriesIsActive;
     };
   })();
+  var buttons = document.querySelectorAll('.user_profile .list-group-item');
+
+  buttons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      if (this.classList.contains('active')) {
+        this.classList.remove('active');
+      } else {
+        buttons.forEach(function(btn) {
+          btn.classList.remove('active');
+        });
+        this.classList.add('active');
+      }
+    });
+  });
 });
 
 function resizeHeaderNavigations() {
@@ -125,35 +139,6 @@ function resizeHeaderNavigations() {
     }
   }
 }
-//function for changing user logo
-/*
-function previewImage(event) {
-  var reader = new FileReader();
-  reader.onload = function() {
-    var button = document.getElementById('uploadButton');
-    button.style.backgroundImage = "url('" + reader.result + "')";
-    button.classList.add('with-preview'); // Add class for styles with background image
-    button.innerText = ''; // clear text in label
-
-    // Отменяем стандартное действие браузера по умолчанию для отправки формы
-    //event.preventDefault();
-
-    // Отправляем форму на сервер
-    var formData = new FormData(document.getElementById('uploadForm'));
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/user_profile', true);
-    xhr.onload = function () {
-      if (xhr.status != 200) {
-        alert('Error uploading file!');
-      }
-    };
-    xhr.send(formData);
-
-  };
-
-  reader.readAsDataURL(event.target.files[0]);
-}
-*/
 function previewImage(event) {
   var reader = new FileReader();
   reader.onload = function() {
@@ -167,6 +152,7 @@ function previewImage(event) {
   }
   reader.readAsDataURL(event.target.files[0]);
 }
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------//
 /*
 function removeAdd(){
