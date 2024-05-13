@@ -10,11 +10,13 @@ class PageModel extends Model{
 
             $sql = "SELECT `id`,`Title`,`Description` FROM `" . $env['route1'] . "` WHERE `Title` = '" . $env['route3'] . "' ";
 
-        } elseif ($env['route1'] == 'news') {
+        }
+        elseif ($env['route1'] == 'news') {
 
             $sql = "SELECT `id`,`name`,`content` FROM `" . $env['route1'] . "` WHERE `name` = '$temporary'";
 
-        } elseif ($env['route1'] == 'blog') {
+        }
+        elseif ($env['route1'] == 'blog') {
 
             $sql = "SELECT `id`,`Title`,`Description` FROM `" . $env['route1'] . "` WHERE `Title` = '" . $env['route3'] . "' ";
 

@@ -20,7 +20,7 @@ class Routing {
         if(isset($route[2])) {
             $route2 = strtok($route[2], '-');
             $env['route2'] = $route2;
-            //$env['route-2'] = $route[2];
+            $env['route-2'] = $route[2];
         }
 
         if(isset($route[3])) {
@@ -41,14 +41,14 @@ class Routing {
 
         /*Определяем контроллер*/
 
-        if(isset($route[3])) {
+        if(isset($route[3]) || ($route[1] == 'news' && isset($route[2]))) {
             $controllerName = "PageController";
             $modelName = "PageModel";
         }
 
 
 
-        elseif((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'news' || $route[1] == 'forum')) && isset($route[2])){
+        elseif((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[2])){
             $controllerName = "TopicController";
             $modelName = "TopicModel";
 

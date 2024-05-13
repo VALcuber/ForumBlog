@@ -110,7 +110,7 @@
 
             <nav class="categories flex-grow-1" id="categories">
 
-                <ul class="nav nav-pills nav-fill flex-nowrap" id="categories-list">
+                <ul class="nav nav-pills nav-fill" id="categories-list">
                     <?= $pageData['topmenu']?>
 
     </div>

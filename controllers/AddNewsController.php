@@ -10,10 +10,10 @@ class AddNewsController extends Controller {
     }
 
     public function index() {
-
+        global $env;
         $this->controller();
 
-        if($_POST['act'] == 'Post-NEWS'){
+        if($env['act'] == 'Post-NEWS'){
             $this->model->post_news();
         }
 
