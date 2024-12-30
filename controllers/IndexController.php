@@ -19,7 +19,7 @@ class IndexController extends Controller {
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
 
-	public function echo_random_blog_topics() { //Ф-я для вывода блога
+	public function echo_random_blog_topics() {
         $resultHTML = '';
 		$blog = $this->model->blog();
 
@@ -39,13 +39,13 @@ class IndexController extends Controller {
 
         for($i = 0; $i < $arrSize; $i++){
 
-                 $blogName = $resultblog[$i]["Topic"];
-                 $blogContent = $resultblog[$i]["Title"];
+                 $blogName = $resultblog[$i]["Category"];
+                 $blogContent = $resultblog[$i]["Category_Description"];
 
                  $htmlblog = <<<"EOT"
 		        	  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				        <h5 class="card-title">$blogName</h5>
-				        <a href="/blog/$blogName" class="card-link">Go to category</a>
+				        <a href="/blog/$blogName/$blogContent" class="card-link">Go to category</a>
 			          </div>
 			          <p class="card-text flex-grow-1">$blogContent</p>
 EOT;
@@ -54,10 +54,10 @@ EOT;
 		 }
 		  
 		  return $resultHTML;
-	}
+	} //Ф-я для вывода блога
 	
 	public function make_Random_Array_blog($amount, $array){
-        //$amount = $amount -1;
+	    $amount = $amount -1;
 			$randomArrayblog = array();
 			$randKeys = array_rand($array, $amount);
 
@@ -68,7 +68,7 @@ EOT;
 			return $randomArrayblog;
 	} //Функция для случайного отображения елементов в массиве
 	
-	public function echo_latest_news() { //Ф-я для вывода новостей
+	public function echo_latest_news() {
 
 	    $resulthtmlnews = "";
 		$news = $this->model->news();
@@ -104,9 +104,9 @@ EOT;
 			}
 
 		return $resulthtmlnews;
-	}
+	} //Ф-я для вывода новостей
 
-	public function echo_random_forum_topics() { //Ф-я для вывода форума
+	public function echo_random_forum_topics() {
 
 	    $forum = $this->model->forum();
 
@@ -115,20 +115,19 @@ EOT;
 
 		if($forum != NULL) {
             $resultforum = $this->make_Random_Array_forum($forum_count, $forum);
-
             $arrSize = count($resultforum);
         }
-		else
+		else {
             $resultforum = '';
+        }
 
 		for($i = 0; $i < $arrSize; $i++){
 		    if($i >= 7){
 		        break;
 		    }
             else {
-                $forumName = $resultforum[$i]["Topic"];
-
-                $forumContent = $resultforum[$i]["Title"];
+                $forumName = $resultforum[$i]["Category"];
+                $forumContent = $resultforum[$i]["Category_Description"];
 
                 $htmlforum = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
@@ -141,12 +140,12 @@ EOT;
             }
 		}
 			return $resulthtmlforum;
-	}
+	} //Ф-я для вывода форума
 	
 	public function make_Random_Array_forum($amount, $array){
-        $amount = $amount -1;
-		  $randomArrayforum = array();
-		  $randKeys = array_rand($array,$amount);
+	    $amount = $amount -1;
+		    $randomArrayforum = array();
+		    $randKeys = array_rand($array,$amount);
 
 
 		  for($i = 0; $i < count($randKeys); $i++){

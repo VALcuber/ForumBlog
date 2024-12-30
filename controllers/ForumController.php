@@ -3,7 +3,7 @@
 
 class ForumController extends Controller{
 
-    private $pageTpl = '/templates/Forum.tpl';
+    private $pageTpl = '/templates/forum-blog.tpl';
 
     public function __construct() {
         $this->model = new ForumModel();
@@ -19,6 +19,7 @@ class ForumController extends Controller{
 
         $this->pageData['forum_titles'] = $this->echo_page_titles();
         $this->pageData['echo_latest_forum_posts'] = $this->echo_latest_forum_posts();
+        $this->pageData['route'] = strtoupper($env['route']);
         $this->view->render($this->pageTpl, $this->pageData);
 
     }
@@ -39,7 +40,7 @@ class ForumController extends Controller{
 
         for($i = 0; $i < $count; $i++){
 
-            $subcategory=$all[$i]["Topic"];
+            $subcategory=$all[$i]["Category"];
 
             $subcategory_translit = $this->translit($subcategory);
 
@@ -125,7 +126,7 @@ EOT;
 
             for ($i = 0; $i < $count; $i++) {
 
-                $echo_latest_forum_posts = $latest_forum_posts[$i]["Topic"];
+                $echo_latest_forum_posts = $latest_forum_posts[$i]["Category"];
 
                 $echo_latest_forum_posts_translit = $this->translit($echo_latest_forum_posts);
 

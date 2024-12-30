@@ -8,7 +8,7 @@ class ForumModel extends Model{
 
         global $env;
 
-        $sql = "CREATE TABLE if not exists `forum` (`Id` INT, `Topic` TEXT, `Title` TEXT, `Description` TEXT, `structure` VARCHAR)";
+        $sql = "CREATE TABLE if not exists `forum` (`Id` INT, `Category` TEXT, `Category_Description` TEXT, `structure` VARCHAR)";
 
         $forum = $this->db->prepare($sql);
 
@@ -16,7 +16,7 @@ class ForumModel extends Model{
 
         $result_page_all = array();
 
-        $sql = "SELECT `Topic` FROM `forum`";
+        $sql = "SELECT `Category` FROM `forum`";
 
         $page_all = $this->db->prepare($sql);
 
@@ -69,7 +69,7 @@ class ForumModel extends Model{
 
         $result_forum = array();
 
-        $sql = "SELECT `Topic` FROM `forum` ORDER BY id DESC LIMIT 10";
+        $sql = "SELECT `Category` FROM `forum` ORDER BY id DESC LIMIT 10";
 
         $request = $this->db->prepare($sql);
         $request->execute();

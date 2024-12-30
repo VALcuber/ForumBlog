@@ -3,7 +3,7 @@
 
 class BlogController extends Controller{
 
-    private $pageTpl = '/templates/Forum.tpl';
+    private $pageTpl = '/templates/forum-blog.tpl';
 
     public function __construct() {
         $this->model = new BlogModel();
@@ -19,11 +19,12 @@ class BlogController extends Controller{
 
         $this->pageData['forum_titles'] = $this->echo_page_titles();
         $this->pageData['echo_latest_forum_posts'] = $this->echo_latest_blog_posts();
+        $this->pageData['route'] = strtoupper($env['route']);
         $this->view->render($this->pageTpl, $this->pageData);
 
     }
 
-    public function echo_page_content() { //Ф-я для отображения форума
+    public function echo_page_content() {
 
         global $env;
 
@@ -39,7 +40,7 @@ class BlogController extends Controller{
 
         for($i = 0; $i < $count; $i++){
 
-            $subcategory=$all[$i]["Topic"];
+            $subcategory=$all[$i]["Category"];
 
             $subcategory_translit = $this->translit($subcategory);
 
@@ -54,9 +55,9 @@ EOT;
 
         return $result;
 
-    }
+    } //Ф-я для отображения блога
 
-    public function echo_page_titles(){ //Ф-я для отображения форума и кнопка " + " со ссылками
+    public function echo_page_titles(){
 
         global $env;
 
@@ -108,7 +109,7 @@ EOT;
 
         return $titles.$pageallecho.$this->echo_page_content().$ul_nav;
 
-    }
+    } //Ф-я для отображения блога и кнопка " + " со ссылками
 
     public function echo_latest_blog_posts(){
         global $env;
@@ -125,7 +126,7 @@ EOT;
 
             for ($i = 0; $i < $count; $i++) {
 
-                $echo_latest_blog_posts = $latest_blog_posts[$i]["Topic"];
+                $echo_latest_blog_posts = $latest_blog_posts[$i]["Category"];
 
                 $echo_latest_blog_posts_translit = $this->translit($echo_latest_blog_posts);
 

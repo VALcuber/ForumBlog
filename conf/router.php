@@ -26,6 +26,7 @@ class Routing {
         if(isset($route[3])) {
             $route3 = urldecode($route[3]);
             $env['route3'] = $route3;
+            echo $route3;
         }
         if($route[1] == 'blog'){
             $env['route'] = 'blog';
@@ -46,11 +47,9 @@ class Routing {
             $modelName = "PageModel";
         }
 
-
-
         elseif((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[2])){
-            $controllerName = "TopicController";
-            $modelName = "TopicModel";
+            $controllerName = "PageController";
+            $modelName = "PageModel";
 
             if(isset($route[2]) && $route[2] == 'CommentController'){
                 $controllerName = "CommentController";

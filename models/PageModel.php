@@ -8,7 +8,7 @@ class PageModel extends Model{
 
         if ($env['route1'] == 'forum') {
 
-            $sql = "SELECT `id`,`Title`,`Description` FROM `" . $env['route1'] . "` WHERE `Title` = '" . $env['route3'] . "' ";
+            $sql = "SELECT `id`,`Category`,`Category_Description` FROM `" . $env['route1'] . "` WHERE `Category` = '" . $env['route2'] . "' ";
 
         }
         elseif ($env['route1'] == 'news') {
@@ -18,7 +18,7 @@ class PageModel extends Model{
         }
         elseif ($env['route1'] == 'blog') {
 
-            $sql = "SELECT `id`,`Title`,`Description` FROM `" . $env['route1'] . "` WHERE `Title` = '" . $env['route3'] . "' ";
+            $sql = "SELECT `id`,`Category`,`Category_Description` FROM `" . $env['route1'] . "` WHERE `Category` = '" . $env['route2'] . "' ";
 
         }
 
@@ -38,7 +38,7 @@ class PageModel extends Model{
         global $env;
 
         $page_id = $env['id'];
-
+//var_dump($page_id);
         $sql = "SELECT `forum_comments`.*, `users`.`First name` AS `name` FROM `forum_comments` INNER JOIN `users` ON `forum_comments` . `user_id` = `users`.`Id` WHERE `Forum_page` = ' $page_id ' AND `structure` = '" . $env['route1'] . "' ";
 
         $smtppage = $this->db->prepare($sql);

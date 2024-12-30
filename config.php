@@ -11,6 +11,7 @@ include ("conf/db.php");
 include ("conf/router.php");
 
 // инициализация
+$env['id'] = $_POST['id']?? '';
 $env['act'] = $_POST['act']?? '';
 $env['active'] = '';
 $env['all_title'] = '';

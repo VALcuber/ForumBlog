@@ -8,7 +8,7 @@ class BlogModel extends Model{
 
         global $env;
 
-        $sql = "CREATE TABLE if not exists `blog` (`Id` INT, `Topic` TEXT, `Title` TEXT, `Description` TEXT, `structure` VARCHAR)";
+        $sql = "CREATE TABLE if not exists `blog` (`Id` INT, `Category` TEXT, `Category_Description` TEXT, `structure` VARCHAR)";
 
         $forum = $this->db->prepare($sql);
 
@@ -16,7 +16,7 @@ class BlogModel extends Model{
 
         $result_page_all = array();
 
-        $sql = "SELECT `Topic` FROM `blog`";
+        $sql = "SELECT `Category` FROM `blog`";
 
         $page_all = $this->db->prepare($sql);
 
@@ -33,8 +33,8 @@ class BlogModel extends Model{
     }
 
     public function add_blog_content(){
-        $blog_topic = $_POST['Topic'] ?? '';
-        $blog_title = $_POST['Title'] ?? '';
+        $blog_topic = $_POST['Category'] ?? '';
+        $blog_title = $_POST['Category_Description'] ?? '';
         $blog_description = $_POST['description'] ?? '';
 
         $sql = "SELECT `id` FROM `blog` WHERE `Topic`= :blog_topic";
@@ -69,7 +69,7 @@ class BlogModel extends Model{
 
         $result_forum = array();
 
-        $sql = "SELECT `Topic` FROM `blog` ORDER BY id DESC LIMIT 10";
+        $sql = "SELECT `Category` FROM `blog` ORDER BY id DESC LIMIT 10";
 
         $request = $this->db->prepare($sql);
         $request->execute();

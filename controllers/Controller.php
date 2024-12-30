@@ -21,7 +21,7 @@
         public function controller(){
             global $env;
             $signin_modal_winwow = '';
-            $active = $env['active'];
+            //$active = $env['active'];
             $env['active'] = 'active';
             $this->pageData["slash"] = null;
 
@@ -232,26 +232,13 @@ EOT;
                 $active = 'active';
             }
 
-            $homebutton = '
-                    <div class="row px-4 py-4">
-
-                        <nav class="categories flex-grow-1" id="categories">
-
-                        <ul class="nav nav-pills nav-fill flex-nowrap" id="categories-list">
-                        
-                            <li class="nav-item ">
-
-                                <a href="/" class="nav-link ' .$active . ' categories__link text-nowrap">Home</a>
-
-                            </li>';
-
             if($arrSize > 1) {
 
                 for ($i = 0; $i < $arrSize; $i++) {
 
                     $route_title = $category[$i]['tablename'];
-                    $categories = $category[$i]['Topic'];
-                    $structure = $category[$i]['Title'];
+                    $categories = $category[$i]['Category'];
+                    $structure = $category[$i]['Category_Description'];
                     //$Name = $category[$i]['name'];
 
                     $activist = '';
@@ -289,8 +276,6 @@ EOT;
                 $result_html_category = $resulthtmlcategory . $buttonall;
                 return $result_html_category;
             }
-           // else
-           //     return $homebutton;
 
         }
 

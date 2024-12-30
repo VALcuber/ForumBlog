@@ -53,7 +53,7 @@ class IndexModel extends Model {
         $smtp = $this->db->prepare($sql);
         $smtp->execute();
 
-        $sql = "SELECT `Topic`, `Title` FROM `forum`";
+        $sql = "SELECT * FROM `forum` ORDER BY id DESC LIMIT 7";
 		
 		$smtpf = $this->db->prepare($sql);
 		$smtpf->execute();

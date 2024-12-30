@@ -25,16 +25,16 @@ class PageController extends Controller {
         $env['temporary'] = $env['route2'];
 
         if($env['route'] == 'blog' || $env['route'] == 'forum'){
-            echo 1;
+            //echo 1;
             $this->pageData['comments'] = $this->echo_html_comments();
             $this->pageData['forum_comments'] = '<script src="../../assets/js/forum.comments.js"></script>';
 
             $temporary = $env['temporary'];
 
             $smtppage = $this->model->get_page($temporary);
-
-            $pageName=$smtppage["Title"];
-            $pageContent=$smtppage["Description"];
+//var_export($smtppage);
+            $pageName=$smtppage["Category"];
+            $pageContent=$smtppage["Category_Description"];
 
             $html_page_blog = <<<"EOT"
                 <div class="card">
@@ -87,7 +87,7 @@ EOT;
 	public function echo_comments(){
 	    global $env;
         $resultHTML = '';
-        if($env['route'] == 'forum') {
+        if($env['route'] == 'forum' || $env['route'] == 'blog') {
 
             $smtppage = $this->model->get_comments();
 
