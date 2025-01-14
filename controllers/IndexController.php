@@ -30,11 +30,12 @@ class IndexController extends Controller {
                 $resultblog = $this->make_Random_Array_blog($blog_count, $blog);
             else
                 $resultblog = $blog;
-		    $arrSize = count($resultblog);
+            $arrSize = count($resultblog);
 
         }
         else {
             $resultblog = '';
+            $arrSize = NULL;
         }
 
         for($i = 0; $i < $arrSize; $i++){
@@ -119,6 +120,7 @@ EOT;
         }
 		else {
             $resultforum = '';
+            $arrSize = NULL;
         }
 
 		for($i = 0; $i < $arrSize; $i++){

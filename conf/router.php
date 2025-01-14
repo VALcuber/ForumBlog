@@ -42,7 +42,7 @@ class Routing {
 
         /*Определяем контроллер*/
 
-        if(isset($route[3]) || ($route[1] == 'news' && isset($route[2]))) {
+        if(($route[1] == 'news' && isset($route[2])) || isset($route[3])) {
             $controllerName = "PageController";
             $modelName = "PageModel";
         }
@@ -76,8 +76,21 @@ class Routing {
         }
 
 		elseif(isset($route[1]) && $route[1] == 'all'){
-            $controllerName = "";
-            $modelName = "";
+            $controllerName = "AllController";
+            $modelName = "AllModel";
+        }
+
+        elseif(isset($route2) && $route2 != 'all' ){
+
+            $controllerName = "All_for_certain_categoryController";
+            $modelName = "All_for_certain_categoryModel";
+
+            $route3 = strtok($route[2], '_');
+
+            $env['title_category'] = $route[1];
+            $env['forum_blog'] = lcfirst($route3);
+            $env['subcategory'] = $route[2];
+
         }
 
         elseif($route[1] != '') {

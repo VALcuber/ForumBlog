@@ -294,12 +294,11 @@ EOT;
 
                 $route = explode("/", $_SERVER['REQUEST_URI']);
 
-                $categories = $category[$i]['Title'];
+                $categories = $category[$i]['Category'];
                 $structure = $category[$i]['structure'];
-                $Name = $category[$i]['Title'];
 
                 if(isset($route[2])) {
-                    if(isset($route[1]) && $route[1] == $structure && $route[2] == $Name) {
+                    if(isset($route[1]) && $route[1] == $structure && $route[2] == $categories) {
                         $activist = 'active';
                     }
                     else{
@@ -310,9 +309,16 @@ EOT;
                     $activist = '';
                 }
 
+                if($structure == 'blog'){
+                    $categories = $categories. '_blog';
+                }
+                else{
+                    $categories = $categories. '_forum';
+                }
+
                 $htmlburger = <<<"EOT"
 				<li class= "navbar-item p-2">
-				    <a href="/$structure/$Name" class="nav-link $activist categories__link text-nowrap">$categories</a>
+				    <a href="/$structure/$categories" class="nav-link $activist categories__link text-nowrap">$categories</a>
 				</li>
 EOT;
                 $resulthtmlburger =  $resulthtmlburger.$htmlburger;
