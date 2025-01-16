@@ -26,8 +26,9 @@ class Routing {
         if(isset($route[3])) {
             $route3 = urldecode($route[3]);
             $env['route3'] = $route3;
-            echo $route3;
+
         }
+
         if($route[1] == 'blog'){
             $env['route'] = 'blog';
         }
@@ -42,20 +43,14 @@ class Routing {
 
         /*Определяем контроллер*/
 
-        if(($route[1] == 'news' && isset($route[2])) || isset($route[3])) {
-            $controllerName = "PageController";
-            $modelName = "PageModel";
+        if (isset($route[1]) && $route[1] == 'manage_users'){
+            $controllerName = "ManageUsersController";
+            $modelName = "ManageUsersModel";
         }
 
-        elseif((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[2])){
+        elseif($route[1] == 'news' && isset($route[2])) {echo 'news';
             $controllerName = "PageController";
             $modelName = "PageModel";
-
-            if(isset($route[2]) && $route[2] == 'CommentController'){
-                $controllerName = "CommentController";
-                $modelName = "CommentModel";
-            }
-
         }
 
         elseif(isset($route[1]) && ($route[1] == 'forum')){
@@ -68,34 +63,34 @@ class Routing {
             $controllerName = "BlogController";
             $modelName = "BlogModel";
 
-		}
-
-        elseif (isset($route[1]) && $route[1] == 'manage_users'){
-            $controllerName = "ManageUsersController";
-            $modelName = "ManageUsersModel";
         }
 
-		elseif(isset($route[1]) && $route[1] == 'all'){
-            $controllerName = "AllController";
-            $modelName = "AllModel";
+        elseif(isset($route[1]) && $route[1] == 'all'){
+            $controllerName = "Categories_allController";
+            $modelName = "Categories_allModel";
         }
 
-        elseif(isset($route2) && $route2 != 'all' ){
+        if((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[2]) && !isset($route[3])){
+
+            $controllerName = "PageController";
+            $modelName = "PageModel";
+
+            if(isset($route[2]) && $route[2] == 'CommentController'){
+                $controllerName = "CommentController";
+                $modelName = "CommentModel";
+            }
+
+        }
+
+        if(isset($route[2]) && !isset($route[3])){
 
             $controllerName = "All_for_certain_categoryController";
-            $modelName = "All_for_certain_categoryModel";
-
-            $route3 = strtok($route[2], '_');
-
-            $env['title_category'] = $route[1];
-            $env['forum_blog'] = lcfirst($route3);
-            $env['subcategory'] = $route[2];
+            $modelName = "Categories_allModel";
 
         }
 
-        elseif($route[1] != '') {
-            $controllerName = ucfirst($route[1]. "Controller");
-            $modelName = ucfirst($route[1]. "Model");
+        elseif(isset($route[3])){
+             echo 1;
         }
 
 		include PATH_C . $controllerName . ".php"; //IndexController.php
@@ -113,17 +108,10 @@ class Routing {
 
 	}
 */
+
 /*
-    elseif(isset($route2) && $route2 != 'all' ){
-
-        $controllerName = "Page_allController";
-        $modelName = "Page_allModel";
-
-        $route3 = strtok($route[2], '_');
-
-        $env['title_category'] = $route[1];
-        $env['forum_blog'] = lcfirst($route3);
-        $env['subcategory'] = $route[2];
-
-    }
+        elseif($route[1] != '') {
+            $controllerName = ucfirst($route[1]. "Controller");
+            $modelName = ucfirst($route[1]. "Model");
+        }
 */

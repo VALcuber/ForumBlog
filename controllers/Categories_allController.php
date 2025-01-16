@@ -1,12 +1,12 @@
 <?php
 
-class AllController extends Controller {
+class Categories_allController extends Controller {
 
     private $pageTpl = '/templates/all.tpl';
 
     public function __construct() {
 
-        $this->model = new AllModel();
+        $this->model = new Categories_allModel();
 
         $this->view = new View();
 
@@ -22,11 +22,11 @@ class AllController extends Controller {
 
     }
 
-    public function echo_pagealltitles(){ //Ф-я для вывода названия категорий
+    public function echo_pagealltitles(){ //Ф-я для вывода названия категорий и подкатегорий
 
         global $env;
 
-        $all_titles = $this->model->getpagealltitles();
+        $all_titles = $this->model->get_all_categories();
         $count_titles = count($all_titles);
 
 //-------------------------------------
@@ -35,11 +35,11 @@ class AllController extends Controller {
 
                     <div class="col-8 px-0">
 
-                      <h4><b>';
+                      ';
 
-        $page_all_echo_1 = '</b></h4>
+        $page_all_echo_1 = '
 
-                    </div>
+                  </div>
 
                     <div class="col-4">
 
@@ -78,30 +78,37 @@ class AllController extends Controller {
  //-----------------------------------------------------------
 
         $some_result_all = "";
-
+        $structure = 'forum-blog';
 //----------------------------------------------------------- Для вывода самих категорий
 
         for ($i = 0; $i < $count_titles; $i++) {
 
             $some_result_descriptions_all = "";
 
-            $category = $all_titles[$i]['Category'];
+            $category_from_bd = $all_titles[$i]['Category'];
 
-            $env['all_title'] = $category;
+            $category = <<<"EOT"
+                <a href="/$structure/$category_from_bd" class="py-2" style="font-size: 2.2em; font-weight: bold;">$category_from_bd</a>
+EOT;
+            $env['all_title'] = $category_from_bd;
 
-            $alltitles2 = $this->model->getpageall();
+//----------------------------------------------------------- Для вывода подкатегорий
+
+            $alltitles2 = $this->model->get_all_subcategories();
 
             $counttitles2 = count($alltitles2);
 
             for ($j = 0; $j < $counttitles2; $j++) {
 
+                $structure_from_db = $alltitles2[$j]["structure"];
+                $category_from_bd_2 = $alltitles2[$j]["Category"];;
                 $subcategory = $alltitles2[$j]["Description"];
 
                 $subcategories = <<<"EOT"
 
                     <li>
 
-                        <a href="/$category/$subcategory" class="py-2">$subcategory</a>
+                        <a href="/$structure_from_db/$category_from_bd_2/$subcategory" class="py-2">$subcategory</a>
 
                     </li>
 
@@ -120,4 +127,3 @@ EOT;
     }
 
 }
-

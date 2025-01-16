@@ -25,14 +25,14 @@ class PageController extends Controller {
         $env['temporary'] = $env['route2'];
 
         if($env['route'] == 'blog' || $env['route'] == 'forum'){
-            //echo 1;
+
             $this->pageData['comments'] = $this->echo_html_comments();
             $this->pageData['forum_comments'] = '<script src="../../assets/js/forum.comments.js"></script>';
 
             $temporary = $env['temporary'];
 
             $smtppage = $this->model->get_page($temporary);
-//var_export($smtppage);
+
             $pageName=$smtppage["Category"];
             $pageContent=$smtppage["Category_Description"];
 

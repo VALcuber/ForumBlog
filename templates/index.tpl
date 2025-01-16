@@ -35,8 +35,6 @@
 
               <h5 class="card-title">NEWS</h5>
 
-              <a href="/news" class="card-link">Go to News</a>
-
             </div>
 
             <div class="card-body d-flex-1 flex-column">
