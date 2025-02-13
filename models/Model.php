@@ -25,8 +25,7 @@ class Model{
         return $categories;
     }
 
-    public function getburger()
-    {
+    public function getburger(){
 
         $categories = array();
 

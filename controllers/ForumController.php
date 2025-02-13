@@ -1,6 +1,5 @@
 <?php
 
-
 class ForumController extends Controller{
 
     private $pageTpl = '/templates/forum-blog.tpl';
@@ -24,7 +23,7 @@ class ForumController extends Controller{
 
     }
 
-    public function echo_page_content() { //Ф-я для отображения форума
+    public function echo_page_content() {
 
         global $env;
 
@@ -55,9 +54,9 @@ EOT;
 
         return $result;
 
-    }
+    } // Function for displaying forum
 
-    public function echo_page_titles(){ //Ф-я для отображения форума и кнопка " + " со ссылками
+    public function echo_page_titles(){
 
         global $env;
 
@@ -109,7 +108,7 @@ EOT;
 
         return $titles.$pageallecho.$this->echo_page_content().$ul_nav;
 
-    }
+    } // Function for displaying forum and button " + " with links
 
     public function echo_latest_forum_posts(){
         global $env;

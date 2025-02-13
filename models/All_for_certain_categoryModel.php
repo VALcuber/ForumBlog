@@ -1,6 +1,5 @@
 <?php
 
-
 class All_for_certain_categoryModel extends Model{
 
     public function getpageall(){

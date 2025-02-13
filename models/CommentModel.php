@@ -35,7 +35,7 @@ class CommentModel extends Model{
 
         $errorInfo = $smtppage->errorInfo();
         if ($errorInfo[0] !== '00000') {
-            // Обработка ошибок
+            // Error handling
             $result = ("Error: " . $errorInfo[2]);
         }
         else {

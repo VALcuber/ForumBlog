@@ -1,1 +1,1 @@
-This is a project of Forum$Blog website. For practicing php skilss
+This is a project of Forum$Blog website. For practicing php skills

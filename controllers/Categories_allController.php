@@ -22,7 +22,7 @@ class Categories_allController extends Controller {
 
     }
 
-    public function echo_pagealltitles(){ //Ф-я для вывода названия категорий и подкатегорий
+    public function echo_pagealltitles(){
 
         global $env;
 
@@ -79,7 +79,7 @@ class Categories_allController extends Controller {
 
         $some_result_all = "";
         $structure = 'forum-blog';
-//----------------------------------------------------------- Для вывода самих категорий
+//----------------------------------------------------------- For displaying categories
 
         for ($i = 0; $i < $count_titles; $i++) {
 
@@ -92,7 +92,7 @@ class Categories_allController extends Controller {
 EOT;
             $env['all_title'] = $category_from_bd;
 
-//----------------------------------------------------------- Для вывода подкатегорий
+//----------------------------------------------------------- For displaying subcategories
 
             $alltitles2 = $this->model->get_all_subcategories();
 
@@ -124,6 +124,6 @@ EOT;
 
         return $some_result_all;
 
-    }
+    } //function for displaying categories and subcategories
 
 }

@@ -329,10 +329,10 @@ EOT;
 
         public function translit($translit) {
 
-            $translit = strip_tags($translit); // убираем HTML-теги
-            $translit = str_replace(array("\n", "\r"), " ", $translit); // убираем перевод каретки
-            $translit = preg_replace("/\s+/", ' ', $translit); // удаляем повторяющие пробелы
-            $translit = trim($translit); // убираем пробелы в начале и конце строки
+            $translit = strip_tags($translit); // Deleting HTML-tegs
+            $translit = str_replace(array("\n", "\r"), " ", $translit); // remove carriage return
+            $translit = preg_replace("/\s+/", ' ', $translit); // remove duplicate spaces
+            $translit = trim($translit); // remove spaces at the beginning and end of the line
             $translit = strtr($translit, array(
                 "а"=>"a",
                 "б"=>"b",
@@ -409,10 +409,10 @@ EOT;
                 "Ґ"=>"G",
                 "Є"=>"YE"
             ));
-            //$translit = preg_replace("/[^0-9a-z-_ ]/i", "", $translit); // очищаем строку от недопустимых символов
-            $translit = str_replace(" ", "-", $translit); // заменяем пробелы знаком минус
+            //$translit = preg_replace("/[^0-9a-z-_ ]/i", "", $translit); // clear the string of invalid characters
+            $translit = str_replace(" ", "-", $translit); // replace spaces with a minus sign
 
-            return $translit; // возвращаем результат
+            return $translit; // return the result
         }
 
         public function translit_reverse($translit_reverse) {
@@ -493,9 +493,9 @@ EOT;
                 "G"=>"Ґ",
                 "YE"=>"Є"
             ));
-            $translit_reverse = str_replace("-", " ", $translit_reverse); // заменяем знаки минус пробелами
+            $translit_reverse = str_replace("-", " ", $translit_reverse); // replace minus signs with spaces
 
-            return $translit_reverse; // возвращаем результат
+            return $translit_reverse; // return the result
         }
 
         public function echo_form_signin(){

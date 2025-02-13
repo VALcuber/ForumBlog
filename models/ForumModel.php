@@ -6,8 +6,6 @@ class ForumModel extends Model{
 
     public function get_page_topic(){
 
-        global $env;
-
         $sql = "CREATE TABLE if not exists `forum` (`Id` INT, `Category` TEXT, `Category_Description` TEXT, `structure` VARCHAR)";
 
         $forum = $this->db->prepare($sql);
@@ -33,6 +31,7 @@ class ForumModel extends Model{
     }
 
     public function add_forum_content(){
+
         $forum_topic = $_POST['Topic'] ?? '';
         $forum_title = $_POST['Title'] ?? '';
         $forum_description = $_POST['description'] ?? '';

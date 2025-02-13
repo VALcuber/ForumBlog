@@ -38,7 +38,7 @@ class PageModel extends Model{
         global $env;
 
         $page_id = $env['id'];
-//var_dump($page_id);
+
         $sql = "SELECT `forum_comments`.*, `users`.`First name` AS `name` FROM `forum_comments` INNER JOIN `users` ON `forum_comments` . `user_id` = `users`.`Id` WHERE `Forum_page` = ' $page_id ' AND `structure` = '" . $env['route1'] . "' ";
 
         $smtppage = $this->db->prepare($sql);

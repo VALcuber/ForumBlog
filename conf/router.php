@@ -1,11 +1,11 @@
 <?php
-session_start();
+session_start(); // starting session
 class Routing {
 
 	public static function buildRoute() {
 		global $env;
 
-		/*Контроллер и action по умолчанию*/
+		/* Default controller and action*/
 		$controllerName = "IndexController";
 		$modelName = "IndexModel";
 		$action = "index";
@@ -41,7 +41,7 @@ class Routing {
             $env['route'] = 'news';
         }
 
-        /*Определяем контроллер*/
+        /* Define controller */
 
         if (isset($route[1]) && $route[1] == 'manage_users'){
             $controllerName = "ManageUsersController";

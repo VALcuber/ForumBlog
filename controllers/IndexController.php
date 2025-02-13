@@ -55,7 +55,7 @@ EOT;
 		 }
 		  
 		  return $resultHTML;
-	} //Ф-я для вывода блога
+	} // Function for displaying blog
 	
 	public function make_Random_Array_blog($amount, $array){
 	    $amount = $amount -1;
@@ -67,7 +67,7 @@ EOT;
 			}
 
 			return $randomArrayblog;
-	} //Функция для случайного отображения елементов в массиве
+	} // Function for displaying random elements in blog array
 	
 	public function echo_latest_news() {
 
@@ -105,7 +105,7 @@ EOT;
 			}
 
 		return $resulthtmlnews;
-	} //Ф-я для вывода новостей
+	} // Function for displaying news
 
 	public function echo_random_forum_topics() {
 
@@ -142,7 +142,7 @@ EOT;
             }
 		}
 			return $resulthtmlforum;
-	} //Ф-я для вывода форума
+	} // Function for displaying forum
 	
 	public function make_Random_Array_forum($amount, $array){
 	    $amount = $amount -1;
@@ -156,5 +156,5 @@ EOT;
 		  }
 
 		  return $randomArrayforum;
-	} //Функция для случайного отображения елементов в массиве 
+	} // Function for displaying random elements in forum array
 }

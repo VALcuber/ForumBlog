@@ -24,8 +24,7 @@ class User_profileController extends Controller {
 	}
 
 	public function image_upload(){
-	    global $env;
-        // Проверяем, был ли отправлен файл
+        // Checking for sending file
         if(isset($_FILES['image'])){
             $errors = array();
             $file_name = $_FILES['image']['name'];
@@ -35,21 +34,20 @@ class User_profileController extends Controller {
             $file_ext=pathinfo($file_name, PATHINFO_EXTENSION);
             $extensions= array("jpeg","jpg","png");
 
-            // Проверяем расширение файла
+            // Checking the file extension
             if(!in_array($file_ext,$extensions)){
                 $errors[]="Extension not allowed, please choose a JPEG or PNG file.";
             }
 
-            // Проверяем размер файла (максимум 2MB)
+            // Check the file size (maximum 2MB)
             if($file_size > 2097152){
                 $errors[]='File size must be less than 2 MB';
             }
 
-            // Если нет ошибок, перемещаем файл в желаемую директорию
+            // If there are no errors, move the file to the desired directory
             if(empty($errors)==true){
                 move_uploaded_file($file_tmp,__DIR__ ."/../assets/uploads/".$file_name);
                 $this->model->user_profile_logo($file_name);
-                //echo "Success";
                 return;
             } else {
                 print_r($errors);

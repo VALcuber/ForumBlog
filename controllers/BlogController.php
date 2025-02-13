@@ -55,7 +55,7 @@ EOT;
 
         return $result;
 
-    } //Ф-я для отображения блога
+    }  // function for blog
 
     public function echo_page_titles(){
 
@@ -109,7 +109,7 @@ EOT;
 
         return $titles.$pageallecho.$this->echo_page_content().$ul_nav;
 
-    } //Ф-я для отображения блога и кнопка " + " со ссылками
+    } // // function for blog and button " + " with links
 
     public function echo_latest_blog_posts(){
         global $env;

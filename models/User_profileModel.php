@@ -22,7 +22,7 @@ class User_profileModel extends Model {
             return $resr;
         }
         else{
-            echo "Proval v logo";
+            echo "Crash in logo";
         }
 	}
 }
