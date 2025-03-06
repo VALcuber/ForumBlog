@@ -8,21 +8,31 @@ class PageModel extends Model{
 
         if ($env['route1'] == 'forum') {
 
-            $sql = "SELECT `id`,`Category`,`Category_Description` FROM `" . $env['route1'] . "` WHERE `Category` = '" . $env['route2'] . "' ";
+            $sql = "SELECT `forum_category`.`Description`, `forum`.`Category`, `forum_category`.`id`
+                    FROM `forum_category`
+                        JOIN `forum`
+                            ON `forum`.`id` = `forum_category`.`Category`
+                                WHERE `forum_category`.`Description` = :description ";
 
         }
         elseif ($env['route1'] == 'news') {
 
-            $sql = "SELECT `id`,`name`,`content` FROM `" . $env['route1'] . "` WHERE `name` = '$temporary'";
+            $sql = "SELECT `id`,`name`,`content` FROM `news` WHERE `name` = '$temporary'";
 
         }
         elseif ($env['route1'] == 'blog') {
 
-            $sql = "SELECT `id`,`Category`,`Category_Description` FROM `" . $env['route1'] . "` WHERE `Category` = '" . $env['route2'] . "' ";
+            $sql = "SELECT `blog_category`.`Description`, `blog`.`Category`, `blog_category`.`id`
+                    FROM `blog_category`
+                        JOIN `blog`
+                            ON `blog`.`id` = `blog_category`.`Category`
+                                WHERE `blog_category`.`Description` = :description ";
 
         }
 
         $smtppage = $this->db->prepare($sql);
+
+        $smtppage->bindValue(":description", $env['route3'], PDO::PARAM_STR);
 
         $smtppage->execute();
 

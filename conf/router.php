@@ -43,20 +43,19 @@ class Routing {
 
         /* Define controller */
 
+        if($route[1] == 'user_profile'){
+            $controllerName = "User_profileController";
+            $modelName = "User_profileModel";
+        }
+
         if (isset($route[1]) && $route[1] == 'manage_users'){
             $controllerName = "ManageUsersController";
             $modelName = "ManageUsersModel";
         }
 
-        elseif($route[1] == 'news' && isset($route[2])) {echo 'news';
+        elseif($route[1] == 'news' && isset($route[2])) {
             $controllerName = "PageController";
             $modelName = "PageModel";
-        }
-
-        elseif(isset($route[1]) && ($route[1] == 'forum')){
-            $controllerName = "ForumController";
-            $modelName = "ForumModel";
-
         }
 
         elseif(isset($route[1]) && ($route[1] == 'blog') ) {
@@ -70,19 +69,24 @@ class Routing {
             $modelName = "Categories_allModel";
         }
 
-        if((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[2]) && !isset($route[3])){
+        elseif((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[3])){
 
             $controllerName = "PageController";
             $modelName = "PageModel";
 
-            if(isset($route[2]) && $route[2] == 'CommentController'){
-                $controllerName = "CommentController";
-                $modelName = "CommentModel";
-            }
+        }
+        elseif(isset($route[2]) && $route[2] == 'CommentController'){
+            $controllerName = "CommentController";
+            $modelName = "CommentModel";
+        }
+
+        elseif(isset($route[1]) && ($route[1] == 'forum')){
+            $controllerName = "ForumController";
+            $modelName = "ForumModel";
 
         }
 
-        if(isset($route[2]) && !isset($route[3])){
+        if(isset($route[2]) && $route[2] != 'CommentController' && !isset($route[3])){
 
             $controllerName = "All_for_certain_categoryController";
             $modelName = "Categories_allModel";
@@ -90,7 +94,8 @@ class Routing {
         }
 
         elseif(isset($route[3])){
-             echo 1;
+            $controllerName = "PageController";
+            $modelName = "PageModel";
         }
 
 		include PATH_C . $controllerName . ".php"; //IndexController.php

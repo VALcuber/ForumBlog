@@ -34,7 +34,7 @@ class PageController extends Controller {
             $smtppage = $this->model->get_page($temporary);
 
             $pageName=$smtppage["Category"];
-            $pageContent=$smtppage["Category_Description"];
+            $pageContent=$smtppage["Description"];
 
             $html_page_blog = <<<"EOT"
                 <div class="card">
@@ -145,6 +145,6 @@ EOT;
 
 EOT;
 
-        return$html_comments_echo;
+        return $html_comments_echo;
     }
 }

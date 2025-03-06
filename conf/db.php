@@ -3,7 +3,7 @@
 class DB{
 
 	const USER = "root";
-	const PASS = "";
+	const PASS = "123456";
 	const HOST = '127.0.0.1';
 	const DB   = 'epiz_27717656_forumblog';
 	//const CHARSET = "utf8mb4";
