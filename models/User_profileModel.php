@@ -3,7 +3,6 @@
 class User_profileModel extends Model {
 
 	public function user_profile_logo($file_name){
-    global $env;
 	    $id = $_SESSION['user_id'];
 
         $sql = "UPDATE `users` SET `logo`='../assets/uploads/$file_name' WHERE  `id`='$id'";
@@ -25,4 +24,22 @@ class User_profileModel extends Model {
             echo "Crash in logo";
         }
 	}
+
+    public function user_forum_posts(){
+        $id = $_SESSION['user_id'];
+
+        $sql = "SELECT `description` FROM `forum_category` WHERE user_id = :user_id";
+
+        $smtppage = $this->db->prepare($sql);
+
+        $smtppage->bindValue(":user_id", $id, PDO::PARAM_STR);
+
+        $smtppage->execute();
+
+        $user_forum_posts = $smtppage->fetchall(PDO::FETCH_ASSOC);
+
+
+        return ($user_forum_posts);
+    }
+
 }

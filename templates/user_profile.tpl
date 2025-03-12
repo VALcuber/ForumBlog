@@ -29,13 +29,15 @@
                   </li>
 
                   <li class="user-profile_li">
-                      <button class="col d-flex justify-content-center list-group-item">FORUM</button>
+                      <input type="hidden" id="hiddenData" value="<?= $pageData['user_forum_posts'] ?>">
+                      <button id="p.b.forum" class="col d-flex justify-content-center list-group-item">FORUM</button>
                   </li>
 
                   <li class="user-profile_li">
                       <button class="col d-flex justify-content-center list-group-item">FRIENDS</button>
                   </li>
           </ul>
+          <div id="infoContainer" class="info-container"></div>
       </div>
 
     </div>

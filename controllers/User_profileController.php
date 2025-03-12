@@ -20,6 +20,7 @@ class User_profileController extends Controller {
 
         $this->controller();
 
+        $this->pageData['user_forum_posts'] = $this->model->user_forum_posts();
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
 
