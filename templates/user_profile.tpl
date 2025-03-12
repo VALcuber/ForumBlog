@@ -29,7 +29,7 @@
                   </li>
 
                   <li class="user-profile_li">
-                      <input type="hidden" id="hiddenData" value="<?= $pageData['user_forum_posts'] ?>">
+                      <input type="hidden" id="hiddenData" value="<?=htmlspecialchars($pageData['user_forum_posts'], ENT_QUOTES, 'UTF-8')?>"><!--<?=$pageData['user_forum_posts']?>-->
                       <button id="p.b.forum" class="col d-flex justify-content-center list-group-item">FORUM</button>
                   </li>
 

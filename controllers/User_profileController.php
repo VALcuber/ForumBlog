@@ -20,7 +20,7 @@ class User_profileController extends Controller {
 
         $this->controller();
 
-        $this->pageData['user_forum_posts'] = $this->model->user_forum_posts();
+        $this->pageData['user_forum_posts'] = $this->user_forum_posts();
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
 
@@ -56,6 +56,23 @@ class User_profileController extends Controller {
             }
         }
 
+    }
+
+    public function user_forum_posts(){
+        $resultHTML = '';
+
+	    $user_posts_array = $this->model->user_forum_posts();
+        $count_user_posts = count($user_posts_array);
+
+        for ($i = 0; $i < $count_user_posts; $i++) {
+            $user_posts_from_bd = $user_posts_array[$i]['description'];
+
+            $user_posts = <<<"EOT"
+<a href="../$user_posts_from_bd">$user_posts_from_bd</a>
+EOT;
+            $resultHTML = $resultHTML . $user_posts;
+        }
+        return $resultHTML;
     }
 
 }
