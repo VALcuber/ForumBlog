@@ -6,11 +6,6 @@ class IndexModel extends Model {
 		
 		$resultblog=array();
 
-        $sql = "CREATE TABLE if not exists `blog` (`Id` INT, `Topic` TEXT, `blog_content` TEXT, `Title` VARCHAR (20))";
-		
-		$smtp = $this->db->prepare($sql);
-		$smtp->execute();
-
         $sql = "SELECT * FROM `blog` ORDER BY id DESC LIMIT 7";
         $smtp = $this->db->prepare($sql);
         $smtp->execute();
@@ -27,11 +22,6 @@ class IndexModel extends Model {
 		
     	$resultnews=array();
 
-        $sql = "CREATE TABLE if not exists `news` (`Id` INT, `name` TEXT, `content` TEXT)";
-
-        $smtp = $this->db->prepare($sql);
-        $smtp->execute();
-
         $sql = "SELECT * FROM `news` ORDER BY id DESC LIMIT 7";
 		
 		$smtpn = $this->db->prepare($sql);
@@ -47,11 +37,6 @@ class IndexModel extends Model {
     public function forum(){
                 
     	$resultforum=array();
-
-        $sql = "CREATE TABLE if not exists `forum` (`Id` INT, `name` TEXT, `forum_content` TEXT, `structure` VARCHAR (4))";
-
-        $smtp = $this->db->prepare($sql);
-        $smtp->execute();
 
         $sql = "SELECT * FROM `forum` ORDER BY id DESC LIMIT 7";
 		
