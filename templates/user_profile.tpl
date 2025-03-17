@@ -25,11 +25,12 @@
                   </li>
 
                   <li class="user-profile_li">
-                      <button class="col d-flex justify-content-center list-group-item">BLOG</button>
+                      <input type="hidden" id="hiddenblogData" value="<?=htmlspecialchars($pageData['user_blog_posts'], ENT_QUOTES, 'UTF-8')?>">
+                      <button id="p.b.blog" class="col d-flex justify-content-center list-group-item">BLOG</button>
                   </li>
 
                   <li class="user-profile_li">
-                      <input type="hidden" id="hiddenData" value="<?=htmlspecialchars($pageData['user_forum_posts'], ENT_QUOTES, 'UTF-8')?>"><!--<?=$pageData['user_forum_posts']?>-->
+                      <input type="hidden" id="hiddenforumData" value="<?=htmlspecialchars($pageData['user_forum_posts'], ENT_QUOTES, 'UTF-8')?>">
                       <button id="p.b.forum" class="col d-flex justify-content-center list-group-item">FORUM</button>
                   </li>
 
@@ -42,4 +43,3 @@
 
     </div>
   </main>
-<!--<section class="col-lg-10 col-md-12 mx-auto my-2">-->

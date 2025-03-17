@@ -28,7 +28,12 @@ class User_profileModel extends Model {
     public function user_forum_posts(){
         $id = $_SESSION['user_id'];
 
-        $sql = "SELECT `description` FROM `forum_category` WHERE user_id = :user_id";
+        $sql = "SELECT `forum`.`Category` AS `Category`, 
+                       `forum_category`.`Description` AS `Description`,
+                       'forum' AS `Part`
+                                        FROM `forum_category`
+                                            JOIN `forum` ON `forum_category`.`Category` = `forum`.`id`
+                                                WHERE `forum_category`.`user_id` = :user_id";
 
         $smtppage = $this->db->prepare($sql);
 
@@ -40,6 +45,26 @@ class User_profileModel extends Model {
 
 
         return ($user_forum_posts);
+    }
+    public function user_blog_posts(){
+        $id = $_SESSION['user_id'];
+
+        $sql = "SELECT `blog`.`Category` AS `Category`, 
+                       `blog_category`.`Description` AS `Description`,
+                       'blog' AS `Part`
+                                        FROM `blog_category`
+                                            JOIN `blog` ON `blog_category`.`Category` = `blog`.`id`
+                                                WHERE `blog_category`.`user_id` = :user_id";
+
+        $smtppage = $this->db->prepare($sql);
+
+        $smtppage->bindValue(":user_id", $id, PDO::PARAM_STR);
+
+        $smtppage->execute();
+
+        $user_blog_posts = $smtppage->fetchall(PDO::FETCH_ASSOC);
+
+        return ($user_blog_posts);
     }
 
 }

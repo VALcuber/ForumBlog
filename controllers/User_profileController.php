@@ -21,6 +21,8 @@ class User_profileController extends Controller {
         $this->controller();
 
         $this->pageData['user_forum_posts'] = $this->user_forum_posts();
+        $this->pageData['user_blog_posts'] = $this->user_blog_posts();
+
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
 
@@ -59,20 +61,41 @@ class User_profileController extends Controller {
     }
 
     public function user_forum_posts(){
-        $resultHTML = '';
+        $result_forum_HTML = '';
 
 	    $user_posts_array = $this->model->user_forum_posts();
         $count_user_posts = count($user_posts_array);
 
         for ($i = 0; $i < $count_user_posts; $i++) {
-            $user_posts_from_bd = $user_posts_array[$i]['description'];
+            $user_posts_category_from_bd = $user_posts_array[$i]['Category'];
+            $user_posts_description_from_bd = $user_posts_array[$i]['Description'];
+            $user_posts_part_from_bd = $user_posts_array[$i]['Part'];
 
             $user_posts = <<<"EOT"
-<a href="../$user_posts_from_bd">$user_posts_from_bd</a>
+<a href="../$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
 EOT;
-            $resultHTML = $resultHTML . $user_posts;
+            $result_forum_HTML .= $user_posts;
         }
-        return $resultHTML;
+        return $result_forum_HTML;
+    }
+    public function user_blog_posts(){
+        $result_blog_HTML = '';
+
+        $user_posts_array = $this->model->user_blog_posts();
+        $count_user_posts = count($user_posts_array);
+
+        for ($i = 0; $i < $count_user_posts; $i++) {
+            $user_posts_category_from_bd = $user_posts_array[$i]['Category'];
+            $user_posts_description_from_bd = $user_posts_array[$i]['Description'];
+            $user_posts_part_from_bd = $user_posts_array[$i]['Part'];
+
+            $user_posts = <<<"EOT"
+<a href="../$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
+EOT;
+            $result_blog_HTML .= $user_posts;
+        }
+
+        return $result_blog_HTML;
     }
 
 }

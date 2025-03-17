@@ -6,7 +6,7 @@ class DB{
 	const PASS = "123456";
 	const HOST = '127.0.0.1';
 	const DB   = 'epiz_27717656_forumblog';
-	//const CHARSET = "utf8mb4";
+	const CHARSET = "utf8mb4";
 
 	public static function connToDB() {
 
@@ -14,27 +14,100 @@ class DB{
 		$pass = self::PASS;
 		$host = self::HOST;
 		$db   = self::DB;
-		//$charset = self::CHARSET;
+		$charset = self::CHARSET;
         try {
             $conn = new PDO('mysql:host='.$host,  $user, $pass);
             $sql = "CREATE DATABASE IF NOT EXISTS $db";
             $conn->query($sql);
-            $conn = null;
-            $dbh = new PDO('mysql:host='.$host.';dbname='.$db,  $user, $pass);
-            $sql = "CREATE TABLE if not exists `users` (`Id` INT, `First name` TEXT, `Last name` TEXT, `birthday` TEXT, `email` TEXT, `pass` TEXT, `status` VARCHAR (5) DEFAULT 'user')";
-            $dbh->query($sql);
-            $sql = "CREATE TABLE if not exists `blog` (`Id` INT, `Topic` TEXT, `blog_content` TEXT, `Title` VARCHAR (20))";
-            $dbh->query($sql);
-            $sql = "CREATE TABLE if not exists `news` (`Id` INT, `name` TEXT, `content` TEXT)";
-            $dbh->query($sql);
-            $sql = "CREATE TABLE if not exists `forum` (`Id` INT, `name` TEXT, `forum_content` TEXT, `structure` VARCHAR (4))";
-            $dbh->query($sql);
-
-            return $dbh;
+            $conn = new PDO("mysql:host=$host; dbname=$db; charset=$charset", $user, $pass);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //Connect to db
+            $sql = "CREATE TABLE IF NOT EXISTS `blog` ( 
+                                                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                                                        `Category` tinytext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+                                                        `Category_Description` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+                                                        `structure` varchar(4) NOT NULL DEFAULT 'blog',
+                                                        PRIMARY KEY (`id`)
+            )";
+            $conn->query($sql);
+            $sql = "CREATE TABLE IF NOT EXISTS `blog_category` (
+                                                                `id` int(11) NOT NULL AUTO_INCREMENT,
+                                                                `Category` int(11) DEFAULT NULL,
+                                                                `Description` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+                                                                `user_id` int(11) DEFAULT NULL,
+                                                                PRIMARY KEY (`id`) USING BTREE,
+                                                                KEY `blog_category_blog` (`Category`) USING BTREE,
+                                                                KEY `blog_posts_user_id` (`user_id`),
+                                                                CONSTRAINT `blog_category_blog` FOREIGN KEY (`Category`) REFERENCES `blog` (`id`),
+                                                                CONSTRAINT `blog_posts_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+            )";
+            $conn->query($sql);
+            $sql = "CREATE TABLE IF NOT EXISTS `forum` (
+                                                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                                                        `Category` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+                                                        `Category_Description` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+                                                        `structure` varchar(5) NOT NULL DEFAULT 'forum',
+                                                        PRIMARY KEY (`id`)
+            )";
+            $conn->query($sql);
+            $sql = "CREATE TABLE IF NOT EXISTS `forum_category` (
+                                                                 `id` int(11) NOT NULL AUTO_INCREMENT,
+                                                                 `Category` int(11) DEFAULT NULL,
+                                                                 `Description` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+                                                                 `user_id` int(11) DEFAULT NULL,
+                                                                 PRIMARY KEY (`id`) USING BTREE,
+                                                                 KEY `forum_category` (`Category`) USING BTREE,
+                                                                 KEY `forum_posts_user_id` (`user_id`),
+                                                                 CONSTRAINT `forum_category` FOREIGN KEY (`Category`) REFERENCES `forum` (`id`),
+                                                                 CONSTRAINT `forum_posts_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+            )";
+            $conn->query($sql);
+            $sql = "CREATE TABLE IF NOT EXISTS `forum_comments` (
+                                                                 `id` int(11) NOT NULL AUTO_INCREMENT,
+                                                                 `Comment` varchar(50) DEFAULT NULL,
+                                                                 `Forum_page` int(11) DEFAULT NULL,
+                                                                 `user_id` int(11) DEFAULT NULL,
+                                                                 `structure` varchar(50) DEFAULT NULL,
+                                                                 PRIMARY KEY (`id`),
+                                                                 KEY `FK_forum_comments_users` (`user_id`),
+                                                                 KEY `FK_forum_comments_forum_category` (`Forum_page`),
+                                                                 CONSTRAINT `FK_forum_comments_forum_category` FOREIGN KEY (`Forum_page`) REFERENCES `forum_category` (`id`),
+                                                                 CONSTRAINT `FK_forum_comments_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+            )";
+            $conn->query($sql);
+            $sql = "CREATE TABLE IF NOT EXISTS `news` (
+                                                       `id` int(11) NOT NULL AUTO_INCREMENT,
+                                                       `name` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                                                       `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                                                       PRIMARY KEY (`id`)
+            )";
+            $conn->query($sql);
+            $sql = "CREATE TABLE IF NOT EXISTS `top-menu` (
+                                                           `id` int(11) NOT NULL AUTO_INCREMENT,
+                                                           `name` text NOT NULL,
+                                                           `id_blog` int(11) DEFAULT NULL,
+                                                           `id_forum` int(11) DEFAULT NULL,
+                                                           PRIMARY KEY (`id`),
+                                                           KEY `blog-categories` (`id_blog`),
+                                                           KEY `forum-categories` (`id_forum`)
+            )";
+            $conn->query($sql);
+            $sql = "CREATE TABLE IF NOT EXISTS `users` (
+                                                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                                                        `First name` text,
+                                                        `Last name` text NOT NULL,
+                                                        `birthday` text NOT NULL,
+                                                        `email` text NOT NULL,
+                                                        `pass` text NOT NULL,
+                                                        `logo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'none',
+                                                        `status` varchar(5) NOT NULL DEFAULT 'user',
+                                                        PRIMARY KEY (`id`)
+            )";
+            $conn->query($sql);
+            return $conn;
         }
         catch (PDOException $e) {
-            print "Error!: Database not responding";
-            die();
+            //print "Error!: Database not responding";
+            die("Database error: " . $e->getMessage());
         }
 	}
 }
