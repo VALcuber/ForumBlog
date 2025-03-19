@@ -26,10 +26,7 @@ class Categories_allController extends Controller {
 
         global $env;
 
-        $all_titles = $this->model->get_all_categories();
-        $count_titles = count($all_titles);
-
-//-------------------------------------
+//------------------------------------- For displaying right side navigation menu
 
         $page_all_echo_0 = '<div class="row px-4 py-2">
 
@@ -76,19 +73,21 @@ class Categories_allController extends Controller {
         $page_all_echo_2 = "</ul></nav></div></div>";
 
  //-----------------------------------------------------------
-
         $some_result_all = "";
-        $structure = 'forum-blog';
 //----------------------------------------------------------- For displaying categories
+
+        $all_titles = $this->model->get_all_categories();
+        $count_titles = count($all_titles);
 
         for ($i = 0; $i < $count_titles; $i++) {
 
             $some_result_descriptions_all = "";
 
             $category_from_bd = $all_titles[$i]['Category'];
+            $category_from_bd_low_register = lcfirst($category_from_bd);
 
             $category = <<<"EOT"
-                <a href="/$structure/$category_from_bd" class="py-2" style="font-size: 2.2em; font-weight: bold;">$category_from_bd</a>
+                <a href="/$category_from_bd_low_register" class="py-2" style="font-size: 2.2em; font-weight: bold;">$category_from_bd</a>
 EOT;
             $env['all_title'] = $category_from_bd;
 

@@ -24,8 +24,6 @@ $env['status'] = $_POST['userid'] ?? '';
 $env['page_id'] = '';
 $env['action'] = $_POST['action'] ?? '';
 
-//$_SESSION['user_id'] = '';
-
 // Downloading settings
 
 include PATH_M. 'Model.php';

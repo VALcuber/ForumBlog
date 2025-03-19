@@ -101,11 +101,15 @@
                 $this->pageData['topmenu'] = $this->echo_topmenu();
             }
 
-            if((($env['route1'] == 'blog' || $env['route1'] == 'forum') && !isset($env['route2']) || $env['route1'] == 'all')){
-                $this->pageData['script_category'] = $this->script_category();
+            if(empty($env['route2']) && (($env['route1'] == 'blog' || $env['route1'] == 'forum') && empty($env['route3'])) || $env['route1'] == 'all' ){
+                $this->pageData['script_category'] = '<script src="../assets/js/category.js"></script>'; //for categories on blog and forum pages
             }
-            elseif (!(($env['route1'] == 'blog' || $env['route1'] == 'forum') && !isset($env['route2']) || $env['route1'] == 'all')){
+            else{
                 $this->pageData['script_category'] = '';
+            }
+
+            if($env['route1'] != 'user_profile'){
+                $this->pageData['script_profile'] = ''; //for script on profile page
             }
 
             $this->pageData['title'] = "Forum-blog";
@@ -118,13 +122,6 @@
 
             $this->pageData['burger'] = $this->echo_burger();
 
-        }
-
-        public function script_category(){
-
-            $script_category = '<script src="../assets/js/category.js"></script>';
-
-            return $script_category;
         }
 
         public function admin_panel(){

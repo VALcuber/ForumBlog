@@ -5,14 +5,6 @@ class BlogModel extends Model{
 
     public function get_page_topic(){
 
-        global $env;
-
-        $sql = "CREATE TABLE if not exists `blog` (`Id` INT, `Category` TEXT, `Category_Description` TEXT, `structure` VARCHAR)";
-
-        $forum = $this->db->prepare($sql);
-
-        $forum->execute();
-
         $result_page_all = array();
 
         $sql = "SELECT `Category` FROM `blog`";

@@ -6,12 +6,6 @@ class ForumModel extends Model{
 
     public function get_page_topic(){
 
-        $sql = "CREATE TABLE if not exists `forum` (`Id` INT, `Category` TEXT, `Category_Description` TEXT, `structure` VARCHAR)";
-
-        $forum = $this->db->prepare($sql);
-
-        $forum->execute();
-
         $result_page_all = array();
 
         $sql = "SELECT `Category` FROM `forum`";

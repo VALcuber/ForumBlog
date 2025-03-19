@@ -48,16 +48,19 @@ CREATE TABLE IF NOT EXISTS `blog_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `Category` int(11) DEFAULT NULL,
   `Description` text,
+  `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `blog_category_blog` (`Category`),
-  CONSTRAINT `blog_category_blog` FOREIGN KEY (`Category`) REFERENCES `blog` (`id`)
+  KEY `blog_posts_user_id` (`user_id`),
+  CONSTRAINT `blog_category_blog` FOREIGN KEY (`Category`) REFERENCES `blog` (`id`),
+  CONSTRAINT `blog_posts_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- Дамп данных таблицы epiz_27717656_forumblog.blog_category: ~3 rows (приблизительно)
-REPLACE INTO `blog_category` (`id`, `Category`, `Description`) VALUES
-	(1, 1, 'Strange things'),
-	(2, 2, 'Dark Souls'),
-	(3, 2, 'Dota');
+REPLACE INTO `blog_category` (`id`, `Category`, `Description`, `user_id`) VALUES
+	(1, 1, 'Strange things', 2),
+	(2, 2, 'Dark Souls', 2),
+	(3, 2, 'Dota', 2);
 
 -- Дамп структуры для таблица epiz_27717656_forumblog.forum
 CREATE TABLE IF NOT EXISTS `forum` (
@@ -98,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `forum_category` (
 
 -- Дамп данных таблицы epiz_27717656_forumblog.forum_category: ~4 rows (приблизительно)
 REPLACE INTO `forum_category` (`id`, `Category`, `Description`, `user_id`) VALUES
-	(1, 1, 'Something weared', 3),
+	(1, 1, 'Something weared', 5),
 	(2, 2, 'Lineage', 2),
 	(3, 2, 'Portal', 2),
 	(4, 12, 'Some philosophy thoughts', 5);
@@ -131,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Дамп данных таблицы epiz_27717656_forumblog.news: ~9 rows (приблизительно)
+-- Дамп данных таблицы epiz_27717656_forumblog.news: ~11 rows (приблизительно)
 REPLACE INTO `news` (`id`, `name`, `content`) VALUES
 	(8, 'Хостинг', 'Cайт перенесен на хостинг с локального хостинга'),
 	(9, 'Вывод топиков', 'Вывод топиков теперь доступен на сайте'),
@@ -184,10 +187,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы epiz_27717656_forumblog.users: ~3 rows (приблизительно)
+-- Дамп данных таблицы epiz_27717656_forumblog.users: ~2 rows (приблизительно)
 REPLACE INTO `users` (`id`, `First name`, `Last name`, `birthday`, `email`, `pass`, `logo`, `status`) VALUES
-	(2, 'Sviatoslav', 'Kitastiy', '1994-03-26', 'lordiccat@gmail.com', '159159', '../assets/uploads/hortitsa_1943_god.jpg', 'admin'),
-	(3, 'Artem', 'Stokiz', '2020-12-24', 'artemstokiz@gmail.com', 'hello2020', 'none', 'admin'),
+	(2, 'Sviatoslav', 'Komputerz', '1994-03-26', 'lordiccat@gmail.com', '159159', '../assets/uploads/hortitsa_1943_god.jpg', 'admin'),
 	(5, 'Kirill', 'Kirillovich', '0001-01-01', 'asfdfs@sdfsfesfe', '123456789', 'none', 'user');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;

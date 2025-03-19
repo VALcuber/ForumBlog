@@ -22,6 +22,7 @@ class User_profileController extends Controller {
 
         $this->pageData['user_forum_posts'] = $this->user_forum_posts();
         $this->pageData['user_blog_posts'] = $this->user_blog_posts();
+        $this->pageData['script_profile'] = '<script src="../assets/js/profile.js"></script>';
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
@@ -59,7 +60,6 @@ class User_profileController extends Controller {
         }
 
     }
-
     public function user_forum_posts(){
         $result_forum_HTML = '';
 
@@ -97,5 +97,6 @@ EOT;
 
         return $result_blog_HTML;
     }
+
 
 }
