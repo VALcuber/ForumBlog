@@ -53,7 +53,7 @@ EOT;
             return $html_page_blog;
         }
 
-        if($env['route'] == 'news'){
+        else{
             $this->pageData['forum_comments'] = '';
             $this->pageData['comments'] = '';
 

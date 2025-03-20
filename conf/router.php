@@ -48,7 +48,7 @@ class Routing {
             $modelName = "User_profileModel";
         }
 
-        if (isset($route[1]) && $route[1] == 'manage_users'){
+        elseif (isset($route[1]) && $route[1] == 'manage_users'){
             $controllerName = "ManageUsersController";
             $modelName = "ManageUsersModel";
         }
@@ -75,10 +75,6 @@ class Routing {
             $modelName = "PageModel";
 
         }
-        elseif(isset($route[2]) && $route[2] == 'CommentController'){
-            $controllerName = "CommentController";
-            $modelName = "CommentModel";
-        }
 
         elseif(isset($route[1]) && ($route[1] == 'forum')){
             $controllerName = "ForumController";
@@ -86,7 +82,15 @@ class Routing {
 
         }
 
-        if(isset($route[2]) && $route[2] != 'CommentController' && !isset($route[3])){
+        elseif(!empty($route[1]) && empty($route[2])){
+            echo 1;
+        }
+        elseif(isset($route[2]) && $route[2] == 'CommentController'){
+            $controllerName = "CommentController";
+            $modelName = "CommentModel";
+        }
+
+        elseif(isset($route[2]) && $route[2] != 'CommentController' && !isset($route[3])){
 
             $controllerName = "All_for_certain_categoryController";
             $modelName = "Categories_allModel";

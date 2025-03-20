@@ -45,7 +45,7 @@ class BlogController extends Controller{
             $subcategory_translit = $this->translit($subcategory);
 
             $subcategoryes = <<<"EOT"
-                <li class="py-2 col d-flex justify-content-center">
+                <li class="blog-content py-2 col d-flex justify-content-left">
                     <a href="/$route_title/$subcategory_translit">$subcategory</a>
                 </li>
 EOT;
@@ -64,15 +64,15 @@ EOT;
         $category = ucfirst($env['route']);
 
         $titles = <<<"EOT"
-                <h4>$category</h4>
+                <h4 class="py-2">$category</h4>
 EOT;
 
         $pageallecho = <<<"EOT"
                 </div>
 
-                <div class="col-4">
+                <div class="col-2">
 
-                  <ul class="nav align-items-center justify-content-center">
+                  <ul class="nav align-items-center justify-content-end">
 
                     <li class="nav-item">
 
@@ -96,7 +96,7 @@ EOT;
 
               <div class="row px-4 py-2">
 
-                <div class="col-9 px-0">
+                <div class="col-10 px-0">
 
                   <nav>
 

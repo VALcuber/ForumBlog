@@ -5,13 +5,13 @@
 
         <div class="row px-4 py-2">
 
-            <div class="col-8 px-0 forum">
+            <div class="col-10 px-0 forum">
 
                 <?=$pageData['forum_titles']?>
 
             </div>
 
-            <div class="col-3">
+            <div class="col-2 card-category">
 
                 <aside>
 
@@ -19,7 +19,7 @@
 
                         <div class="card-body">
 
-                            <h5 class="card-title mb-4">RECENT <?=$pageData['route']?> POSTS</h5>
+                            <h5 class="card-title mb-4">RECENT NEWS BY THIS CATEGORY</h5>
                             <?=$pageData['echo_latest_forum_posts']?>
                         </div>
 
