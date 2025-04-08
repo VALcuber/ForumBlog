@@ -6,17 +6,19 @@ class CommentModel extends Model{
 
         global $env;
 
-        $page_id = $_SESSION["page_id"];
-
-        $sql = "SELECT `forum_comments`.*, `users`.`First name` AS `name` FROM `forum_comments` INNER JOIN `users` ON `forum_comments` . `user_id` = `users`.`Id` WHERE `forum_comments`.`Forum_page` = :page_id AND `forum_comments`.`structure` = :structure";
+        $sql = "SELECT `forum_comments`.*, `users`.`First name` AS `name` 
+	                FROM `forum_comments`
+		                INNER JOIN `users` ON `forum_comments`.`user_id` = `users`.`Id`
+			                WHERE `forum_comments`.`Forum_page` = (SELECT `Id` FROM `forum_category` WHERE `Description` = :page_id)
+				                AND `forum_comments`.`structure` = :structure";
 
         $smtppage = $this->db->prepare($sql);
 
-        $smtppage->bindValue(":page_id", $page_id, PDO::PARAM_STR);
+        $smtppage->bindValue(":page_id", $env['route3'], PDO::PARAM_STR);
         $smtppage->bindValue(":structure", $env['route1'], PDO::PARAM_STR);
 
         $smtppage->execute();
-
+        echo $_SESSION["page_id"];
         $comment = $smtppage->fetchall(PDO::FETCH_ASSOC);
 
 

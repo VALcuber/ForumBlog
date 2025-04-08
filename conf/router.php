@@ -73,6 +73,10 @@ class Routing {
 
             $controllerName = "PageController";
             $modelName = "PageModel";
+            if(isset($route[2]) && $route[2] == 'CommentController') {
+                $controllerName = "CommentController";
+                $modelName = "CommentModel";echo '11';
+            }
 
         }
 
@@ -83,23 +87,18 @@ class Routing {
         }
 
         elseif(!empty($route[1]) && empty($route[2])){
-            echo 1;
-        }
+            echo 'Empty rout';
+        }/*
         elseif(isset($route[2]) && $route[2] == 'CommentController'){
             $controllerName = "CommentController";
             $modelName = "CommentModel";
-        }
+        }*/
 
         elseif(isset($route[2]) && $route[2] != 'CommentController' && !isset($route[3])){
 
             $controllerName = "All_for_certain_categoryController";
             $modelName = "Categories_allModel";
 
-        }
-
-        elseif(isset($route[3])){
-            $controllerName = "PageController";
-            $modelName = "PageModel";
         }
 
 		include PATH_C . $controllerName . ".php"; //IndexController.php
