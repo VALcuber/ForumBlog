@@ -61,9 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (this.dataset.state === 'closed') {
         toggleBtns.dataset.state = 'opened'
         toggleBtns.style.zIndex = '2';
-        //toggleBtns.style.position = 'fixed';
-        //toggleBtns.style.top = coordinates.top + 'px';
-        //toggleBtns.style.left = coordinates.left + 'px';
         menu.classList.add('menu_opened');
         document.body.append(overlay);
       }
@@ -158,39 +155,4 @@ function previewImage(event) {
 function removeAdd(){
   document.body.children[document.body.children.length-1].remove();
   document.body.children[document.body.children.length-1].remove();
-}*/
-
-//----------------------------------------------------------------------------//
-
-/*
-    document.getElementById('signinModal').onclick = function(e){
-      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Log In'){
-        $('#signinModal').modal('show');
-        setTimeout(()=>{
-          $('#registrationModal').modal('hide');
-        },300)
-      }
-    }
-
-    document.getElementById('registrationModal').onclick = function(e){
-      if(e.target.classList.contains('btn') && e.target.innerHTML === 'Registration'){
-        $('#registrationModal').modal('show');
-        setTimeout(()=>{
-          $('#signinModal').modal('show');
-
-        },300)
-      }
-    }
-*/
-//------------------------------------------------------------------------------------//
-//from resizeHeaderNavigations
-/*
-NavItemsColection = categoriesList.children;
-resizeHeaderNavigations.clonedCollection = categoriesList.cloneNode(true).children;
-
-while(categories.offsetWidth > maxWidth) {
-  if(categories.offsetWidth <= minWidth) {
-    break;
-  }
-  NavItemsColection[NavItemsColection.length - 2].remove();
 }*/

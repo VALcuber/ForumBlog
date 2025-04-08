@@ -1,7 +1,6 @@
 <?php
 
 class PageController extends Controller {
-    protected $pagesData = array("slash" => '../../../');
 
 	private $pageTpl = '/templates/page.tpl';
 
@@ -13,7 +12,6 @@ class PageController extends Controller {
 	public function index() {
         global $env;
         $this->controller();
-        $this->pageData['slash'] = "../../../";
         $this->pageData['page'] = $this->echo_page();
 
 		$this->view->render($this->pageTpl, $this->pageData);
@@ -27,7 +25,7 @@ class PageController extends Controller {
         if($env['route'] == 'blog' || $env['route'] == 'forum'){
 
             $this->pageData['comments'] = $this->echo_html_comments();
-            $this->pageData['forum_comments'] = '<script src="../../assets/js/forum.comments.js"></script>';
+            $this->pageData['forum_comments'] = '<script src="/assets/js/forum.comments.js"></script>';
 
             $temporary = $env['temporary'];
 
@@ -36,21 +34,18 @@ class PageController extends Controller {
             $pageName=$smtppage["Category"];
             $pageContent=$smtppage["Description"];
 
-            $html_page_blog = <<<"EOT"
-                <div class="card">
+            return '<div class="card">
                   <div class="card-header">
-                    <h2 class="text-center p-2">
+                    <h2 class="text-center p-2">'.
                         $pageName
-                    </h2>
+                    .'</h2>
                   </div>
                   <div class="card-body">
-                    <p class="p-2">
+                    <p class="p-2">'.
             		    $pageContent
-            	    </p>
+            	    .'</p>
                   </div>
-                </div>
-EOT;
-            return $html_page_blog;
+                </div>';
         }
 
         else{
@@ -65,61 +60,25 @@ EOT;
             $pageName=$smtppage["name"];
             $pageContent=$smtppage["content"];
 
-            $html_page_news = <<<"EOT"
-                <div class="card">
+            return '<div class="card">
                   <div class="card-header">
-                    <h2 class="text-center p-2">
+                    <h2 class="text-center p-2">'.
                         $pageName
-                    </h2>
+                    .'</h2>
                   </div>
                   <div class="card-body">
-                    <p class="p-2">
+                    <p class="p-2">'.
             		    $pageContent
-            	    </p>
+            	    .'</p>
                   </div>
-                </div>
-EOT;
-            return $html_page_news;
+                </div>';
         }
-
 	}
-
-	public function echo_comments(){
-	    global $env;
-        $resultHTML = '';
-        if($env['route'] == 'forum' || $env['route'] == 'blog') {
-
-            $smtppage = $this->model->get_comments();
-
-            foreach ($smtppage as $item) {
-                $name = $item["name"];
-                $Comment = $item["Comment"];
-                $Commentid = $item["id"];
-
-                $html_comment_forum = <<<"EOT"
-                    <li name="comments_id" class="col-lg-10 col-md-12 mx-auto my-2" data-id="$Commentid">
-                        <div>
-                            <u>$name</u>
-                         </div>
-                        <div>
-                            <p>$Comment</p>
-                        </div >
-                    </li >
-EOT;
-                $resultHTML = $resultHTML . $html_comment_forum;
-            }
-            return $resultHTML;
-        }
-    }
 
     public function echo_html_comments(){
 
-	    $echo_comments = $this->echo_comments();
-
-	    $html_comments_echo = <<<"EOT"
-<div>
+        return '<div>
         <ul id="messages" class=" row px-5 message">
-          $echo_comments
         </ul>
       </div>
 
@@ -141,10 +100,6 @@ EOT;
 
         </form>
 
-      </div>
-
-EOT;
-
-        return $html_comments_echo;
-    }
+      </div>';
+  }
 }

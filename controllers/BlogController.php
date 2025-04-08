@@ -1,6 +1,5 @@
 <?php
 
-
 class BlogController extends Controller{
 
     private $pageTpl = '/templates/forum-blog.tpl';

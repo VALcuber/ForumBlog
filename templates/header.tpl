@@ -24,7 +24,7 @@
 
             <a href="/" class="header__logo mx-3">
 
-                <img src="<?= $pageData['slash'] ?>../assets/img/logo.png" alt="logo img">
+                <img src="/assets/img/logo.png" alt="logo img">
 
             </a>
 

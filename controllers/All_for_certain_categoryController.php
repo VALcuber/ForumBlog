@@ -13,7 +13,6 @@ class All_for_certain_categoryController extends Controller{
 
         $this->controller();
         $this->pageData['pagealltitles'] = $this->echo_certain_category();
-        $this->pageData['slash'] = "../";
         $this->view->render($this->pageTpl, $this->pageData);
     }
 

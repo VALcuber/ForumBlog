@@ -27,7 +27,7 @@ $(document).ready(function(){
     function loadMessages(errorCb, alwaysCb) {
         $.ajax({
             method: 'post',
-            url: "../CommentController",
+            url: getCurrentPathWithSlash() + "CommentController",
             dataType: 'json',
         })
             .done(function (data) {
@@ -51,10 +51,9 @@ $(document).ready(function(){
             })
             .fail(errorCb)
             .always(alwaysCb);
-    }
+    } // function for adding new messages to forum
 });
 
-// Add messages from db
 function renderMessage(item) {
     return `<li name="comments_id" class="col-lg-10 col-md-12 mx-auto my-2" data-id="${item.id}">
                 <div><u>${item.name}</u></div>
@@ -62,9 +61,8 @@ function renderMessage(item) {
                     <p>${item.Comment}</p>
                 </div>
             </li>`;
-}
+}// Add messages from db
 
-// Remove messages if they removed in db
 function removeMessages(commentIds) {
     const messagesContainer = document.querySelector('.message');
     commentIds.forEach(id => {
@@ -73,17 +71,23 @@ function removeMessages(commentIds) {
             message.remove();
         }
     });
-}
+}// Remove messages if they removed in db
 
+function getCurrentPathWithSlash() {
+    let path = window.location.pathname;
+    if (!path.endsWith('/')) {
+        path += '/';
+    }
+    return path;
+} //function for getting current url and adding '/' to the end of it for correct work redirecting
 
-//Adding comments
 $('#comments-send').submit(function (e) {
 
     $.ajax({
         method: 'post',
-        url: "../CommentController",
+        url: getCurrentPathWithSlash() + "CommentController",
         data: {'action' : 'add_comment',
                'comment' : $('#comment_text').val()},
     }).done(function (data) {$('#comment_text').val('')});
     return false;
-})
+}) //Adding comments

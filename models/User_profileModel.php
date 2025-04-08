@@ -5,7 +5,7 @@ class User_profileModel extends Model {
 	public function user_profile_logo($file_name){
 	    $id = $_SESSION['user_id'];
 
-        $sql = "UPDATE `users` SET `logo`='../assets/uploads/$file_name' WHERE  `id`='$id'";
+        $sql = "UPDATE `users` SET `logo`='/assets/uploads/$file_name' WHERE  `id`='$id'";
 
         $smtpt = $this->db->prepare($sql);
         $smtpt->execute();

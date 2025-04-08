@@ -18,7 +18,7 @@ class CommentModel extends Model{
         $smtppage->bindValue(":structure", $env['route1'], PDO::PARAM_STR);
 
         $smtppage->execute();
-        echo $_SESSION["page_id"];
+
         $comment = $smtppage->fetchall(PDO::FETCH_ASSOC);
 
 

@@ -58,7 +58,7 @@ class Routing {
             $modelName = "PageModel";
         }
 
-        elseif(isset($route[1]) && ($route[1] == 'blog') ) {
+        elseif((isset($route[1]) && ($route[1] == 'blog')) && empty($route[2]) ) { echo 'there';
             $controllerName = "BlogController";
             $modelName = "BlogModel";
 
@@ -73,9 +73,9 @@ class Routing {
 
             $controllerName = "PageController";
             $modelName = "PageModel";
-            if(isset($route[2]) && $route[2] == 'CommentController') {
+            if(!empty($route[4]) && $route[4] == 'CommentController') {
                 $controllerName = "CommentController";
-                $modelName = "CommentModel";echo '11';
+                $modelName = "CommentModel";
             }
 
         }
@@ -88,11 +88,7 @@ class Routing {
 
         elseif(!empty($route[1]) && empty($route[2])){
             echo 'Empty rout';
-        }/*
-        elseif(isset($route[2]) && $route[2] == 'CommentController'){
-            $controllerName = "CommentController";
-            $modelName = "CommentModel";
-        }*/
+        }
 
         elseif(isset($route[2]) && $route[2] != 'CommentController' && !isset($route[3])){
 

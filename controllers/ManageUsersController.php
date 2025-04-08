@@ -19,7 +19,6 @@ class ManageUsersController extends Controller{
         }
 
         $this->pageData['users'] = $this->echo_users();
-        $this->pageData['slash'] = "";
         $this->pageData['admin-styles'] = '<link rel="stylesheet" href="assets/css/admin.style.css">';
         $this->pageData['topmenu'] = '';
 

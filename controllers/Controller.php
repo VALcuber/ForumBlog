@@ -6,7 +6,7 @@
 		public $view;
 		public $env;
 		protected $pageData = array();
-		protected $pagesData = array('slash' => null);
+		protected $pagesData = array();
         protected $logo;
 
         public function __construct() {
@@ -49,7 +49,7 @@
                     $result_Fn_Ln_arr = $Fn['0'] . $Ln['0'];
                 }
                 else{
-                    $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="'.$this->pagesData["slash"].$user_logo['logo'].'">';
+                    $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="'.$user_logo['logo'].'">';
                 }
 
                 $user_menu_winwow = 'user-menu';
@@ -102,7 +102,7 @@
             }
 
             if(empty($env['route2']) && (($env['route1'] == 'blog' || $env['route1'] == 'forum') && empty($env['route3'])) || $env['route1'] == 'all' ){
-                $this->pageData['script_category'] = '<script src="../assets/js/category.js"></script>'; //for categories on blog and forum pages
+                $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>'; //for categories on blog and forum pages
             }
             else{
                 $this->pageData['script_category'] = '';
