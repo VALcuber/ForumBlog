@@ -235,7 +235,6 @@ EOT;
 
                     $route_title = $category[$i]['tablename'];
                     $categories = $category[$i]['Category'];
-                    $structure = $category[$i]['Category_Description'];
                     //$Name = $category[$i]['name'];
 
                     $activist = '';
@@ -243,7 +242,7 @@ EOT;
 
                     if (isset($env['route2'])) {
 
-                        if (isset($env['route1']) && isset($env['route3']) && $env['route1'] == $route_title && $env['route2'] == $categories && $env['route3'] ==$structure) {
+                        if (isset($env['route1']) && isset($env['route3']) && $env['route1'] == $route_title && $env['route2'] == $categories) {
                             $activist = 'active';
                         }
 
@@ -251,7 +250,7 @@ EOT;
 
                     $htmlcategory = <<<"EOT"
 				<li class= "nav-item">
-				    <a href="/$route_title/$categories/$structure" class="nav-link $activist categories__link text-nowrap">$categories</a>
+				    <a href="/$route_title/$categories" class="nav-link $activist categories__link text-nowrap">$categories</a>
 				</li>
 EOT;
                     $resulthtmlcategory = $resulthtmlcategory . $htmlcategory;
