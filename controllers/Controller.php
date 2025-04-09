@@ -42,7 +42,6 @@
                 $user_logo = $users_logo ?? $this->model->check_logo();
 
                 if($user_logo['logo'] == 'none') {
-
                     $Fn = str_split($_SESSION['first-name']);
                     $Ln = str_split($_SESSION['last-name']);
 
@@ -50,6 +49,7 @@
                 }
                 else{
                     $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="'.$user_logo['logo'].'">';
+                    $this->pageData['id_state'] = 'login';
                 }
 
                 $user_menu_winwow = 'user-menu';
@@ -65,6 +65,7 @@
 
             }
             else{
+                $this->pageData['id_state'] = 'no_login';
                 $result_Fn_Ln_arr = 'Log in';
                 $adminPanel = '';
                 $_SESSION['status'] = 'user';
@@ -214,65 +215,54 @@ EOT;
         }
 
         public function echo_topmenu(){
-
             global $env;
 
-            $resulthtmlcategory ="";
+            $resulthtmlcategory = "";
 
             $category = $this->model->gettopic();
 
-            $arrSize = count($category);
+            shuffle($category);
 
-            $active = '';
+            $category = array_slice($category, 0, 12);
 
-            if (isset($env['route1']) && $env['route1'] == '') {
-                $active = 'active';
-            }
+            $active = (isset($env['route1']) && $env['route1'] == '') ? 'active' : '';
 
-            if($arrSize > 1) {
-
-                for ($i = 0; $i < $arrSize; $i++) {
-
-                    $route_title = $category[$i]['tablename'];
-                    $categories = $category[$i]['Category'];
-                    //$Name = $category[$i]['name'];
+            if (count($category) > 0) {
+                foreach ($category as $cat) {
+                    $route_title = $cat['tablename'];
+                    $categories = $cat['Category'];
 
                     $activist = '';
-                    $active = $activist;
 
-                    if (isset($env['route2'])) {
-
-                        if (isset($env['route1']) && isset($env['route3']) && $env['route1'] == $route_title && $env['route2'] == $categories) {
-                            $activist = 'active';
-                        }
-
+                    if (isset($env['route1'], $env['route2'], $env['route3']) && $env['route1'] == $route_title && $env['route2'] == $categories) {
+                        $activist = 'active';
                     }
 
                     $htmlcategory = <<<"EOT"
-				<li class= "nav-item">
-				    <a href="/$route_title/$categories" class="nav-link $activist categories__link text-nowrap">$categories</a>
-				</li>
+            <li class="nav-item">
+                <a href="/$route_title/$categories" class="nav-link $activist categories__link text-nowrap">$categories</a>
+            </li>
 EOT;
-                    $resulthtmlcategory = $resulthtmlcategory . $htmlcategory;
+                    $resulthtmlcategory .= $htmlcategory;
                 }
-
 
                 if (isset($env['route1']) && $env['route1'] == 'all') {
                     $active = 'active';
                 }
 
                 $buttonall = '<li class="nav-item">
-                        <a href="/all" class="nav-link ' . $active . ' categories__link text-nowrap">All</a>
-                    </li>
-                </ul>
+                                  <a href="/all" class="nav-link ' . $active . ' categories__link text-nowrap">All</a>
+                              </li>
+                          </ul>
 
-            </nav>
+                      </nav>
 
-        </div>';
-                $result_html_category = $resulthtmlcategory . $buttonall;
-                return $result_html_category;
+                  </div>';
+
+                return $resulthtmlcategory . $buttonall;
             }
 
+            return '';
         }
 
         public function echo_burger(){

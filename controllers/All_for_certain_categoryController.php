@@ -5,7 +5,7 @@ class All_for_certain_categoryController extends Controller{
     private $pageTpl = '/templates/All_for_certain_category.tpl';
 
     public function __construct() {
-        $this->model = new Categories_allModel();
+        $this->model = new All_for_certain_categoryModel();
         $this->view = new View();
     }
 
@@ -17,7 +17,7 @@ class All_for_certain_categoryController extends Controller{
     }
 
     public function echo_certain_category(){
-global $env;
+        global $env;
         $someresultall = "";
 
             $category = $env['route2'];
@@ -44,40 +44,35 @@ global $env;
                     <ul class="category-list p-0">
 EOT;
 
-/*
-            $get_structure = $this->model->get_sertain_category_structure();
-
-            $count_structure = count($get_structure);
-
-            for($i = 0; $i < $count_structure; $i++){
-                $env['all_title'] = $get_structure[$i]["structure"];
-                var_export($env['all_title']);
-            }
-*/
             $env['all_title'] =$env['route2'];
 
             $all = $this->model->get_all_subcategories();
 
-            $count2 = count($all);
-
-        for($i = 0; $i < $count2; $i++) {
-            $someresult = "";
-            for ($i = 0; $i < $count2; $i++) {
-
-                $structure = $all[$i]["structure"];
-                $category_from_bd = $all[$i]["Category"];
-                $subcategory = $all[$i]["Description"];
-
-                $subcategoryes = <<<"EOT"
-                    <li class="py-2">
-                        <a href="/$structure/$category_from_bd/$subcategory">$subcategory</a>
-                    </li>
-EOT;
-                $someresult = $someresult . $subcategoryes;
+            if($all == false){
+                $someresultall = $titles . $pageallecho;
             }
+            else{
+                $count2 = count($all);
+                //var_export($all);
+                for($i = 0; $i < $count2; $i++) {
+                    $someresult = "";
+                    for ($i = 0; $i < $count2; $i++) {
 
-            $someresultall = $titles . $pageallecho . $someresult;
-        }
+                        $structure = $all[$i]["structure"];
+                        $category_from_bd = $all[$i]["Category"];
+                        $subcategory = $all[$i]["Description"];
+
+                        $subcategoryes = <<<"EOT"
+                            <li class="py-2">
+                                <a href="/$structure/$category_from_bd/$subcategory">$subcategory</a>
+                            </li>
+EOT;
+                        $someresult = $someresult . $subcategoryes;
+                    }
+
+                    $someresultall = $titles . $pageallecho . $someresult;
+                }
+            }
         return $someresultall;
     }
 

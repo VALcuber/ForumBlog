@@ -52,8 +52,7 @@ class PageController extends Controller {
             $this->pageData['forum_comments'] = '';
             $this->pageData['comments'] = '';
 
-            $env['temporary'] = $env['route-2'];
-            $temporary = $this->translit_reverse($env['temporary']);
+            $temporary = $this->translit_reverse($env['route-2']);
 
             $smtppage = $this->model->get_page($temporary);
 

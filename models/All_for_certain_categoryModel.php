@@ -2,43 +2,36 @@
 
 class All_for_certain_categoryModel extends Model{
 
-    public function getpageall(){
+    public function get_all_subcategories(){
+
         global $env;
 
-        $resultpageall = array();
+        $title = $env['all_title'];
+        $structure = $env['route1'];
 
-        $sql = "SELECT `Category` FROM :structure WHERE `Category` = :subcategory ";
+        try {
+            if (!preg_match('/^[a-zA-Z0-9_]+$/', $structure)) {
+                throw new Exception("Invalid table name");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+
+// Collect SQL string
+        $sql = "SELECT `{$structure}_category`.`Description`, `{$structure}`.`structure`, `{$structure}`.`Category`
+                    FROM `{$structure}_category`
+                        JOIN `{$structure}`
+                            ON `{$structure}`.`id` = `{$structure}_category`.`Category`
+                                WHERE `{$structure}`.`Category` = :title";
 
         $ppageall = $this->db->prepare($sql);
-
-        $ppageall->bindValue(":structure", $env['structure']."_category", PDO::PARAM_STR);
-        $ppageall->bindValue(":subcategory", $env['subcategory'], PDO::PARAM_STR);
-
+        $ppageall->bindValue(":title", $title, PDO::PARAM_STR);
         $ppageall->execute();
 
-        while($respageall=$ppageall->fetch(PDO::FETCH_ASSOC)){
-            array_push($resultpageall,$respageall);
-        }
-        var_export($resultpageall);
+        $resultpageall=$ppageall->fetchall(PDO::FETCH_ASSOC);
+
         return($resultpageall);
+
     }
-    public function getpagealltitles(){
-        global $env;
-
-        $resultpage = array();
-
-        $sql = "SELECT `Category` FROM `".$env['structure']."-certain-category` WHERE `Category` = '".$env['category']."' ";
-
-        $ppagealltitles = $this->db->prepare($sql);
-
-        $ppagealltitles->execute();
-
-        while($pagealltitles=$ppagealltitles->fetch(PDO::FETCH_ASSOC)){
-            array_push($resultpage,$pagealltitles);
-        }
-
-        return($resultpage);
-    }
-
 
 }

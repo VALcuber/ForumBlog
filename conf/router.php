@@ -20,7 +20,6 @@ class Routing {
         if(isset($route[2])) {
             $route2 = strtok($route[2], '-');
             $env['route2'] = $route2;
-            $env['route-2'] = $route[2];
         }
 
         if(isset($route[3])) {
@@ -79,13 +78,13 @@ class Routing {
             }
 
         }
-
+/*
         elseif(isset($route[1]) && ($route[1] == 'forum')){
             $controllerName = "ForumController";
             $modelName = "ForumModel";
 
         }
-
+*/
         elseif(!empty($route[1]) && empty($route[2])){
             echo 'Empty rout';
         }
@@ -93,12 +92,14 @@ class Routing {
         elseif(isset($route[2]) && $route[2] != 'CommentController' && !isset($route[3])){
 
             $controllerName = "All_for_certain_categoryController";
-            $modelName = "Categories_allModel";
+            $modelName = "All_for_certain_categoryModel";
 
         }
 
-		include PATH_C . $controllerName . ".php"; //IndexController.php
-		include PATH_M . $modelName . ".php"; //IndexModel.php
+        /** @noinspection PhpIncludeInspection */
+        include PATH_C . $controllerName . ".php"; //IndexController.php
+        /** @noinspection PhpIncludeInspection */
+        include PATH_M . $modelName . ".php"; //IndexModel.php
 
 		$controller = new $controllerName();
 		$controller->$action();
