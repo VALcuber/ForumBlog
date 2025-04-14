@@ -150,6 +150,22 @@ function previewImage(event) {
   reader.readAsDataURL(event.target.files[0]);
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+  const hiddenForm = document.getElementById('hiddenPostForm');
+
+  if (!hiddenForm){
+    console.log('net formy');
+    return;
+  } // если формы нет — ничего не делать
+
+  document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      hiddenForm.action = this.href;
+      hiddenForm.submit();
+    });
+  });
+});
 //--------------------------------------------------------------------------------------------------------------------------------------------------------//
 /*
 function removeAdd(){

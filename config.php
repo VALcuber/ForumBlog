@@ -23,6 +23,7 @@ $env['route'] = '';
 $env['status'] = $_POST['userid'] ?? '';
 $env['page_id'] = '';
 $env['action'] = $_POST['action'] ?? '';
+$env['token'] = $_POST['token'] ?? '';
 
 // Downloading settings
 

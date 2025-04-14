@@ -60,15 +60,15 @@ class Model{
 
         if ($smtpc->rowCount() == 0){
             $resultchkuser['user_id'] = '';
-            $_SESSION['user_id'] = $resultchkuser;
+            $resultchkuser['user_id'] = $resultchkuser;
             return $resultchkuser;
         }
         else {
-            //$resultchkuser['user_id'] = $resc['id'];
-            $_SESSION['user_id'] = $resc['id'];
-            $_SESSION['first-name'] = $resc['First name'];
-            $_SESSION['last-name'] = $resc['Last name'];
-            $_SESSION['status'] = $resc['status'];
+            $resultchkuser['user_id'] = $resc['id'];
+            $resultchkuser['user_id'] = $resc['id'];
+            $resultchkuser['first-name'] = $resc['First name'];
+            $resultchkuser['last-name'] = $resc['Last name'];
+            $resultchkuser['status'] = $resc['status'];
 
             return $resultchkuser;
         }
@@ -123,8 +123,9 @@ class Model{
     }
 
     public function check_logo(){
+        global $env;
 
-        $user_id = $_SESSION['user_id'];
+        $user_id = $env['user_data']['user_id'];
 
         $sql = "SELECT `logo` FROM `users` WHERE `id` = '$user_id'";
         $smtpc = $this->db->prepare($sql);

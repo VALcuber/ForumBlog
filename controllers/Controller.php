@@ -6,7 +6,6 @@
 		public $view;
 		public $env;
 		protected $pageData = array();
-		protected $pagesData = array();
         protected $logo;
 
         public function __construct() {
@@ -25,51 +24,59 @@
             $env['active'] = 'active';
             $this->pageData["slash"] = null;
 
+            $this->pageData['id_login'] = $env['token'];
+
             if(($env['act'] == 'Log In') && ($_POST['email'] != '') && ($_POST['password'] != '')){
 
-                $this->model->checkUser();
+                $env['user_data'] = $this->model->checkUser();
 
-                if($_SESSION['user_id'] == ''){
+                $env['token'] = $this->LogIn($env['user_data']['user_id']);
+
+                $this->pageData['id_login'] = $env['token'];
+
+                if($env['token'] == ''){
                     header("Location: /");
                 }
 
             }
 
-            if(isset($_SESSION['user_id']) && $_SESSION['user_id'] !=''){
+            if(isset($env['token']) && $env['token'] !=''){
 
-                $users_logo = $this->logo;
+                $userID = $this->token_check();
 
-                $user_logo = $users_logo ?? $this->model->check_logo();
+                if($userID == true) {
+                    $users_logo = $this->logo;
 
-                if($user_logo['logo'] == 'none') {
-                    $Fn = str_split($_SESSION['first-name']);
-                    $Ln = str_split($_SESSION['last-name']);
+                    $user_logo = $users_logo ?? $this->model->check_logo();
 
-                    $result_Fn_Ln_arr = $Fn['0'] . $Ln['0'];
-                }
-                else{
-                    $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="'.$user_logo['logo'].'">';
-                    $this->pageData['id_state'] = 'login';
-                }
+                    if ($user_logo['logo'] == 'none') {
+                        $Fn = str_split($env['user_data']['first-name']);
+                        $Ln = str_split($env['user_data']['last-name']);
 
-                $user_menu_winwow = 'user-menu';
-                $this->pageData['user_menu_window'] = $user_menu_winwow;
+                        $result_Fn_Ln_arr = $Fn['0'] . $Ln['0'];
+                    } else {
+                        $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="' . $user_logo['logo'] . '">';
+                        $this->pageData['id_state'] = 'login';
+                    }
 
-                if($_SESSION['status'] == 'admin'){
-                    $adminPanel = $this->admin_panel();
-                }
+                    $user_menu_winwow = 'user-menu';
+                    $this->pageData['user_menu_window'] = $user_menu_winwow;
 
-                else{
-                    $adminPanel = '';
+                    if ($env['user_data']['status'] == 'admin') {
+                        $adminPanel = $this->admin_panel();
+                    } else {
+                        $adminPanel = '';
+                    }
                 }
 
             }
             else{
+                $this->pageData['user_menu_window'] = '';
                 $this->pageData['id_state'] = 'no_login';
                 $result_Fn_Ln_arr = 'Log in';
                 $adminPanel = '';
-                $_SESSION['status'] = 'user';
-                $_SESSION['user_id'] = '';
+                $user_data['status'] = 'user';
+                $user_data['user_id'] = '';
                 $signin_modal_winwow = 'data-toggle="modal" data-target="#signinModal"';
                 $this->pageData['page'] = $this->echo_form_signin();
             }
@@ -82,6 +89,8 @@
             }
 
             if($env['act'] == 'Exit'){
+
+                $this->deleteToken();
                 session_destroy();
                 // Delete cookie session
                 if (ini_get("session.use_cookies")) {
@@ -501,5 +510,90 @@ EOT;
 
             return $form_signin;
         }
+
+        public function LogIn($login){
+
+            $token = bin2hex(random_bytes(32));
+
+            $tokenFile = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';
+
+            $tokens = [];
+            if (file_exists($tokenFile)) {
+                $tokens = json_decode(file_get_contents($tokenFile), true);
+            }
+
+            // Удалим все старые токены для этого user_id
+            foreach ($tokens as $tk => $info) {
+                if ($info == $login) {
+                    unset($tokens[$tk]);
+                }
+            }
+
+            $tokens[$token] = $login;
+            file_put_contents($tokenFile, json_encode($tokens, JSON_PRETTY_PRINT));
+
+            return $token;
+        } // Create and bind token to user
+
+        public function load_tokens() {
+            $tokens_file = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';  // token file
+
+            if (!file_exists($tokens_file)) {
+                return [];
+            }
+
+            $json = file_get_contents($tokens_file);
+            return json_decode($json, true) ?? [];
+        } // Load token
+
+        public function token_check(){
+            global $env;
+            $tokens_data = key($this->load_tokens());
+
+            if (isset($tokens_data)) {
+                $env['token'] = $tokens_data;
+                return $tokens_data;
+            }
+
+            return false;
+
+        } // check token
+
+        public function deleteToken() {
+            global $env;
+            echo $env['token'];
+            $file = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';  // token file
+
+
+            // Check file
+            if (file_exists($file)) {
+                // Read file
+                $file_contents = file_get_contents($file);
+
+                // Decode JSON in array
+                $tokens_data = json_decode($file_contents, true);
+
+                // Check decode file
+                if ($tokens_data === null) {
+                    echo "Error reading data from file.";
+                    die;
+                }
+
+                // Token which we want to delete
+                $token_to_delete = key($tokens_data); // Token value
+
+                // Search and delete token
+                if (isset($tokens_data[$token_to_delete])) {
+                    unset($tokens_data[$token_to_delete]);  // Delete token by key
+
+                    // rewrite file with updated data
+                    file_put_contents($file, json_encode($tokens_data, JSON_PRETTY_PRINT));
+
+                }
+            }
+
+        }
+
+
 
 	}
