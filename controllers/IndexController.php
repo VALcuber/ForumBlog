@@ -12,6 +12,7 @@ class IndexController extends Controller {
 	public function index() {
 
         $this->controller();
+
         $this->pageData['blog'] = $this->echo_random_blog_topics();
         $this->pageData['news'] = $this->echo_latest_news();
         $this->pageData['forum'] = $this->echo_random_forum_topics();

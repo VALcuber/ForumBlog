@@ -19,8 +19,9 @@
 
         public function controller(){
             global $env;
+
             $signin_modal_winwow = '';
-            //$active = $env['active'];
+
             $env['active'] = 'active';
             $this->pageData["slash"] = null;
 
@@ -28,11 +29,13 @@
 
             if(($env['act'] == 'Log In') && ($_POST['email'] != '') && ($_POST['password'] != '')){
 
-                $env['user_data'] = $this->model->checkUser();
+                $user_data = $this->model->checkUser();
 
-                $env['token'] = $this->LogIn($env['user_data']['user_id']);
+                $env['token'] = $this->LogIn($user_data['id']);
 
                 $this->pageData['id_login'] = $env['token'];
+
+                $this->crypting_data($user_data);
 
                 if($env['token'] == ''){
                     header("Location: /");
@@ -47,11 +50,13 @@
                 if($userID == true) {
                     $users_logo = $this->logo;
 
-                    $user_logo = $users_logo ?? $this->model->check_logo();
+                    $data_users = $this->get_decrypted_post_data();
+
+                    $user_logo = $users_logo ?? $this->model->check_logo($data_users['id']);
 
                     if ($user_logo['logo'] == 'none') {
-                        $Fn = str_split($env['user_data']['first-name']);
-                        $Ln = str_split($env['user_data']['last-name']);
+                        $Fn = str_split($data_users['first_name']);
+                        $Ln = str_split($data_users['last_name']);
 
                         $result_Fn_Ln_arr = $Fn['0'] . $Ln['0'];
                     } else {
@@ -62,7 +67,7 @@
                     $user_menu_winwow = 'user-menu';
                     $this->pageData['user_menu_window'] = $user_menu_winwow;
 
-                    if ($env['user_data']['status'] == 'admin') {
+                    if ($data_users['status'] == 'admin') {
                         $adminPanel = $this->admin_panel();
                     } else {
                         $adminPanel = '';
@@ -91,15 +96,6 @@
             if($env['act'] == 'Exit'){
 
                 $this->deleteToken();
-                session_destroy();
-                // Delete cookie session
-                if (ini_get("session.use_cookies")) {
-                    $params = session_get_cookie_params();
-                    setcookie(session_name(), '', time() - 42000,
-                        $params["path"], $params["domain"],
-                        $params["secure"], $params["httponly"]
-                    );
-                }
                 header("Location: /");
             }
 
@@ -592,6 +588,90 @@ EOT;
                 }
             }
 
+        }
+
+        public function crypting_data($user_data) {
+
+            require_once ("conf/generate_crypto_keys.php");
+
+            $data = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json'), true);
+            $key = base64_decode($data['key']);
+            $iv = base64_decode($data['iv']);
+
+            foreach ($user_data as $k => $v) {
+                if (!mb_check_encoding($v, 'UTF-8')) {
+                    echo "Проблема с ключом [$k]: не UTF-8<br>";
+                }
+            }
+
+            function clean_utf8_array($arr) {
+                foreach ($arr as $key => $value) {
+                    if (is_array($value)) {
+                        $arr[$key] = clean_utf8_array($value);
+                    } elseif (!mb_check_encoding($value, 'UTF-8')) {
+                        $arr[$key] = utf8_encode($value);
+                    }
+                }
+                return $arr;
+            }
+
+            $user_data = clean_utf8_array($user_data);
+
+            $json_data = json_encode($user_data, JSON_UNESCAPED_UNICODE);
+            if ($json_data === false) {
+                echo 'Ошибка JSON: ' . json_last_error_msg();
+                return;
+            }
+
+            $encrypted = openssl_encrypt($json_data, $cipher, $key, 0, $iv);
+            if ($encrypted === false) {
+                echo 'Ошибка шифрования!';
+                return;
+            }
+
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypt_data.json', $encrypted);
+        }
+
+        public function get_decrypted_post_data() {
+
+            $crypto_file = $_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json';
+
+            if (!file_exists($crypto_file)) {
+                echo "Файл ключей не найден";
+                return null;
+            }
+
+            $data = json_decode(file_get_contents($crypto_file), true);
+
+            $key = base64_decode($data['key']);
+            $iv = base64_decode($data['iv']);
+
+            $crypt_data_file = $_SERVER['DOCUMENT_ROOT'] . '/conf/crypt_data.json';
+
+            if (!file_exists($crypt_data_file)) {
+                echo "Файл шифра не найден";
+                return null;
+            }
+
+            $encrypted_data = file_get_contents($crypt_data_file);
+
+            $cipher = 'AES-256-CBC';
+
+            $decrypted = openssl_decrypt($encrypted_data, $cipher, $key, 0, $iv);
+
+            if ($decrypted === false) {
+                echo 'Ошибка расшифровки!';
+                return null;
+            }
+
+            $data = json_decode($decrypted, true);
+
+            if ($data === null) {
+                echo 'Ошибка JSON: ' . json_last_error_msg();
+                return null;
+            }
+
+            return $data;
         }
 
 

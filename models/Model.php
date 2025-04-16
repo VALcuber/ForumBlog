@@ -49,28 +49,25 @@ class Model{
 
         $resultchkuser = array();
 
-        $sql = "SELECT `id`,`First name`,`Last name`,`status`, `logo` FROM `users` WHERE `email` = :email and `pass` = :password ";
+        $sql = "SELECT `id`, `First name` AS `first_name`, `Last name` AS `last_name`, `status`, `logo` FROM `users` WHERE `email` = :email and `pass` = :password ";
 
         $smtpc = $this->db->prepare($sql);
         $smtpc->bindValue(":email", $email, PDO::PARAM_STR);
         $smtpc->bindValue(":password", $password, PDO::PARAM_STR);
         $smtpc->execute();
 
-        $resc=$smtpc->fetch(PDO::FETCH_ASSOC);
-
         if ($smtpc->rowCount() == 0){
             $resultchkuser['user_id'] = '';
-            $resultchkuser['user_id'] = $resultchkuser;
             return $resultchkuser;
         }
         else {
-            $resultchkuser['user_id'] = $resc['id'];
-            $resultchkuser['user_id'] = $resc['id'];
-            $resultchkuser['first-name'] = $resc['First name'];
-            $resultchkuser['last-name'] = $resc['Last name'];
-            $resultchkuser['status'] = $resc['status'];
-
-            return $resultchkuser;
+            $resc=$smtpc->fetch(PDO::FETCH_ASSOC);
+            foreach ($resc as $k => $v) {
+                if (!mb_check_encoding($v, 'UTF-8')) {
+                    echo "Проблема с [$k]: не UTF-8<br>";
+                }
+            }
+            return $resc;
         }
 
     }
@@ -122,13 +119,12 @@ class Model{
         }
     }
 
-    public function check_logo(){
-        global $env;
+    public function check_logo($user_id){
 
-        $user_id = $env['user_data']['user_id'];
+        $sql = "SELECT `logo` FROM `users` WHERE `id` = :id";
 
-        $sql = "SELECT `logo` FROM `users` WHERE `id` = '$user_id'";
         $smtpc = $this->db->prepare($sql);
+        $smtpc->bindValue(":id", $user_id, PDO::PARAM_STR);
         $smtpc->execute();
 
         $res=$smtpc->fetch(PDO::FETCH_ASSOC);

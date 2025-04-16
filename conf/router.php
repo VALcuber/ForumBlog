@@ -1,5 +1,5 @@
 <?php
-session_start(); // starting session
+
 class Routing {
 
 	public static function buildRoute() {
@@ -57,7 +57,7 @@ class Routing {
             $modelName = "PageModel";
         }
 
-        elseif((isset($route[1]) && ($route[1] == 'blog')) && empty($route[2]) ) { echo 'there';
+        elseif((isset($route[1]) && ($route[1] == 'blog')) && empty($route[2]) ) { //echo 'there';
             $controllerName = "BlogController";
             $modelName = "BlogModel";
 
