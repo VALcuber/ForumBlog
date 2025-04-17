@@ -35,7 +35,7 @@
 
                 $this->pageData['id_login'] = $env['token'];
 
-                $this->crypting_data($user_data);
+                $this->encrypting_data($user_data);
 
                 if($env['token'] == ''){
                     header("Location: /");
@@ -59,7 +59,8 @@
                         $Ln = str_split($data_users['last_name']);
 
                         $result_Fn_Ln_arr = $Fn['0'] . $Ln['0'];
-                    } else {
+                    }
+                    else {
                         $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="' . $user_logo['logo'] . '">';
                         $this->pageData['id_state'] = 'login';
                     }
@@ -69,7 +70,8 @@
 
                     if ($data_users['status'] == 'admin') {
                         $adminPanel = $this->admin_panel();
-                    } else {
+                    }
+                    else {
                         $adminPanel = '';
                     }
                 }
@@ -119,7 +121,9 @@
             }
 
             $this->pageData['title'] = "Forum-blog";
+            /** @noinspection PhpUndefinedVariableInspection */
             $this->pageData['panel'] = $adminPanel;
+            /** @noinspection PhpUndefinedVariableInspection */
             $this->pageData['check'] = $result_Fn_Ln_arr;
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['active'] = $active;
@@ -131,7 +135,8 @@
         }
 
         public function admin_panel(){
-            $adminPanel = <<<"EOT"
+            /** @noinspection HtmlUnknownTarget */
+            return $adminPanel = <<<"EOT"
                 <div class="admin_navbar">
                 
                   <div class="admin_dropdown">
@@ -216,7 +221,6 @@
                   
                 </div>
 EOT;
-            return $adminPanel;
         }
 
         public function echo_topmenu(){
@@ -274,7 +278,8 @@ EOT;
 
             $resulthtmlburger ="";
             $buttonall = '<li class="navbar-item p-2">
-                    <a href="/all" class="nav-link categories__link text-nowrap">All</a>
+                    <!--suppress HtmlUnknownTarget -->
+<a href="/all" class="nav-link categories__link text-nowrap">All</a>
                 </li>';
 
             $category = $this->model->getburger();
@@ -408,6 +413,7 @@ EOT;
 
         public function translit_reverse($translit_reverse) {
 
+            /** @noinspection PhpDuplicateArrayKeysInspection */
             $translit_reverse = strtr($translit_reverse, array(
                 "a"=>"а",
                 "b"=>"б",
@@ -491,7 +497,7 @@ EOT;
 
         public function echo_form_signin(){
 
-            $form_signin = <<<"EOT"
+            return $form_signin = <<<"EOT"
           <h1>This is user page</h1>
           <div class="d-flex justify-content-between">
           <form method="post">
@@ -503,17 +509,25 @@ EOT;
 
           </div>
 EOT;
-
-            return $form_signin;
         }
 
         public function LogIn($login){
 
-            $token = bin2hex(random_bytes(32));
+            try {
+                // Generate a secure random token and convert it to hexadecimal format
+                $token = bin2hex(random_bytes(32));
+            }
+            catch (Exception $e) {
+                // Handle the error if random_bytes() fails
+                echo "Token generation error: " . $e->getMessage();
+                // Set token to an empty string (or you can return false/null depending on logic)
+                $token = '';
+            }
 
             $tokenFile = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';
 
             $tokens = [];
+
             if (file_exists($tokenFile)) {
                 $tokens = json_decode(file_get_contents($tokenFile), true);
             }
@@ -540,7 +554,7 @@ EOT;
 
             $json = file_get_contents($tokens_file);
             return json_decode($json, true) ?? [];
-        } // Load token
+        }
 
         public function token_check(){
             global $env;
@@ -553,7 +567,7 @@ EOT;
 
             return false;
 
-        } // check token
+        }
 
         public function deleteToken() {
             global $env;
@@ -590,46 +604,53 @@ EOT;
 
         }
 
-        public function crypting_data($user_data) {
+        private function generate_crypto_keys(){
+            $cipher = 'AES-256-CBC'; // encrypt type
 
-            require_once ("conf/generate_crypto_keys.php");
+            $key = hash('sha256', 'some data for key crypt');           //encrypt key
+            $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher)); //Initialization vector for random encrypt
 
-            $data = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json'), true);
+            // Save in JSON format
+            $data = [
+                'key' => base64_encode($key),
+                'iv'  => base64_encode($iv),
+            ];
+
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json', json_encode($data)); //Keys storage
+        }
+
+        public function encrypting_data($user_data) {
+
+            $this->generate_crypto_keys();
+
+            $data = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json'), true); //keys storage
+
+            $cipher = 'AES-256-CBC'; // encrypt type
+
             $key = base64_decode($data['key']);
             $iv = base64_decode($data['iv']);
 
             foreach ($user_data as $k => $v) {
                 if (!mb_check_encoding($v, 'UTF-8')) {
-                    echo "Проблема с ключом [$k]: не UTF-8<br>";
+                    echo "Error with key [$k]: not UTF-8<br>";
                 }
-            }
-
-            function clean_utf8_array($arr) {
-                foreach ($arr as $key => $value) {
-                    if (is_array($value)) {
-                        $arr[$key] = clean_utf8_array($value);
-                    } elseif (!mb_check_encoding($value, 'UTF-8')) {
-                        $arr[$key] = utf8_encode($value);
-                    }
-                }
-                return $arr;
-            }
-
-            $user_data = clean_utf8_array($user_data);
+            } //Check encoding type
 
             $json_data = json_encode($user_data, JSON_UNESCAPED_UNICODE);
+
             if ($json_data === false) {
-                echo 'Ошибка JSON: ' . json_last_error_msg();
+                echo 'JSON error: ' . json_last_error_msg();
                 return;
-            }
+            } //Check on JSON errors
 
             $encrypted = openssl_encrypt($json_data, $cipher, $key, 0, $iv);
-            if ($encrypted === false) {
-                echo 'Ошибка шифрования!';
-                return;
-            }
 
-            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypt_data.json', $encrypted);
+            if ($encrypted === false) {
+                echo 'Encoding error!';
+                return;
+            } //Check on encoding errors
+
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypt_data.json', $encrypted); // Encrypting data storage
         }
 
         public function get_decrypted_post_data() {
@@ -673,7 +694,5 @@ EOT;
 
             return $data;
         }
-
-
 
 	}

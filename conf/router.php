@@ -57,9 +57,14 @@ class Routing {
             $modelName = "PageModel";
         }
 
-        elseif((isset($route[1]) && ($route[1] == 'blog')) && empty($route[2]) ) { //echo 'there';
+        elseif((isset($route[1]) && ($route[1] == 'blog')) && empty($route[2]) ) {
             $controllerName = "BlogController";
             $modelName = "BlogModel";
+
+        }
+        elseif((isset($route[1]) && ($route[1] == 'forum')) && empty($route[2]) ) {
+            $controllerName = "ForumController";
+            $modelName = "ForumModel";
 
         }
 
@@ -78,13 +83,7 @@ class Routing {
             }
 
         }
-/*
-        elseif(isset($route[1]) && ($route[1] == 'forum')){
-            $controllerName = "ForumController";
-            $modelName = "ForumModel";
 
-        }
-*/
         elseif(!empty($route[1]) && empty($route[2])){
             echo 'Empty rout';
         }
@@ -112,11 +111,4 @@ class Routing {
 	public function errorPage() {
 
 	}
-*/
-
-/*
-        elseif($route[1] != '') {
-            $controllerName = ucfirst($route[1]. "Controller");
-            $modelName = ucfirst($route[1]. "Model");
-        }
 */
