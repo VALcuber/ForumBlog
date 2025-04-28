@@ -18,6 +18,7 @@ class All_for_certain_categoryModel extends Model{
         }
 
 // Collect SQL string
+        /** @noinspection SqlResolve */
         $sql = "SELECT `{$structure}_category`.`Description`, `{$structure}`.`structure`, `{$structure}`.`Category`
                     FROM `{$structure}_category`
                         JOIN `{$structure}`
