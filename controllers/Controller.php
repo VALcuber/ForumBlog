@@ -31,17 +31,14 @@
 
                 $user_data = $this->model->checkUser();
 
-                $env['token'] = $this->LogIn($user_data['id']);
-
-                $this->pageData['id_login'] = $env['token'];
+                $this->pageData['id_login'] = $env['token'] = $this->LogIn($user_data['id']);
 
                 $this->encrypting_data($user_data);
 
                 if($env['token'] == ''){
                     header("Location: /");
                 }
-
-            }
+            } //Check login info
 
             if(isset($env['token']) && $env['token'] !=''){
 
@@ -52,7 +49,12 @@
 
                     $data_users = $this->get_decrypted_post_data();
 
-                    $user_logo = $users_logo ?? $this->model->check_logo($data_users['id']);
+                    if ($users_logo !== null) {
+                        $user_logo = $users_logo;
+                    }
+                    else {
+                        $user_logo = $this->model->check_logo($data_users['id']);
+                    }
 
                     if ($user_logo['logo'] == 'none') {
                         $Fn = str_split($data_users['first_name']);
@@ -76,7 +78,7 @@
                     }
                 }
 
-            }
+            } //Check token
             else{
                 $this->pageData['user_menu_window'] = '';
                 $this->pageData['id_state'] = 'no_login';
@@ -90,13 +92,12 @@
 
             if (isset($env['route1']) && $env['route1'] == '') {
                 $active = 'active';
-            }
+            } //For blue button when you are on its page
             else{
                 $active = '';
             }
 
             if($env['act'] == 'Exit'){
-
                 $this->deleteToken();
                 header("Location: /");
             }
@@ -110,15 +111,15 @@
             }
 
             if(empty($env['route2']) && (($env['route1'] == 'blog' || $env['route1'] == 'forum') && empty($env['route3'])) || $env['route1'] == 'all' ){
-                $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>'; //for categories on blog and forum pages
-            }
+                $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>';
+            }  //for categories on blog and forum pages
             else{
                 $this->pageData['script_category'] = '';
             }
 
             if($env['route1'] != 'user_profile'){
-                $this->pageData['script_profile'] = ''; //for script on profile page
-            }
+                $this->pageData['script_profile'] = '';
+            }  //for script on profile page
 
             $this->pageData['title'] = "Forum-blog";
             /** @noinspection PhpUndefinedVariableInspection */
@@ -128,8 +129,6 @@
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['active'] = $active;
             $this->pageData['admin-styles'] = '';
-
-
             $this->pageData['burger'] = $this->echo_burger();
 
         }
@@ -554,7 +553,7 @@ EOT;
 
             $json = file_get_contents($tokens_file);
             return json_decode($json, true) ?? [];
-        }
+        } //Read token from file
 
         public function token_check(){
             global $env;
@@ -567,7 +566,7 @@ EOT;
 
             return false;
 
-        }
+        } //Check tokens
 
         public function deleteToken() {
             global $env;
@@ -602,7 +601,7 @@ EOT;
                 }
             }
 
-        }
+        } //Delete token
 
         private function generate_crypto_keys(){
             $cipher = 'AES-256-CBC'; // encrypt type
@@ -617,7 +616,7 @@ EOT;
             ];
 
             file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json', json_encode($data)); //Keys storage
-        }
+        } //Generate keys for crypt user info
 
         public function encrypting_data($user_data) {
 
@@ -651,7 +650,7 @@ EOT;
             } //Check on encoding errors
 
             file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypt_data.json', $encrypted); // Encrypting data storage
-        }
+        } //Crypt user info using keys
 
         public function get_decrypted_post_data() {
 
@@ -693,6 +692,6 @@ EOT;
             }
 
             return $data;
-        }
+        }  //Decrypt user ino for future compare
 
 	}

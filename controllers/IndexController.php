@@ -1,10 +1,11 @@
 <?php
-
+/** @used-by Router */
 class IndexController extends Controller {
 
 	private $pageTpl = '/templates/index.tpl';
 
 	public function __construct() {
+        parent::__construct();
 		$this->model = new IndexModel();
 		$this->view = new View();
 	}

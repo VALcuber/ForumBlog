@@ -1,7 +1,8 @@
 <?php
-
+/** @used-by Router */
 class CommentController extends Controller{
 
+/**@noinspection PhpMissingParentConstructorInspection*/
     public function __construct() {
         $this->model = new CommentModel();
     }

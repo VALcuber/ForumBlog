@@ -26,11 +26,10 @@ class ForumModel extends Model{
 
     public function add_forum_content(){
 
-        $forum_topic = $_POST['Topic'] ?? '';
-        $forum_title = $_POST['Title'] ?? '';
-        $forum_description = $_POST['description'] ?? '';
+        $forum_topic = $_POST['Category'] ?? '';
+        $forum_title = $_POST['Category_Description'] ?? '';
 
-        $sql = "SELECT `id` FROM `forum` WHERE `Topic`= :forum_topic";
+        $sql = "SELECT `id` FROM `forum` WHERE `Category`= :forum_topic";
 
         $smtps = $this->db->prepare($sql);
         $smtps->bindValue(":forum_topic", $forum_topic, PDO::PARAM_STR);
@@ -40,19 +39,17 @@ class ForumModel extends Model{
 
         if(!empty($ress)){
 
-            $query =  'Такой форум уже есть';
-            return $query;
+          return 'Same forum already exist';
         }
 
         elseif($ress == NULL) {
 
-            $sql = "INSERT INTO `forum` (`Topic`,`Title`, `Description`) VALUES (:forum_topic,:forum_title, :forum_description)";
+            $sql = "INSERT INTO `forum` (`Category`,`Category_Description`) VALUES (:forum_topic,:forum_title)";
 
 
             $forum = $this->db->prepare($sql);
             $forum->bindValue(":forum_topic", $forum_topic, PDO::PARAM_STR);
             $forum->bindValue(":forum_title", $forum_title, PDO::PARAM_STR);
-            $forum->bindValue(":forum_description", $forum_description, PDO::PARAM_STR);
             $forum->execute();
             return ($forum);
         }

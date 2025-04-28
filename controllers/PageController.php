@@ -1,16 +1,16 @@
 <?php
-
+/** @used-by Router */
 class PageController extends Controller {
 
 	private $pageTpl = '/templates/page.tpl';
 
 	public function __construct() {
+        parent::__construct();
 		$this->model = new PageModel();
 		$this->view = new View();
 	}
 
 	public function index() {
-        global $env;
         $this->controller();
         $this->pageData['page'] = $this->echo_page();
 

@@ -1,10 +1,11 @@
 <?php
-
+/** @used-by Router */
 class All_for_certain_categoryController extends Controller{
 
     private $pageTpl = '/templates/All_for_certain_category.tpl';
 
     public function __construct() {
+        parent::__construct();
         $this->model = new All_for_certain_categoryModel();
         $this->view = new View();
     }
@@ -75,41 +76,4 @@ EOT;
             }
         return $someresultall;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-    public function echo_all_subcategories() {
-
-        for ($i = 0; $i < $count; $i++) {
-
-
-
-            $category_from_bd = $env['alltitles'][$i]['Category'];
-
-
-
-
-
-
-        }
-        return $someresult;
-    }*/
-
 }

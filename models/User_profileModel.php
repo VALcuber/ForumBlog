@@ -2,8 +2,7 @@
 
 class User_profileModel extends Model {
 
-	public function user_profile_logo($file_name){
-	    $id = $_SESSION['user_id'];
+	public function user_profile_logo($file_name, $id){
 
         $sql = "UPDATE `users` SET `logo`='/assets/uploads/$file_name' WHERE  `id`='$id'";
 
@@ -17,16 +16,15 @@ class User_profileModel extends Model {
 
         $resr=$smtpt->fetch(PDO::FETCH_ASSOC);
 
-        if(!empty($resr)){
-            return $resr;
+        if(empty($resr)){
+            echo "Crash in logo";
         }
         else{
-            echo "Crash in logo";
+            return $resr;
         }
 	}
 
-    public function user_forum_posts(){
-        $id = $_SESSION['user_id'];
+    public function user_forum_posts($id){
 
         $sql = "SELECT `forum`.`Category` AS `Category`, 
                        `forum_category`.`Description` AS `Description`,
@@ -46,8 +44,8 @@ class User_profileModel extends Model {
 
         return ($user_forum_posts);
     }
-    public function user_blog_posts(){
-        $id = $_SESSION['user_id'];
+
+    public function user_blog_posts($id){
 
         $sql = "SELECT `blog`.`Category` AS `Category`, 
                        `blog_category`.`Description` AS `Description`,

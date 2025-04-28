@@ -26,9 +26,8 @@ class BlogModel extends Model{
     public function add_blog_content(){
         $blog_topic = $_POST['Category'] ?? '';
         $blog_title = $_POST['Category_Description'] ?? '';
-        $blog_description = $_POST['description'] ?? '';
 
-        $sql = "SELECT `id` FROM `blog` WHERE `Topic`= :blog_topic";
+        $sql = "SELECT `id` FROM `blog` WHERE `Category`= :blog_topic";
 
         $smtps = $this->db->prepare($sql);
         $smtps->bindValue(":blog_topic", $blog_topic, PDO::PARAM_STR);
@@ -37,20 +36,17 @@ class BlogModel extends Model{
         $ress=$smtps->fetch(PDO::FETCH_ASSOC);
 
         if(!empty($ress)){
-
-            $query =  'Blog already exists';
-            return $query;
+            return  'Blog already exists';
         }
 
         elseif($ress == NULL) {
 
-            $sql = "INSERT INTO `blog` (`Topic`,`Title`, `Description`) VALUES (:blog_topic,:blog_title, :blog_description)";
+            $sql = "INSERT INTO `blog` (`Category`,`Category_Description`) VALUES (:blog_topic,:blog_title)";
 
 
             $forum = $this->db->prepare($sql);
             $forum->bindValue(":blog_topic", $blog_topic, PDO::PARAM_STR);
             $forum->bindValue(":blog_title", $blog_title, PDO::PARAM_STR);
-            $forum->bindValue(":blog_description", $blog_description, PDO::PARAM_STR);
             $forum->execute();
             return ($forum);
         }

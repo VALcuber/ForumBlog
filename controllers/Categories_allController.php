@@ -1,15 +1,13 @@
 <?php
-
+/** @used-by Router */
 class Categories_allController extends Controller {
 
     private $pageTpl = '/templates/all.tpl';
 
     public function __construct() {
-
+        parent::__construct();
         $this->model = new Categories_allModel();
-
         $this->view = new View();
-
     }
 
     public function index() {
@@ -83,7 +81,7 @@ class Categories_allController extends Controller {
 
             $some_result_descriptions_all = "";
 
-            $category_from_bd = $all_titles[$i]['Category'];
+            $category_from_bd = $all_titles['Category'];
             $category_from_bd_low_register = lcfirst($category_from_bd);
 
             $category = <<<"EOT"
@@ -100,7 +98,7 @@ EOT;
             for ($j = 0; $j < $counttitles2; $j++) {
 
                 $structure_from_db = $alltitles2[$j]["structure"];
-                $category_from_bd_2 = $alltitles2[$j]["Category"];;
+                $category_from_bd_2 = $alltitles2[$j]["Category"];
                 $subcategory = $alltitles2[$j]["Description"];
 
                 $subcategories = <<<"EOT"

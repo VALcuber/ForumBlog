@@ -91,8 +91,7 @@ class Model{
         $ress=$smtps->fetch(PDO::FETCH_ASSOC);
 
         if(!empty($ress)){
-
-            $query =  'Такой пользователь уже есть';
+            return 'User already exist';
         }
 
         elseif($ress == NULL){
@@ -110,8 +109,7 @@ class Model{
             $resr=$smtpr->fetch(PDO::FETCH_ASSOC);
 
             if(!empty($resr)){
-                $query = $this->db->lastInsertId();
-                return $query;
+                return $this->db->lastInsertId();
             }
             else{
                 echo "Proval";
@@ -127,8 +125,7 @@ class Model{
         $smtpc->bindValue(":id", $user_id, PDO::PARAM_STR);
         $smtpc->execute();
 
-        $res=$smtpc->fetch(PDO::FETCH_ASSOC);
-        return $res;
+        return $smtpc->fetch(PDO::FETCH_ASSOC);
 
     }
 

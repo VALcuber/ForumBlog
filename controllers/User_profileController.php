@@ -1,20 +1,23 @@
 <?php
-
+/** @used-by Router */
 class User_profileController extends Controller {
 
 	private $pageTpl = '/templates/user_profile.tpl';
 
 	public function __construct() {
+        parent::__construct();
 		$this->model = new User_profileModel();
 		$this->view = new View();
 	}
 
 	public function index() {
-        global $env;
+
+
 
         if(isset($_FILES['image'])){
+            $id = $this->get_decrypted_post_data();
             $this->image_upload();
-            $logo = $this->model->check_logo();
+            $logo = $this->model->check_logo($id['id']);
             $this->setLogo($logo);
         }
 
@@ -28,13 +31,14 @@ class User_profileController extends Controller {
 	}
 
 	public function image_upload(){
+        $id = $this->get_decrypted_post_data();
         // Checking for sending file
         if(isset($_FILES['image'])){
             $errors = array();
             $file_name = $_FILES['image']['name'];
             $file_size =$_FILES['image']['size'];
             $file_tmp =$_FILES['image']['tmp_name'];
-            $file_type=$_FILES['image']['type'];
+            //$file_type=$_FILES['image']['type'];
             $file_ext=pathinfo($file_name, PATHINFO_EXTENSION);
             $extensions= array("jpeg","jpg","png");
 
@@ -51,7 +55,7 @@ class User_profileController extends Controller {
             // If there are no errors, move the file to the desired directory
             if(empty($errors)==true){
                 move_uploaded_file($file_tmp,__DIR__ ."/../assets/uploads/".$file_name);
-                $this->model->user_profile_logo($file_name);
+                $this->model->user_profile_logo($file_name, $id['id']);
                 return;
             } else {
                 print_r($errors);
@@ -61,9 +65,11 @@ class User_profileController extends Controller {
 
     }
     public function user_forum_posts(){
+        $id = $this->get_decrypted_post_data();
+
         $result_forum_HTML = '';
 
-	    $user_posts_array = $this->model->user_forum_posts();
+	    $user_posts_array = $this->model->user_forum_posts($id['id']);
         $count_user_posts = count($user_posts_array);
 
         for ($i = 0; $i < $count_user_posts; $i++) {
@@ -79,9 +85,11 @@ EOT;
         return $result_forum_HTML;
     }
     public function user_blog_posts(){
-        $result_blog_HTML = '';
+        $id = $this->get_decrypted_post_data();
 
-        $user_posts_array = $this->model->user_blog_posts();
+	    $result_blog_HTML = '';
+
+        $user_posts_array = $this->model->user_blog_posts($id['id']);
         $count_user_posts = count($user_posts_array);
 
         for ($i = 0; $i < $count_user_posts; $i++) {

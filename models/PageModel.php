@@ -30,6 +30,7 @@ class PageModel extends Model{
 
         }
 
+        /** @noinspection PhpUndefinedVariableInspection */
         $smtppage = $this->db->prepare($sql);
 
         $smtppage->bindValue(":description", $env['route3'], PDO::PARAM_STR);

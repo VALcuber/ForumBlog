@@ -1,10 +1,11 @@
 <?php
-
+/** @used-by Router */
 class ManageUsersController extends Controller{
 
     private $pageTpl = '/templates/ManageUsers.tpl';
 
     public function __construct() {
+        parent::__construct();
         $this->model = new ManageUsersModel();
         $this->view = new View();
     }
@@ -19,6 +20,7 @@ class ManageUsersController extends Controller{
         }
 
         $this->pageData['users'] = $this->echo_users();
+        /** @noinspection HtmlUnknownTarget */
         $this->pageData['admin-styles'] = '<link rel="stylesheet" href="assets/css/admin.style.css">';
         $this->pageData['topmenu'] = '';
 

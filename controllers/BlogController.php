@@ -1,10 +1,11 @@
 <?php
-
+/** @used-by Router */
 class BlogController extends Controller{
 
     private $pageTpl = '/templates/forum-blog.tpl';
 
     public function __construct() {
+        parent::__construct();
         $this->model = new BlogModel();
         $this->view = new View();
     }
@@ -66,6 +67,7 @@ EOT;
                 <h4 class="py-2">$category</h4>
 EOT;
 
+        /** @noinspection HtmlUnknownTarget */
         $pageallecho = <<<"EOT"
                 </div>
 

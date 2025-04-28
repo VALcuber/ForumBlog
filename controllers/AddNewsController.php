@@ -1,10 +1,11 @@
 <?php
-
+/** @used-by Router */
 class AddNewsController extends Controller {
 
     private $pageTpl = '/templates/add_news.tpl';
 
     public function __construct() {
+        parent::__construct();
         $this->model = new AddNewsModel();
         $this->view = new View();
     }
