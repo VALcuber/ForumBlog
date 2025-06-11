@@ -81,7 +81,7 @@ class Categories_allController extends Controller {
 
             $some_result_descriptions_all = "";
 
-            $category_from_bd = $all_titles['Category'];
+            $category_from_bd = $all_titles[$i]['Category'];
             $category_from_bd_low_register = lcfirst($category_from_bd);
 
             $category = <<<"EOT"

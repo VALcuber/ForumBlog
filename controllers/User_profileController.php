@@ -12,7 +12,7 @@ class User_profileController extends Controller {
 
 	public function index() {
 
-
+        $this->controller();
 
         if(isset($_FILES['image'])){
             $id = $this->get_decrypted_post_data();
@@ -21,16 +21,16 @@ class User_profileController extends Controller {
             $this->setLogo($logo);
         }
 
-        $this->controller();
-
+        $this->pageData['script_profile'] = '<script src="../assets/js/profile.js"></script>';
         $this->pageData['user_forum_posts'] = $this->user_forum_posts();
         $this->pageData['user_blog_posts'] = $this->user_blog_posts();
-        $this->pageData['script_profile'] = '<script src="../assets/js/profile.js"></script>';
+
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
 
 	public function image_upload(){
+
         $id = $this->get_decrypted_post_data();
         // Checking for sending file
         if(isset($_FILES['image'])){
@@ -65,6 +65,7 @@ class User_profileController extends Controller {
 
     }
     public function user_forum_posts(){
+
         $id = $this->get_decrypted_post_data();
 
         $result_forum_HTML = '';
@@ -78,13 +79,14 @@ class User_profileController extends Controller {
             $user_posts_part_from_bd = $user_posts_array[$i]['Part'];
 
             $user_posts = <<<"EOT"
-<a href="../$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
+<a href="/$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
 EOT;
             $result_forum_HTML .= $user_posts;
         }
         return $result_forum_HTML;
     }
     public function user_blog_posts(){
+
         $id = $this->get_decrypted_post_data();
 
 	    $result_blog_HTML = '';
@@ -98,7 +100,7 @@ EOT;
             $user_posts_part_from_bd = $user_posts_array[$i]['Part'];
 
             $user_posts = <<<"EOT"
-<a href="../$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
+<a href="/$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
 EOT;
             $result_blog_HTML .= $user_posts;
         }

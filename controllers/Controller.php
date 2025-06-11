@@ -40,9 +40,11 @@
                 }
             } //Check login info
 
+            $userID = $this->token_check();
+
             if(isset($env['token']) && $env['token'] !=''){
 
-                $userID = $this->token_check();
+
 
                 if($userID == true) {
                     $users_logo = $this->logo;
@@ -59,8 +61,9 @@
                     if ($user_logo['logo'] == 'none') {
                         $Fn = str_split($data_users['first_name']);
                         $Ln = str_split($data_users['last_name']);
-
+                        $this->pageData['id_state'] = 'login';
                         $result_Fn_Ln_arr = $Fn['0'] . $Ln['0'];
+
                     }
                     else {
                         $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="' . $user_logo['logo'] . '">';
@@ -225,7 +228,7 @@ EOT;
         public function echo_topmenu(){
             global $env;
 
-            $resulthtmlcategory = "";
+            $result_html_category = "";
 
             $category = $this->model->gettopic();
 
@@ -233,29 +236,40 @@ EOT;
 
             $category = array_slice($category, 0, 12);
 
-            $active = (isset($env['route1']) && $env['route1'] == '') ? 'active' : '';
-
             if (count($category) > 0) {
+
                 foreach ($category as $cat) {
-                    $route_title = $cat['tablename'];
-                    $categories = $cat['Category'];
 
-                    $activist = '';
+                    $route_title = $cat['table_name'];
+                    $category = $cat['Category'];
 
-                    if (isset($env['route1'], $env['route2'], $env['route3']) && $env['route1'] == $route_title && $env['route2'] == $categories) {
+                    if (isset($env['route1'], $env['route2'], $env['route3']) && $env['route1'] == $route_title && $env['route2'] == $category) {
                         $activist = 'active';
                     }
+                    else{
+                        $activist = '';
+                    }
 
-                    $htmlcategory = <<<"EOT"
+                    if($route_title == 'blog'){
+                        $categories = $category. '_blog';
+                    }
+                    else{
+                        $categories = $category. '_forum';
+                    }
+
+                    $html_category = <<<"EOT"
             <li class="nav-item">
-                <a href="/$route_title/$categories" class="nav-link $activist categories__link text-nowrap">$categories</a>
+                <a href="/$route_title/$category" class="nav-link $activist categories__link text-nowrap">$categories</a>
             </li>
 EOT;
-                    $resulthtmlcategory .= $htmlcategory;
+                    $result_html_category .= $html_category;
                 }
 
                 if (isset($env['route1']) && $env['route1'] == 'all') {
                     $active = 'active';
+                }
+                else{
+                    $active = '';
                 }
 
                 $buttonall = '<li class="nav-item">
@@ -267,33 +281,39 @@ EOT;
 
                   </div>';
 
-                return $resulthtmlcategory . $buttonall;
+                return $result_html_category . $buttonall;
             }
 
             return '';
         }
 
         public function echo_burger(){
+            global $env;
 
             $resulthtmlburger ="";
+
+            if (isset($env['route1']) && $env['route1'] == 'all') {
+                $active = 'active';
+            }
+            else{
+                $active = '';
+            }
+
             $buttonall = '<li class="navbar-item p-2">
-                    <!--suppress HtmlUnknownTarget -->
-<a href="/all" class="nav-link categories__link text-nowrap">All</a>
+                    <a href="/all" class="nav-link categories__link '.$active.' text-nowrap">All</a>
                 </li>';
 
-            $category = $this->model->getburger();
+            $category_from_bd = $this->model->getburger();
 
-            $arrSize = count($category);
+            $arrSize = count($category_from_bd);
 
             for($i = 0; $i < $arrSize; $i++){
 
-                $route = explode("/", $_SERVER['REQUEST_URI']);
+                $category = $category_from_bd[$i]['Category'];
+                $structure = $category_from_bd[$i]['structure'];
 
-                $categories = $category[$i]['Category'];
-                $structure = $category[$i]['structure'];
-
-                if(isset($route[2])) {
-                    if(isset($route[1]) && $route[1] == $structure && $route[2] == $categories) {
+                if(isset($env['route2'])) {
+                    if(isset($env['route1']) && $env['route1'] == $structure && $env['route2'] == $category) {
                         $activist = 'active';
                     }
                     else{
@@ -305,15 +325,15 @@ EOT;
                 }
 
                 if($structure == 'blog'){
-                    $categories = $categories. '_blog';
+                    $categories = $category. '_blog';
                 }
                 else{
-                    $categories = $categories. '_forum';
+                    $categories = $category. '_forum';
                 }
 
                 $htmlburger = <<<"EOT"
 				<li class= "navbar-item p-2">
-				    <a href="/$structure/$categories" class="nav-link $activist categories__link text-nowrap">$categories</a>
+				    <a href="/$structure/$category" class="nav-link $activist categories__link text-nowrap">$categories</a>
 				</li>
 EOT;
                 $resulthtmlburger =  $resulthtmlburger.$htmlburger;
@@ -570,7 +590,7 @@ EOT;
 
         public function deleteToken() {
             global $env;
-            echo $env['token'];
+
             $file = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';  // token file
 
 
