@@ -49,7 +49,7 @@ class Model{
 
         $resultchkuser = array();
 
-        $sql = "SELECT `id`, `First name` AS `first_name`, `Last name` AS `last_name`, `status`, `logo` FROM `users` WHERE `email` = :email and `pass` = :password ";
+        $sql = "SELECT `id`, `First name` AS `first_name`, `Last name` AS `last_name`,`Nickname` AS `nickname`, `status`, `logo` FROM `users` WHERE `email` = :email and `pass` = :password ";
 
         $smtpc = $this->db->prepare($sql);
         $smtpc->bindValue(":email", $email, PDO::PARAM_STR);
@@ -78,6 +78,7 @@ class Model{
         $email = $env['email'];
         $first_name = $env['first-name'];
         $last_name = $env['last-name'];
+        $nickname = $env['nickname'];
         $birthday = $env['birthday'];
         $password = $env['password'];
         //$crypt = $env['crypt'];
@@ -96,11 +97,12 @@ class Model{
 
         elseif($ress == NULL){
 
-            $sql = "INSERT INTO `users` (`First name`,`Last name`,`birthday`,`email`,`pass` ) VALUES (:first_name,:last_name,:birthday,:email,:password)";
+            $sql = "INSERT INTO `users` (`First name`,`Last name`,`Nickname`,`birthday`,`email`,`pass` ) VALUES (:first_name,:last_name,:nickname,:birthday,:email,:password)";
 
             $smtpr = $this->db->prepare($sql);
             $smtpr->bindValue(":first_name", $first_name, PDO::PARAM_STR);
             $smtpr->bindValue(":last_name", $last_name, PDO::PARAM_STR);
+            $smtpr->bindValue(":nickname", $nickname, PDO::PARAM_STR);
             $smtpr->bindValue(":birthday", $birthday, PDO::PARAM_STR);
             $smtpr->bindValue(":email", $email, PDO::PARAM_STR);
             $smtpr->bindValue(":password", $password, PDO::PARAM_STR);

@@ -44,12 +44,12 @@
 
             if(isset($env['token']) && $env['token'] !=''){
 
-
-
                 if($userID == true) {
                     $users_logo = $this->logo;
 
                     $data_users = $this->get_decrypted_post_data();
+
+                    $this->pageData['nickname'] = $data_users['nickname'];
 
                     if ($users_logo !== null) {
                         $user_logo = $users_logo;

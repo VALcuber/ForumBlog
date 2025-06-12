@@ -20,6 +20,7 @@ class PageController extends Controller {
 	public function echo_page(){
 		global $env;
 
+
         $env['temporary'] = $env['route2'];
 
         if($env['route'] == 'blog' || $env['route'] == 'forum'){
@@ -30,6 +31,10 @@ class PageController extends Controller {
             $temporary = $env['temporary'];
 
             $smtppage = $this->model->get_page($temporary);
+var_export($smtppage['user_id']);
+            $post_author = $this->model->post_author($smtppage['user_id']);
+
+            $nickname = $env['nickname'] = $post_author['Nickname'];
 
             $pageName=$smtppage["Category"];
             $pageContent=$smtppage["Description"];
@@ -44,6 +49,7 @@ class PageController extends Controller {
                     <p class="p-2">'.
             		    $pageContent
             	    .'</p>
+                    <p class="p-1 text-right">by '.$nickname.'</p>
                   </div>
                 </div>';
         }
@@ -69,6 +75,7 @@ class PageController extends Controller {
                     <p class="p-2">'.
             		    $pageContent
             	    .'</p>
+                    <p class="p-1 text-right">by '.$nickname.'</p>
                   </div>
                 </div>';
         }
