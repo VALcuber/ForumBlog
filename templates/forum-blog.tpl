@@ -19,7 +19,7 @@
 
                         <div class="card-body">
 
-                            <h5 class="card-title mb-4">RECENT NEWS BY THIS CATEGORY</h5>
+                            <h5 class="card-title mb-4">LATEST POSTS FOR THIS CATEGORY</h5>
                             <?=$pageData['echo_latest_forum_posts']?>
                         </div>
 

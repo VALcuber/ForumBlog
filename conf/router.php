@@ -20,6 +20,7 @@ class Routing {
         if(isset($route[2])) {
             $route2 = strtok($route[2], '-');
             $env['route2'] = $route2;
+            $env['route-2'] = $route[2]; //Need for translitreverse news in PageController
         }
 
         if(isset($route[3])) {

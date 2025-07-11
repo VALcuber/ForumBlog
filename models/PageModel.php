@@ -24,11 +24,13 @@ class PageModel extends Model{
         }
         elseif ($env['route1'] == 'blog') {
 
-            $sql = "SELECT `blog_category`.`Description`, `blog`.`Category`, `blog_category`.`id`
+            $sql = "SELECT `blog_category`.`Description`, `blog`.`Category`, `blog_category`.`id`,`blog_category`.`user_id`
                         FROM `blog_category`
                             JOIN `blog`
                                 ON `blog`.`id` = `blog_category`.`Category`
-                                    WHERE `blog_category`.`Description` = :description ";
+                                	JOIN `users`
+                                		ON `users`.`id` = `blog_category`.`user_id`
+                                    		WHERE `blog_category`.`Description` = :description ";
 
         }
 
@@ -55,6 +57,8 @@ class PageModel extends Model{
         $smtppage->execute();
 
         $result = $smtppage->fetch(PDO::FETCH_ASSOC);
+
+        return ($result);
 
     }
 

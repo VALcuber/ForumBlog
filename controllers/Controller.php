@@ -22,8 +22,8 @@
 
             $signin_modal_winwow = '';
 
-            $env['active'] = 'active';
-            $this->pageData["slash"] = null;
+            $env['active'] = 'active'; // Need for working blue background on active links
+            $this->pageData["slash"] = null; // Need for linking files on different pages
 
             $this->pageData['id_login'] = $env['token'];
 
@@ -91,14 +91,14 @@
                 $user_data['user_id'] = '';
                 $signin_modal_winwow = 'data-toggle="modal" data-target="#signinModal"';
                 $this->pageData['page'] = $this->echo_form_signin();
-            }
+            } // If user unauthorised
 
             if (isset($env['route1']) && $env['route1'] == '') {
                 $active = 'active';
             } //For blue button when you are on its page
             else{
                 $active = '';
-            }
+            } // For transparent background on links
 
             if($env['act'] == 'Exit'){
                 $this->deleteToken();
@@ -111,18 +111,18 @@
 
             if(isset($env['route1']) && $env['route1'] != 'manage_users'){
                 $this->pageData['topmenu'] = $this->echo_topmenu();
-            }
+            } // For displaying top menu
 
             if(empty($env['route2']) && (($env['route1'] == 'blog' || $env['route1'] == 'forum') && empty($env['route3'])) || $env['route1'] == 'all' ){
                 $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>';
-            }  //for categories on blog and forum pages
+            }  //For categories on blog and forum pages
             else{
                 $this->pageData['script_category'] = '';
             }
 
             if($env['route1'] != 'user_profile'){
                 $this->pageData['script_profile'] = '';
-            }  //for script on profile page
+            }  //For script on profile page
 
             $this->pageData['title'] = "Forum-blog";
             /** @noinspection PhpUndefinedVariableInspection */
@@ -245,14 +245,14 @@ EOT;
 
                     if (isset($env['route1'], $env['route2'], $env['route3']) && $env['route1'] == $route_title && $env['route2'] == $category) {
                         $activist = 'active';
-                    }
+                    } // Need for displaying blue button on active page
                     else{
                         $activist = '';
                     }
 
                     if($route_title == 'blog'){
                         $categories = $category. '_blog';
-                    }
+                    } // Need for displaying correct links
                     else{
                         $categories = $category. '_forum';
                     }
@@ -290,7 +290,7 @@ EOT;
         public function echo_burger(){
             global $env;
 
-            $resulthtmlburger ="";
+            $resulthtmlburger = ""; // Need for correct work links
 
             if (isset($env['route1']) && $env['route1'] == 'all') {
                 $active = 'active';
@@ -339,6 +339,7 @@ EOT;
                 $resulthtmlburger =  $resulthtmlburger.$htmlburger;
             }
             $resulthtmlburger = $resulthtmlburger.$buttonall;
+
             return $resulthtmlburger;
         }
 

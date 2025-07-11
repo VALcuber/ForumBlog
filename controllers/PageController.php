@@ -20,18 +20,15 @@ class PageController extends Controller {
 	public function echo_page(){
 		global $env;
 
-
-        $env['temporary'] = $env['route2'];
-
         if($env['route'] == 'blog' || $env['route'] == 'forum'){
 
             $this->pageData['comments'] = $this->echo_html_comments();
             $this->pageData['forum_comments'] = '<script src="/assets/js/forum.comments.js"></script>';
 
-            $temporary = $env['temporary'];
+            $temporary = $env['route2'];
 
             $smtppage = $this->model->get_page($temporary);
-var_export($smtppage['user_id']);
+
             $post_author = $this->model->post_author($smtppage['user_id']);
 
             $nickname = $env['nickname'] = $post_author['Nickname'];
@@ -55,6 +52,7 @@ var_export($smtppage['user_id']);
         }
 
         else{
+            $nickname = "Admin";
             $this->pageData['forum_comments'] = '';
             $this->pageData['comments'] = '';
 
