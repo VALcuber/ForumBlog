@@ -30,7 +30,7 @@ class User_profileController extends Controller {
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
 
-	public function image_upload(){
+	private function image_upload(){
 
         $id = $this->get_decrypted_post_data();
         // Checking for sending file
@@ -65,7 +65,7 @@ class User_profileController extends Controller {
         }
 
     }
-    public function user_forum_posts(){
+    private function user_forum_posts(){
 
         $id = $this->get_decrypted_post_data();
 
@@ -86,7 +86,7 @@ EOT;
         }
         return $result_forum_HTML;
     }
-    public function user_blog_posts(){
+    private function user_blog_posts(){
 
         $id = $this->get_decrypted_post_data();
 

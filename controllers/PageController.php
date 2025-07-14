@@ -16,8 +16,8 @@ class PageController extends Controller {
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
-	
-	public function echo_page(){
+
+    private function echo_page(){
 		global $env;
 
         if($env['route'] == 'blog' || $env['route'] == 'forum'){
@@ -79,7 +79,7 @@ class PageController extends Controller {
         }
 	}
 
-    public function echo_html_comments(){
+    private function echo_html_comments(){
 
         return '<div>
         <ul id="messages" class=" row px-5 message">

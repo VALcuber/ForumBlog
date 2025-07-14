@@ -24,7 +24,7 @@ class ForumController extends Controller{
 
     }
 
-    public function echo_page_content() {
+    private function echo_page_content() {
 
         global $env;
 
@@ -57,7 +57,7 @@ EOT;
 
     } // Function for displaying forum
 
-    public function echo_page_titles(){
+    private function echo_page_titles(){
 
         global $env;
 
@@ -111,7 +111,7 @@ EOT;
 
     } // Function for displaying forum and button " + " with links
 
-    public function echo_latest_forum_posts(){
+    private function echo_latest_forum_posts(){
         global $env;
 
         $result = "";

@@ -24,7 +24,7 @@ class BlogController extends Controller{
 
     }
 
-    public function echo_page_content() {
+    private function echo_page_content() {
 
         global $env;
 
@@ -57,7 +57,7 @@ EOT;
 
     }  // function for blog
 
-    public function echo_page_titles(){
+    private function echo_page_titles(){
 
         global $env;
 
@@ -112,7 +112,7 @@ EOT;
 
     } // // function for blog and button " + " with links
 
-    public function echo_latest_blog_posts(){
+    private function echo_latest_blog_posts(){
         global $env;
 
         $result = "";

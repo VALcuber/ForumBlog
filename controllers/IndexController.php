@@ -21,7 +21,7 @@ class IndexController extends Controller {
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
 
-	public function echo_random_blog_topics() {
+	private function echo_random_blog_topics() {
         $resultHTML = '';
 		$blog = $this->model->blog();
 
@@ -59,7 +59,7 @@ EOT;
 		  return $resultHTML;
 	} // Function for displaying blog
 	
-	public function make_Random_Array_blog($amount, $array){
+	private function make_Random_Array_blog($amount, $array){
 	    $amount = $amount -1;
 			$randomArrayblog = array();
 			$randKeys = array_rand($array, $amount);
@@ -71,7 +71,7 @@ EOT;
 			return $randomArrayblog;
 	} // Function for displaying random elements in blog array
 	
-	public function echo_latest_news() {
+	private function echo_latest_news() {
 
 	    $resulthtmlnews = "";
 		$news = $this->model->news();
@@ -109,7 +109,7 @@ EOT;
 		return $resulthtmlnews;
 	} // Function for displaying news
 
-	public function echo_random_forum_topics() {
+	private function echo_random_forum_topics() {
 
 	    $forum = $this->model->forum();
 
@@ -146,7 +146,7 @@ EOT;
 			return $resulthtmlforum;
 	} // Function for displaying forum
 	
-	public function make_Random_Array_forum($amount, $array){
+	private function make_Random_Array_forum($amount, $array){
 	    $amount = $amount -1;
 		    $randomArrayforum = array();
 		    $randKeys = array_rand($array,$amount);

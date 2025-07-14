@@ -17,7 +17,7 @@ class All_for_certain_categoryController extends Controller{
         $this->view->render($this->pageTpl, $this->pageData);
     }
 
-    public function echo_certain_category(){
+    private function echo_certain_category(){
         global $env;
         $someresultall = "";
 

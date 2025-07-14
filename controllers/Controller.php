@@ -13,11 +13,7 @@
 			$this->model = new Model();
 		}
 
-        public function setLogo($logo) {
-            $this->logo = $logo;
-        }
-
-        public function controller(){
+        protected function controller(){
             global $env;
 
             $signin_modal_winwow = '';
@@ -136,7 +132,7 @@
 
         }
 
-        public function admin_panel(){
+        private function admin_panel(){
             /** @noinspection HtmlUnknownTarget */
             return $adminPanel = <<<"EOT"
                 <div class="admin_navbar">
@@ -225,7 +221,7 @@
 EOT;
         }
 
-        public function echo_topmenu(){
+        private function echo_topmenu(){
             global $env;
 
             $result_html_category = "";
@@ -287,7 +283,7 @@ EOT;
             return '';
         }
 
-        public function echo_burger(){
+        private function echo_burger(){
             global $env;
 
             $resulthtmlburger = ""; // Need for correct work links
@@ -343,7 +339,165 @@ EOT;
             return $resulthtmlburger;
         }
 
-        public function translit($translit) {
+        private function echo_form_signin(){
+
+            return $form_signin = <<<"EOT"
+          <h1>This is user page</h1>
+          <div class="d-flex justify-content-between">
+          <form method="post">
+
+            <button type="button" class="btn btn-secondary">Registration</button>
+
+            <input type="submit" class="btn btn-primary" name="act" value="Login"/>
+          </form>
+
+          </div>
+EOT;
+        }
+
+        private function LogIn($login){
+
+            try {
+                // Generate a secure random token and convert it to hexadecimal format
+                $token = bin2hex(random_bytes(32));
+            }
+            catch (Exception $e) {
+                // Handle the error if random_bytes() fails
+                echo "Token generation error: " . $e->getMessage();
+                // Set token to an empty string (or you can return false/null depending on logic)
+                $token = '';
+            }
+
+            $tokenFile = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';
+
+            $tokens = [];
+
+            if (file_exists($tokenFile)) {
+                $tokens = json_decode(file_get_contents($tokenFile), true);
+            }
+
+            // Удалим все старые токены для этого user_id
+            foreach ($tokens as $tk => $info) {
+                if ($info == $login) {
+                    unset($tokens[$tk]);
+                }
+            }
+
+            $tokens[$token] = $login;
+            file_put_contents($tokenFile, json_encode($tokens, JSON_PRETTY_PRINT));
+
+            return $token;
+        } // Create and bind token to user
+
+        private function load_tokens() {
+            $tokens_file = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';  // token file
+
+            if (!file_exists($tokens_file)) {
+                return [];
+            }
+
+            $json = file_get_contents($tokens_file);
+            return json_decode($json, true) ?? [];
+        } //Read token from file
+
+        private function token_check(){
+            global $env;
+            $tokens_data = key($this->load_tokens());
+
+            if (isset($tokens_data)) {
+                $env['token'] = $tokens_data;
+                return $tokens_data;
+            }
+
+            return false;
+
+        } //Check tokens
+
+        private function deleteToken() {
+            global $env;
+
+            $file = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';  // token file
+
+
+            // Check file
+            if (file_exists($file)) {
+                // Read file
+                $file_contents = file_get_contents($file);
+
+                // Decode JSON in array
+                $tokens_data = json_decode($file_contents, true);
+
+                // Check decode file
+                if ($tokens_data === null) {
+                    echo "Error reading data from file.";
+                    die;
+                }
+
+                // Token which we want to delete
+                $token_to_delete = key($tokens_data); // Token value
+
+                // Search and delete token
+                if (isset($tokens_data[$token_to_delete])) {
+                    unset($tokens_data[$token_to_delete]);  // Delete token by key
+
+                    // rewrite file with updated data
+                    file_put_contents($file, json_encode($tokens_data, JSON_PRETTY_PRINT));
+
+                }
+            }
+
+        } //Delete token
+
+        private function generate_crypto_keys(){
+            $cipher = 'AES-256-CBC'; // encrypt type
+
+            $key = hash('sha256', 'some data for key crypt');           //encrypt key
+            $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher)); //Initialization vector for random encrypt
+
+            // Save in JSON format
+            $data = [
+                'key' => base64_encode($key),
+                'iv'  => base64_encode($iv),
+            ];
+
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json', json_encode($data)); //Keys storage
+        } //Generate keys for crypt user info
+
+        private function encrypting_data($user_data) {
+
+            $this->generate_crypto_keys();
+
+            $data = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json'), true); //keys storage
+
+            $cipher = 'AES-256-CBC'; // encrypt type
+
+            $key = base64_decode($data['key']);
+            $iv = base64_decode($data['iv']);
+
+            foreach ($user_data as $k => $v) {
+                if (!mb_check_encoding($v, 'UTF-8')) {
+                    echo "Error with key [$k]: not UTF-8<br>";
+                }
+            } //Check encoding type
+
+            $json_data = json_encode($user_data, JSON_UNESCAPED_UNICODE);
+
+            if ($json_data === false) {
+                echo 'JSON error: ' . json_last_error_msg();
+                return;
+            } //Check on JSON errors
+
+            $encrypted = openssl_encrypt($json_data, $cipher, $key, 0, $iv);
+
+            if ($encrypted === false) {
+                echo 'Encoding error!';
+                return;
+            } //Check on encoding errors
+
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypt_data.json', $encrypted); // Encrypting data storage
+        } //Crypt user info using keys
+
+        protected function translit($translit) {
 
             $translit = strip_tags($translit); // Deleting HTML-tegs
             $translit = str_replace(array("\n", "\r"), " ", $translit); // remove carriage return
@@ -431,7 +585,7 @@ EOT;
             return $translit; // return the result
         }
 
-        public function translit_reverse($translit_reverse) {
+        protected function translit_reverse($translit_reverse) {
 
             /** @noinspection PhpDuplicateArrayKeysInspection */
             $translit_reverse = strtr($translit_reverse, array(
@@ -515,165 +669,7 @@ EOT;
             return $translit_reverse; // return the result
         }
 
-        public function echo_form_signin(){
-
-            return $form_signin = <<<"EOT"
-          <h1>This is user page</h1>
-          <div class="d-flex justify-content-between">
-          <form method="post">
-
-            <button type="button" class="btn btn-secondary">Registration</button>
-
-            <input type="submit" class="btn btn-primary" name="act" value="Login"/>
-          </form>
-
-          </div>
-EOT;
-        }
-
-        public function LogIn($login){
-
-            try {
-                // Generate a secure random token and convert it to hexadecimal format
-                $token = bin2hex(random_bytes(32));
-            }
-            catch (Exception $e) {
-                // Handle the error if random_bytes() fails
-                echo "Token generation error: " . $e->getMessage();
-                // Set token to an empty string (or you can return false/null depending on logic)
-                $token = '';
-            }
-
-            $tokenFile = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';
-
-            $tokens = [];
-
-            if (file_exists($tokenFile)) {
-                $tokens = json_decode(file_get_contents($tokenFile), true);
-            }
-
-            // Удалим все старые токены для этого user_id
-            foreach ($tokens as $tk => $info) {
-                if ($info == $login) {
-                    unset($tokens[$tk]);
-                }
-            }
-
-            $tokens[$token] = $login;
-            file_put_contents($tokenFile, json_encode($tokens, JSON_PRETTY_PRINT));
-
-            return $token;
-        } // Create and bind token to user
-
-        public function load_tokens() {
-            $tokens_file = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';  // token file
-
-            if (!file_exists($tokens_file)) {
-                return [];
-            }
-
-            $json = file_get_contents($tokens_file);
-            return json_decode($json, true) ?? [];
-        } //Read token from file
-
-        public function token_check(){
-            global $env;
-            $tokens_data = key($this->load_tokens());
-
-            if (isset($tokens_data)) {
-                $env['token'] = $tokens_data;
-                return $tokens_data;
-            }
-
-            return false;
-
-        } //Check tokens
-
-        public function deleteToken() {
-            global $env;
-
-            $file = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/tokens.json';  // token file
-
-
-            // Check file
-            if (file_exists($file)) {
-                // Read file
-                $file_contents = file_get_contents($file);
-
-                // Decode JSON in array
-                $tokens_data = json_decode($file_contents, true);
-
-                // Check decode file
-                if ($tokens_data === null) {
-                    echo "Error reading data from file.";
-                    die;
-                }
-
-                // Token which we want to delete
-                $token_to_delete = key($tokens_data); // Token value
-
-                // Search and delete token
-                if (isset($tokens_data[$token_to_delete])) {
-                    unset($tokens_data[$token_to_delete]);  // Delete token by key
-
-                    // rewrite file with updated data
-                    file_put_contents($file, json_encode($tokens_data, JSON_PRETTY_PRINT));
-
-                }
-            }
-
-        } //Delete token
-
-        private function generate_crypto_keys(){
-            $cipher = 'AES-256-CBC'; // encrypt type
-
-            $key = hash('sha256', 'some data for key crypt');           //encrypt key
-            $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher)); //Initialization vector for random encrypt
-
-            // Save in JSON format
-            $data = [
-                'key' => base64_encode($key),
-                'iv'  => base64_encode($iv),
-            ];
-
-            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json', json_encode($data)); //Keys storage
-        } //Generate keys for crypt user info
-
-        public function encrypting_data($user_data) {
-
-            $this->generate_crypto_keys();
-
-            $data = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json'), true); //keys storage
-
-            $cipher = 'AES-256-CBC'; // encrypt type
-
-            $key = base64_decode($data['key']);
-            $iv = base64_decode($data['iv']);
-
-            foreach ($user_data as $k => $v) {
-                if (!mb_check_encoding($v, 'UTF-8')) {
-                    echo "Error with key [$k]: not UTF-8<br>";
-                }
-            } //Check encoding type
-
-            $json_data = json_encode($user_data, JSON_UNESCAPED_UNICODE);
-
-            if ($json_data === false) {
-                echo 'JSON error: ' . json_last_error_msg();
-                return;
-            } //Check on JSON errors
-
-            $encrypted = openssl_encrypt($json_data, $cipher, $key, 0, $iv);
-
-            if ($encrypted === false) {
-                echo 'Encoding error!';
-                return;
-            } //Check on encoding errors
-
-            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypt_data.json', $encrypted); // Encrypting data storage
-        } //Crypt user info using keys
-
-        public function get_decrypted_post_data() {
+        protected function get_decrypted_post_data() {
 
             $crypto_file = $_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json';
 
@@ -714,5 +710,9 @@ EOT;
 
             return $data;
         }  //Decrypt user ino for future compare
+
+        protected function setLogo($logo) {
+            $this->logo = $logo;
+        }
 
 	}

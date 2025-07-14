@@ -28,7 +28,7 @@ class ManageUsersController extends Controller{
 
     }
 
-    public function echo_users() {
+    private function echo_users() {
 
         $resultHTML = "";
         $users = $this->model->GetUsers();

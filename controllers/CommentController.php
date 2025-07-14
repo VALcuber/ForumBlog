@@ -30,7 +30,7 @@ class CommentController extends Controller{
         }
     }
 
-    public function add_comment(){
+    private function add_comment(){
         return ($this->model->add_comments());
     }
 }

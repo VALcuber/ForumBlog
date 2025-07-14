@@ -20,7 +20,7 @@ class Categories_allController extends Controller {
 
     }
 
-    public function echo_pagealltitles(){
+    private function echo_pagealltitles(){
 
         global $env;
 
