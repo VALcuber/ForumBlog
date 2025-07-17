@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `blog_category` (
 REPLACE INTO `blog_category` (`id`, `Category`, `Description`, `user_id`) VALUES
 	(1, 1, 'Strange things', 2),
 	(2, 2, 'Dark Souls', 2),
-	(3, 2, 'Dota', 2);
+	(3, 2, 'Dota', 5);
 
 -- Дамп структуры для таблица epiz_27717656_forumblog.forum
 CREATE TABLE IF NOT EXISTS `forum` (
@@ -122,9 +122,9 @@ CREATE TABLE IF NOT EXISTS `forum_comments` (
 
 -- Дамп данных таблицы epiz_27717656_forumblog.forum_comments: ~3 rows (приблизительно)
 REPLACE INTO `forum_comments` (`id`, `Comment`, `Forum_page`, `user_id`, `structure`) VALUES
-	(1, 'First comment', 4, 2, 'forum'),
-	(2, 'Second comment', 4, 2, 'forum'),
-	(3, 'Third comment', 4, 2, 'forum');
+	(1, 'First comment', 2, 2, 'forum'),
+	(2, 'Second comment', 3, 2, 'forum'),
+	(3, 'Third comment', 2, 2, 'forum');
 
 -- Дамп структуры для таблица epiz_27717656_forumblog.news
 CREATE TABLE IF NOT EXISTS `news` (
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Дамп данных таблицы epiz_27717656_forumblog.news: ~11 rows (приблизительно)
+-- Дамп данных таблицы epiz_27717656_forumblog.news: ~9 rows (приблизительно)
 REPLACE INTO `news` (`id`, `name`, `content`) VALUES
 	(8, 'Хостинг', 'Cайт перенесен на хостинг с локального хостинга'),
 	(9, 'Вывод топиков', 'Вывод топиков теперь доступен на сайте'),
@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `First name` text,
   `Last name` text NOT NULL,
+  `Nickname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'Random user',
   `birthday` text NOT NULL,
   `email` text NOT NULL,
   `pass` text NOT NULL,
@@ -188,9 +189,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- Дамп данных таблицы epiz_27717656_forumblog.users: ~2 rows (приблизительно)
-REPLACE INTO `users` (`id`, `First name`, `Last name`, `birthday`, `email`, `pass`, `logo`, `status`) VALUES
-	(2, 'Sviatoslav', 'Komputerz', '1994-03-26', 'lordiccat@gmail.com', '159159', '../assets/uploads/hortitsa_1943_god.jpg', 'admin'),
-	(5, 'Kirill', 'Kirillovich', '0001-01-01', 'asfdfs@sdfsfesfe', '123456789', 'none', 'user');
+REPLACE INTO `users` (`id`, `First name`, `Last name`, `Nickname`, `birthday`, `email`, `pass`, `logo`, `status`) VALUES
+	(2, 'Sviatoslav', 'Komputerz', 'Admin', '1994-03-26', 'lordiccat@gmail.com', '159159', '/assets/uploads/hortitsa_1943_god.jpg', 'admin'),
+	(5, 'Kirill', 'Kirillovich', 'Tozoro', '0001-01-01', 'asfdfs@sdfsfesfe', '123456789', 'none', 'user');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
