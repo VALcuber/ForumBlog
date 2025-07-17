@@ -4,6 +4,5 @@ Tasks:
 
  - Change links on blog and forum columns
 
- - Change db.php. Need change "CREATE DATABASE IF NOT EXISTS"
+ }
 
- - Update database file in project core on fresh one

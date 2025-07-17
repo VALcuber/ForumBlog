@@ -27,9 +27,9 @@ $env['token'] = $_POST['token'] ?? '';
 
 // Downloading settings
 
+include PATH_C. 'Controller.php'; // Connecting controller
 include PATH_M. 'Model.php';
 include PATH_V. 'View.php';
-include PATH_C. 'Controller.php'; // Connecting controller
 
 Routing::buildRoute();
 
