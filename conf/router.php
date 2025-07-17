@@ -80,7 +80,7 @@ class Routing {
                 $controllerName = "All_for_certain_categoryController";
                 $modelName = "All_for_certain_categoryModel";
             }
-            else{
+            elseif(!empty($route[1]) && empty($route[2])){
                 throw new Exception("Page", 404);
             }
 
