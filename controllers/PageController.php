@@ -29,26 +29,33 @@ class PageController extends Controller {
 
             $smtppage = $this->model->get_page($temporary);
 
-            $post_author = $this->model->post_author($smtppage['user_id']);
+            if($smtppage != NULL ) {
 
-            $nickname = $env['nickname'] = $post_author['Nickname'];
+                $post_author = $this->model->post_author($smtppage['user_id']);
 
-            $pageName=$smtppage["Category"];
-            $pageContent=$smtppage["Description"];
+                $nickname = $env['nickname'] = $post_author['Nickname'];
 
-            return '<div class="card">
-                  <div class="card-header">
-                    <h2 class="text-center p-2">'.
-                        $pageName
-                    .'</h2>
-                  </div>
-                  <div class="card-body">
-                    <p class="p-2">'.
-            		    $pageContent
-            	    .'</p>
-                    <p class="p-1 text-right">by '.$nickname.'</p>
-                  </div>
-                </div>';
+                $pageName=$smtppage["Category"];
+                $pageContent=$smtppage["Description"];
+
+                return '<div class="card">
+                      <div class="card-header">
+                        <h2 class="text-center p-2">'.
+                            $pageName
+                        .'</h2>
+                      </div>
+                      <div class="card-body">
+                        <p class="p-2">'.
+                            $pageContent
+                        .'</p>
+                        <p class="p-1 text-right">by '.$nickname.'</p>
+                      </div>
+                    </div>';
+            }
+            else{
+                throw new Exception("Page", 404);
+            }
+
         }
 
         else{
@@ -60,22 +67,28 @@ class PageController extends Controller {
 
             $smtppage = $this->model->get_page($temporary);
 
-            $pageName=$smtppage["name"];
-            $pageContent=$smtppage["content"];
+            if($smtppage != NULL ) {
 
-            return '<div class="card">
+                $pageName = $smtppage["name"];
+                $pageContent = $smtppage["content"];
+
+                return '<div class="card">
                   <div class="card-header">
-                    <h2 class="text-center p-2">'.
-                        $pageName
-                    .'</h2>
+                    <h2 class="text-center p-2">' .
+                    $pageName
+                    . '</h2>
                   </div>
                   <div class="card-body">
-                    <p class="p-2">'.
-            		    $pageContent
-            	    .'</p>
-                    <p class="p-1 text-right">by '.$nickname.'</p>
+                    <p class="p-2">' .
+                    $pageContent
+                    . '</p>
+                    <p class="p-1 text-right">by ' . $nickname . '</p>
                   </div>
                 </div>';
+            }
+            else{
+                throw new Exception("Page", 404);
+            }
         }
 	}
 

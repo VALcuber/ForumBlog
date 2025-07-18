@@ -13,7 +13,7 @@ class Routing {
             $action = "index";
 
             $route = explode("/", $_SERVER['REQUEST_URI']);
-
+//var_export($route);
             if (isset($route[1])) {
                 $route1 = strtok($route[1], '-');
                 $env['route1'] = $route1;
@@ -48,26 +48,36 @@ class Routing {
                 $controllerName = "User_profileController";
                 $modelName = "User_profileModel";
             }
+
             elseif (isset($route[1]) && $route[1] == 'manage_users') {
                 $controllerName = "ManageUsersController";
                 $modelName = "ManageUsersModel";
             }
+
             elseif ($route[1] == 'news' && isset($route[2])) {
                 $controllerName = "PageController";
                 $modelName = "PageModel";
             }
+
             elseif ((isset($route[1]) && ($route[1] == 'blog')) && empty($route[2])) {
                 $controllerName = "BlogController";
                 $modelName = "BlogModel";
             }
+
             elseif ((isset($route[1]) && ($route[1] == 'forum')) && empty($route[2])) {
                 $controllerName = "ForumController";
                 $modelName = "ForumModel";
             }
+            elseif (!empty($route[1]) && !in_array($route[1], ['forum', 'blog', 'all'], true) && empty($route[2])) {
+                $controllerName = "ForumBlogController";
+                $modelName = "ForumBlogModel";
+            }
+
             elseif (isset($route[1]) && $route[1] == 'all') {
                 $controllerName = "Categories_allController";
                 $modelName = "Categories_allModel";
             }
+
             elseif ((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[3])) {
                 $controllerName = "PageController";
                 $modelName = "PageModel";
@@ -76,18 +86,20 @@ class Routing {
                     $modelName = "CommentModel";
                 }
             }
+
             elseif (isset($route[2]) && $route[2] != 'CommentController' && !isset($route[3])) {
                 $controllerName = "All_for_certain_categoryController";
                 $modelName = "All_for_certain_categoryModel";
             }
+
             elseif(!empty($route[1]) && empty($route[2])){
                 throw new Exception("Page", 404);
             }
 
             /** @noinspection PhpIncludeInspection */
-            include PATH_C . $controllerName . ".php"; //IndexController.php
+            include PATH_C . $controllerName . ".php";      //IndexController.php
             /** @noinspection PhpIncludeInspection */
-            include PATH_M . $modelName . ".php"; //IndexModel.php
+            include PATH_M . $modelName . ".php";           //IndexModel.php
 
             $controller = new $controllerName();
             $controller->$action();

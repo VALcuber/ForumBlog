@@ -28,9 +28,7 @@ class Categories_allController extends Controller {
 
         $page_all_echo_0 = '<div class="row px-4 py-2">
 
-                    <div class="col-8 px-0">
-
-                      ';
+                    <div class="col-8 px-0">';
 
         $page_all_echo_1 = '
 
