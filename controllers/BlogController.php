@@ -19,7 +19,7 @@ class BlogController extends Controller{
 
         $this->pageData['forum_titles'] = $this->echo_page_titles();
         $this->pageData['echo_latest_forum_posts'] = $this->echo_latest_blog_posts();
-        $this->pageData['route'] = strtoupper($env['route']);
+        $this->pageData['route'] = strtoupper($env['route1']);
         $this->view->render($this->pageTpl, $this->pageData);
 
     }
@@ -30,7 +30,7 @@ class BlogController extends Controller{
 
         $result = "";
 
-        $route_title = $env['route'];
+        $route_title = $env['route1'];
 
         $all_titles = $this->model->get_page_topic();
 
@@ -61,7 +61,7 @@ EOT;
 
         global $env;
 
-        $category = ucfirst($env['route']);
+        $category = ucfirst($env['route1']);
 
         $titles = <<<"EOT"
                 <h4 class="py-2">$category</h4>
@@ -117,7 +117,7 @@ EOT;
 
         $result = "";
 
-        $route_title =$env['route'];
+        $route_title =$env['route1'];
 
         $latest_blog_posts = $this->model->latest_blog_posts();
 

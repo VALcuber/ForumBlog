@@ -30,18 +30,6 @@ class Routing {
                 $env['route3'] = $route3;
             }
 
-            if ($route[1] == 'blog') {
-                $env['route'] = 'blog';
-            }
-
-            if ($route[1] == 'forum') {
-                $env['route'] = 'forum';
-            }
-
-            if ($route[1] == 'news') {
-                $env['route'] = 'news';
-            }
-
             /* Define controller */
 
             if ($route[1] == 'user_profile') {

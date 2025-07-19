@@ -43,14 +43,13 @@ class IndexController extends Controller {
         for($i = 0; $i < $arrSize; $i++){
 
                  $blogName = $resultblog[$i]["Category"];
-                 $blogContent = $resultblog[$i]["Category_Description"];
 
                  $htmlblog = <<<"EOT"
 		        	  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				        <h5 class="card-title">$blogName</h5>
-				        <a href="/blog/$blogName/$blogContent" class="card-link">Go to category</a>
+				        <a href="/blog/$blogName" class="card-link">Go to category</a>
 			          </div>
-			          <p class="card-text flex-grow-1">$blogContent</p>
+			          <p class="card-text flex-grow-1">$blogName  Category</p>
 EOT;
                  $resultHTML = $resultHTML . $htmlblog;
 
@@ -131,14 +130,13 @@ EOT;
 		    }
             else {
                 $forumName = $resultforum[$i]["Category"];
-                $forumContent = $resultforum[$i]["Category_Description"];
 
                 $htmlforum = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
 				<h5 class="card-title">$forumName</h5>
-				<a href="/forum/$forumName/$forumContent" class="card-link">Go to post</a>
+				<a href="/forum/$forumName" class="card-link">Go to post</a>
 			  </div>
-			  <p class="card-text flex-grow-1">$forumContent</p>
+			  <p class="card-text flex-grow-1">$forumName Category</p>
 EOT;
                 $resulthtmlforum = $resulthtmlforum . $htmlforum;
             }

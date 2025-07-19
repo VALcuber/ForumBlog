@@ -1,10 +1,6 @@
 Tasks:
 
- - Don't work routing when click on Games on page All
-
- - Change links on blog and forum columns
-
- - Fix button on ForumblogController
+    Add all sait setings on admin panel
 
  }
 

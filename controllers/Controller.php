@@ -109,7 +109,13 @@
                 $this->pageData['topmenu'] = $this->echo_topmenu();
             } // For displaying top menu
 
-            if(empty($env['route2']) && (($env['route1'] == 'blog' || $env['route1'] == 'forum') && empty($env['route3'])) || $env['route1'] == 'all' ){
+            if(empty($env['route2']) &&
+                (($env['route1'] == 'blog' || $env['route1'] == 'forum') &&
+                    (empty($env['route3']) || $env['route1'] == 'all' )) ||
+                        (!empty($env['route1']) &&
+                            ($env['route1'] != 'forum' ||  $env['route1'] != 'blog' || $env['route1'] == 'all')
+                        )
+            ){
                 $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>';
             }  //For categories on blog and forum pages
             else{
