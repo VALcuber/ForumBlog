@@ -211,6 +211,46 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+// Главная функция для работы с переключателем админ панели
+document.addEventListener('DOMContentLoaded', function() {
+  const toggle = document.getElementById('adminPanelToggle');
+  const panel = document.getElementById('adminPanel');
+
+  // Функция для показа панели
+  function showPanel() {
+    panel.classList.remove('hidden');
+    localStorage.setItem('adminPanelVisible', 'true');
+    console.log('Админ панель включена');
+  }
+
+  // Функция для скрытия панели
+  function hidePanel() {
+    panel.classList.add('hidden');
+    localStorage.setItem('adminPanelVisible', 'false');
+    console.log('Админ панель отключена');
+  }
+
+  // Восстанавливаем состояние при загрузке страницы
+  const savedState = localStorage.getItem('adminPanelVisible');
+  console.log('Сохраненное состояние:', savedState);
+
+  if (savedState === 'true') {
+    toggle.checked = true;
+    showPanel();
+  } else {
+    toggle.checked = false;
+    hidePanel();
+  }
+
+  // Обработчик переключения
+  toggle.addEventListener('change', function() {
+    if (this.checked) {
+      showPanel();
+    } else {
+      hidePanel();
+    }
+  });
+});
 //--------------------------------------------------------------------------------------------------------------------------------------------------------//
 /*
 function removeAdd(){

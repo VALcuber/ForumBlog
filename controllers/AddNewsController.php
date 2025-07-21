@@ -16,6 +16,7 @@ class AddNewsController extends Controller {
 
         if($env['act'] == 'Post-NEWS'){
             $this->model->post_news();
+            header("Location: /");
         }
 
         $this->view->render($this->pageTpl, $this->pageData);

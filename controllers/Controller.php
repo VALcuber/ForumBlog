@@ -71,9 +71,8 @@
 
                     if ($data_users['status'] == 'admin') {
                         $adminPanel = $this->admin_panel();
-                    }
-                    else {
-                        $adminPanel = '';
+                        $admin_panel_switch = $this->admin_panel_switch();
+
                     }
                 }
 
@@ -83,6 +82,7 @@
                 $this->pageData['id_state'] = 'no_login';
                 $result_Fn_Ln_arr = 'Log in';
                 $adminPanel = '';
+                $admin_panel_switch = '';
                 $user_data['status'] = 'user';
                 $user_data['user_id'] = '';
                 $signin_modal_winwow = 'data-toggle="modal" data-target="#signinModal"';
@@ -129,11 +129,11 @@
             $this->pageData['title'] = "Forum-blog";
             /** @noinspection PhpUndefinedVariableInspection */
             $this->pageData['panel'] = $adminPanel;
+            $this->pageData['admin_panel_switch'] = $admin_panel_switch;
             /** @noinspection PhpUndefinedVariableInspection */
             $this->pageData['check'] = $result_Fn_Ln_arr;
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['active'] = $active;
-            $this->pageData['admin-styles'] = '';
             $this->pageData['burger'] = $this->echo_burger();
 
         }
@@ -141,7 +141,7 @@
         private function admin_panel(){
             /** @noinspection HtmlUnknownTarget */
             return $adminPanel = <<<"EOT"
-                <div class="admin_navbar">
+                <div id="adminPanel" class="admin_navbar admin-panel hidden">
                 
                   <div class="admin_dropdown">
                   
@@ -721,4 +721,16 @@ EOT;
             $this->logo = $logo;
         }
 
+        protected function admin_panel_switch(){
+            return $adminPanel = <<<"EOT"
+                                        <div class="admin-toggle">
+                                            <label class="switch">
+                                                <input type="checkbox" id="adminPanelToggle">
+                                                <span class="slider"></span>
+                                            </label>
+                                            <span class="toggle-label"></br>Admin Panel</span>
+                                        </div>
+EOT;
+
+        }
 	}

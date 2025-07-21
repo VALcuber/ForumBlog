@@ -13,7 +13,7 @@ class Routing {
             $action = "index";
 
             $route = explode("/", $_SERVER['REQUEST_URI']);
-//var_export($route);
+
             if (isset($route[1])) {
                 $route1 = strtok($route[1], '-');
                 $env['route1'] = $route1;
@@ -37,6 +37,10 @@ class Routing {
                 $modelName = "User_profileModel";
             }
 
+            elseif (isset($route[1]) && $route[1] == 'AddNews') {
+                $controllerName = "AddNewsController";
+                $modelName = "AddNewsModel";
+            }
             elseif (isset($route[1]) && $route[1] == 'manage_users') {
                 $controllerName = "ManageUsersController";
                 $modelName = "ManageUsersModel";

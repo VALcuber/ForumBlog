@@ -11,6 +11,7 @@
                   </label>
                   <input id="file-upload" type="file" name="image" accept="image/*" onchange="previewImage(event)">
               </form>
+              <?= $pageData['admin_panel_switch'] ?>
           </div>
 
           <div class="col d-flex flex-column">
