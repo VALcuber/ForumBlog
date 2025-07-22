@@ -49,8 +49,7 @@
 
                     if ($users_logo !== null) {
                         $user_logo = $users_logo;
-                    }
-                    else {
+                    } else {
                         $user_logo = $this->model->check_logo($data_users['id']);
                     }
 
@@ -60,8 +59,7 @@
                         $this->pageData['id_state'] = 'login';
                         $result_Fn_Ln_arr = $Fn['0'] . $Ln['0'];
 
-                    }
-                    else {
+                    } else {
                         $result_Fn_Ln_arr = '<img class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" src="' . $user_logo['logo'] . '">';
                         $this->pageData['id_state'] = 'login';
                     }
@@ -70,12 +68,17 @@
                     $this->pageData['user_menu_window'] = $user_menu_winwow;
 
                     if ($data_users['status'] == 'admin') {
+                        // Управление классом hidden через cookie
+                        if (isset($_COOKIE['admin_panel']) && $_COOKIE['admin_panel'] == '0') {
+                            $this->pageData['admin_panel_hidden'] = 'hidden';
+                        }
+                        else {
+                            $this->pageData['admin_panel_hidden'] = '';
+                        }
                         $adminPanel = $this->admin_panel();
                         $admin_panel_switch = $this->admin_panel_switch();
-
                     }
                 }
-
             } //Check token
             else{
                 $this->pageData['user_menu_window'] = '';
@@ -114,8 +117,7 @@
                     (empty($env['route3']) || $env['route1'] == 'all' )) ||
                         (!empty($env['route1']) &&
                             ($env['route1'] != 'forum' ||  $env['route1'] != 'blog' || $env['route1'] == 'all')
-                        )
-            ){
+                        )) {
                 $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>';
             }  //For categories on blog and forum pages
             else{
@@ -139,9 +141,9 @@
         }
 
         private function admin_panel(){
-            /** @noinspection HtmlUnknownTarget */
-            return $adminPanel = <<<"EOT"
-                <div id="adminPanel" class="admin_navbar admin-panel hidden">
+            $admin_panel_hidden = $this->pageData['admin_panel_hidden'];
+            return $adminPanel =
+                '<div id="adminPanel" class="admin_navbar admin-panel '.$admin_panel_hidden.'">
                 
                   <div class="admin_dropdown">
                   
@@ -223,8 +225,7 @@
                     
                   </div> 
                   
-                </div>
-EOT;
+                </div>';
         }
 
         private function echo_topmenu(){
