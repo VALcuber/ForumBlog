@@ -105,6 +105,16 @@ class DB{
 
          )";
         $conn->query($sql);
+        $sql = "CREATE TABLE IF NOT EXISTS `settings` (
+                                                        id INT AUTO_INCREMENT,
+                                                        section VARCHAR(50) NOT NULL,
+                                                        name VARCHAR(50) NOT NULL,
+                                                        value TEXT NOT NULL,
+                                                        UNIQUE KEY (section, name),
+                                                        PRIMARY KEY (`id`) USING BTREE
+        
+        )";
+$conn->query($sql);
         return $conn;
 
 	}

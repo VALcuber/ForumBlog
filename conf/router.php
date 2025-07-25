@@ -51,6 +51,11 @@ class Routing {
                 $modelName = "PageModel";
             }
 
+            elseif($route[1] == 'settings'){
+                $controllerName = 'SettingsController';
+                $modelName = "SettingsModel";
+            }
+
             elseif ((isset($route[1]) && ($route[1] == 'blog')) && empty($route[2])) {
                 $controllerName = "BlogController";
                 $modelName = "BlogModel";
