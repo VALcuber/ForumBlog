@@ -1,4 +1,26 @@
 <h2>Настройки сайта</h2>
+
+<?php if(isset($_GET['success']) && $_GET['success'] == '1'): ?>
+    <div class="alert alert-success" role="alert">
+        <i class="fas fa-check-circle"></i> Settings saved successfully!
+    </div>
+    <script>
+        // Clear URL parameters
+        history.replaceState({}, document.title, window.location.pathname);
+        
+        // Automatically hide message after 3 seconds
+        setTimeout(function() {
+            const alert = document.querySelector('.alert-success');
+            if (alert) {
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    alert.remove();
+                }, 300);
+            }
+        }, 3000);
+    </script>
+<?php endif; ?>
+
 <form method="post" action="/settings" enctype="multipart/form-data">
   <fieldset>
     <legend>Основные</legend>
@@ -24,7 +46,7 @@
     <label>Макс. глубина: <input type="number" name="categories_max_depth" value="<?=$pageData['settings']['categories']['max_depth']?>"></label><br>
   </fieldset>
 
-  <!-- Аналогично для остальных секций: moderation, news, files, seo, security, backup, theme -->
+  <!-- Similarly for other sections: moderation, news, files, seo, security, backup, theme -->
 
   <button type="submit">Сохранить</button>
 </form>

@@ -16,7 +16,14 @@ class AddNewsController extends Controller {
 
         if($env['act'] == 'Post-NEWS'){
             $this->model->post_news();
-            header("Location: /");
+            // Use PRG pattern - redirect after POST
+            header("Location: /?success=news_added");
+            exit; // Important to add exit after redirect
+        }
+
+        // Show success message if exists
+        if(isset($_GET['success']) && $_GET['success'] == 'news_added') {
+            $this->pageData['success_message'] = "News added successfully!";
         }
 
         $this->view->render($this->pageTpl, $this->pageData);

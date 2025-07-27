@@ -14,14 +14,22 @@ class ForumController extends Controller{
         global $env;
 
         $this->controller();
-        if($env['act'] == 'Post')
+        if($env['act'] == 'Post') {
             $this->model->add_forum_content();
+            // Use PRG pattern - redirect after POST
+            header("Location: /" . $env['route1'] . "?success=post_added");
+            exit; // Prevent form resubmission
+        }
+
+        // Show success message if exists
+        if(isset($_GET['success']) && $_GET['success'] == 'post_added') {
+            $this->pageData['success_message'] = "Post added successfully!";
+        }
 
         $this->pageData['forum_titles'] = $this->echo_page_titles();
         $this->pageData['echo_latest_forum_posts'] = $this->echo_latest_forum_posts();
         $this->pageData['route'] = strtoupper($env['route1']);
         $this->view->render($this->pageTpl, $this->pageData);
-
     }
 
     private function echo_page_content() {

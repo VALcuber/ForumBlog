@@ -45,7 +45,7 @@ class All_for_certain_categoryController extends Controller{
                     <ul class="category-list p-0">
 EOT;
 
-            $env['all_title'] =$env['route2'];
+            $env['all_title'] = $env['route2'];
 
             $all = $this->model->get_all_subcategories();
 

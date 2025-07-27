@@ -20,9 +20,9 @@ class Routing {
             }
 
             if (isset($route[2])) {
-                $route2 = strtok($route[2], '-');
+                $route2 = urldecode(strtok($route[2], '-'));
                 $env['route2'] = $route2;
-                $env['route-2'] = $route[2]; // Need for translitreverse news in PageController
+                $env['route-2'] = urldecode($route[2]); // Need for translitreverse news in PageController
             }
 
             if (isset($route[3])) {
@@ -45,26 +45,60 @@ class Routing {
                 $controllerName = "ManageUsersController";
                 $modelName = "ManageUsersModel";
             }
+            elseif (isset($route[1]) && $route[1] == 'admin') {
+                $controllerName = "AdminController";
+                $modelName = "AdminModel";
+                
+                // Determine action for admin panel
+                if (isset($route[2])) {
+                    switch ($route[2]) {
+                        case 'content':
+                            $action = "content";
+                            break;
+                        case 'users':
+                            $action = "users";
+                            break;
+                        case 'settings':
+                            $action = "settings";
+                            break;
+                        case 'reports':
+                            $action = "reports";
+                            break;
+                        case 'ajax':
+                            $action = "ajax";
+                            break;
+                        default:
+                            $action = "index";
+                    }
+                } else {
+                    $action = "index";
+                }
+            }
+            elseif($route[1] == 'settings' && !isset($route[2])){
+                $controllerName = 'SettingsController';
+                $modelName = "SettingsModel";
+            }
 
             elseif ($route[1] == 'news' && isset($route[2])) {
                 $controllerName = "PageController";
                 $modelName = "PageModel";
             }
 
-            elseif($route[1] == 'settings'){
-                $controllerName = 'SettingsController';
-                $modelName = "SettingsModel";
+            elseif ((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && empty($route[2])) {
+                if($route[1] == 'blog'){
+                    $controllerName = "BlogController";
+                    $modelName = "BlogModel";
+                }
+                elseif($route[1] == 'forum'){
+                    $controllerName = "ForumController";
+                    $modelName = "ForumModel";
+                }
             }
-
-            elseif ((isset($route[1]) && ($route[1] == 'blog')) && empty($route[2])) {
-                $controllerName = "BlogController";
-                $modelName = "BlogModel";
-            }
-
+/*
             elseif ((isset($route[1]) && ($route[1] == 'forum')) && empty($route[2])) {
                 $controllerName = "ForumController";
                 $modelName = "ForumModel";
-            }
+            }*/
             elseif (!empty($route[1]) && !in_array($route[1], ['forum', 'blog', 'all'], true) && empty($route[2])) {
                 $controllerName = "ForumBlogController";
                 $modelName = "ForumBlogModel";
@@ -89,9 +123,9 @@ class Routing {
                 $modelName = "All_for_certain_categoryModel";
             }
 
-            elseif(!empty($route[1]) && empty($route[2])){
+/*            elseif(!empty($route[1]) && empty($route[2])){
                 throw new Exception("Page", 404);
-            }
+            }*/
 
             /** @noinspection PhpIncludeInspection */
             include PATH_C . $controllerName . ".php";      //IndexController.php

@@ -7,7 +7,17 @@ class ForumBlogModel extends Model{
 
         $result_page_all = array();
 
-        $sql = "SELECT `Category`, `structure` FROM `blog` WHERE `Category` = :route UNION ALL SELECT `Category`, `structure` FROM `forum` WHERE `Category` = :route";
+        $sql = "SELECT b.structure, b.Category, bc.id, bc.Description, bc.user_id
+                    FROM blog_category bc
+                        JOIN blog b ON bc.Category = b.id
+                            WHERE b.Category = :route
+
+                UNION ALL
+
+                SELECT f.structure, f.Category, fc.id, fc.Description, fc.user_id
+                    FROM forum_category fc
+                        JOIN forum f ON fc.Category = f.id
+                            WHERE f.Category = :route";
 
         $page_all = $this->db->prepare($sql);
         $page_all->bindValue(":route", $route, PDO::PARAM_STR);

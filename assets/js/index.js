@@ -210,50 +210,57 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
-
-// Главная функция для работы с переключателем админ панели
+// Admin panel toggle functionality
 document.addEventListener('DOMContentLoaded', function() {
-  const toggle = document.getElementById('adminPanelToggle');
-  const panel = document.getElementById('adminPanel');
-
-  // Функция для показа панели
-  function showPanel() {
-    panel.classList.remove('hidden');
-    localStorage.setItem('adminPanelVisible', 'true');
-    console.log('Админ панель включена');
-  }
-
-  // Функция для скрытия панели
-  function hidePanel() {
-    panel.classList.add('hidden');
-    localStorage.setItem('adminPanelVisible', 'false');
-    console.log('Админ панель отключена');
-  }
-
-  // Восстанавливаем состояние при загрузке страницы
-  const savedState = localStorage.getItem('adminPanelVisible');
-  console.log('Сохраненное состояние:', savedState);
-
-  if (savedState === 'true') {
-    toggle.checked = true;
-    showPanel();
-  } else {
-    toggle.checked = false;
-    hidePanel();
-  }
-
-  // Обработчик переключения
-  toggle.addEventListener('change', function() {
-    if (this.checked) {
+  const adminToggle = document.getElementById('adminPanelToggle');
+  const adminPanel = document.getElementById('adminPanel');
+  
+  if (adminToggle && adminPanel) {
+    console.log('Admin toggle found:', adminToggle);
+    console.log('Admin panel found:', adminPanel);
+    
+    // Function to show panel
+    function showPanel() {
+      adminPanel.classList.remove('hidden');
+      document.cookie = 'admin_panel=1; path=/';
+      console.log('Admin panel shown');
+    }
+    
+    // Function to hide panel
+    function hidePanel() {
+      adminPanel.classList.add('hidden');
+      document.cookie = 'admin_panel=0; path=/';
+      console.log('Admin panel hidden');
+    }
+    
+    // Set slider state from cookie
+    const matches = document.cookie.match(/(?:^|; )admin_panel=([^;]*)/);
+    if (matches && matches[1] === '1') {
+      adminToggle.checked = true;
       showPanel();
     } else {
+      adminToggle.checked = false;
       hidePanel();
     }
-  });
-});
-//--------------------------------------------------------------------------------------------------------------------------------------------------------//
+    
+    // Save state to cookie when changed
+    adminToggle.addEventListener('change', function() {
+      console.log('Toggle changed:', this.checked);
+      if (this.checked) {
+        showPanel();
+      } else {
+        hidePanel();
+      }
+    });
+  } else {
+    console.log('Admin toggle or panel not found');
+    console.log('adminToggle:', adminToggle);
+    console.log('adminPanel:', adminPanel);
+  }
+});//--------------------------------------------------------------------------------------------------------------------------------------------------------//
 /*
 function removeAdd(){
   document.body.children[document.body.children.length-1].remove();
   document.body.children[document.body.children.length-1].remove();
 }*/
+

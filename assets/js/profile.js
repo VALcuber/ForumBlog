@@ -59,17 +59,21 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function() {
     var adminToggle = document.getElementById('adminPanelToggle');
     if (adminToggle) {
-        // Установить состояние слайдера из cookie
+        // Set slider state from cookie
         var matches = document.cookie.match(/(?:^|; )admin_panel=([^;]*)/);
         if (matches && matches[1] === '1') {
             adminToggle.checked = true;
         } else {
             adminToggle.checked = false;
         }
-        // Сохранять состояние в cookie при изменении
+        // Save state to cookie when changed
         adminToggle.addEventListener('change', function() {
-            document.cookie = 'admin_panel=' + (this.checked ? '1' : '0') + '; path=/';
-            // Можно добавить перезагрузку, если нужно: location.reload();
+            // You can add reload if needed: location.reload();
+            if (this.checked) {
+                showPanel();
+            } else {
+                hidePanel();
+            }
         });
     }
 });

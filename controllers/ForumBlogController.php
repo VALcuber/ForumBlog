@@ -36,15 +36,17 @@ class ForumBlogController extends Controller{
 
         for($i = 0; $i < $count; $i++){
 
-            $subcategory=$all_titles[$i]["Category"];
+            $Category=$all_titles[$i]["Category"];
+
+            $Description=$all_titles[$i]["Description"];
 
             $route_structure = $all_titles[$i]["structure"];
 
-            $subcategory_translit = $this->translit($subcategory);
+            $subcategory_translit = $this->translit($Description);
 
             $subcategoryes = <<<"EOT"
                 <li class="blog-content py-2 col d-flex justify-content-left">
-                    <a href="/$route_structure/$subcategory_translit">$subcategory</a>
+                    <a href="/$route_structure/$Category/$subcategory_translit">$Description</a>
                 </li>
 EOT;
 

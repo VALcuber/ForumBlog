@@ -33,6 +33,11 @@
 
                 if($env['token'] == ''){
                     header("Location: /");
+                    exit; // Prevent form resubmission
+                } else {
+                    // Successful login - redirect
+                    header("Location: /?success=logged_in");
+                    exit; // Prevent form resubmission
                 }
             } //Check login info
 
@@ -68,7 +73,7 @@
                     $this->pageData['user_menu_window'] = $user_menu_winwow;
 
                     if ($data_users['status'] == 'admin') {
-                        // Управление классом hidden через cookie
+                        // Manage hidden class through cookie
                         if (isset($_COOKIE['admin_panel']) && $_COOKIE['admin_panel'] == '0') {
                             $this->pageData['admin_panel_hidden'] = 'hidden';
                         }
@@ -102,10 +107,14 @@
             if($env['act'] == 'Exit'){
                 $this->deleteToken();
                 header("Location: /");
+                exit; // Prevent form resubmission
             }
 
             if($env['act']=='Register'){
                 $this->model->SingIn();
+                // Use PRG pattern - redirect after POST
+                header("Location: /?success=registered");
+                exit; // Prevent form resubmission
             }
 
             if(isset($env['route1']) && $env['route1'] != 'manage_users'){
@@ -147,7 +156,31 @@
                 
                   <div class="admin_dropdown">
                   
-                    <button class="dropbtn"> News
+                    <button class="dropbtn"> Admin Panel
+                    
+                      <i class="fa fa-caret-down"></i>
+                      
+                    </button>
+                    
+                    <div class="dropdown-content">
+                    
+                      <a href="/admin">Dashboard</a>
+                      
+                      <a href="/admin/users">Users</a>
+                      
+                      <a href="/admin/content">Content</a>
+                      
+                      <a href="/admin/settings">Settings</a>
+                      
+                      <a href="/admin/reports">Reports</a>
+                      
+                    </div>
+                    
+                  </div>
+                  
+                  <div class="admin_dropdown">
+                  
+                    <button class="dropbtn"> Quick Actions
                     
                       <i class="fa fa-caret-down"></i>
                       
@@ -157,73 +190,13 @@
                     
                       <a href="/AddNews">Add News</a>
                       
-                      <a href="#">Ссылка 2</a>
+                      <a href="/manage_users">Manage Users</a>
                       
-                      <a href="#">Ссылка 3</a>
-                      
-                    </div>
-                    
-                  </div>
-                  
-                  <div class="admin_dropdown">
-                  
-                    <button class="dropbtn"> Blog
-                    
-                      <i class="fa fa-caret-down"></i>
-                      
-                    </button>
-                    
-                    <div class="dropdown-content">
-                    
-                      <a href="#">Create Topic</a>
-                      
-                      <a href="#">Ссылка 2</a>
-                      
-                      <a href="#">Ссылка 3</a>
-                      
-                    </div>
-                    
-                    </div>
-                    
-                  <div class="admin_dropdown">
-                  
-                    <button class="dropbtn"> Forum
-                    
-                      <i class="fa fa-caret-down"></i>
-                      
-                    </button>
-                    
-                    <div class="dropdown-content">
-                    
-                      <a href="#">Create Topic</a>
-                      
-                      <a href="#">Ссылка 2</a>
-                      
-                      <a href="#">Ссылка 3</a>
+                      <a href="/admin/content">Create Topic</a>
                       
                     </div>
                     
                   </div>
-                  
-                  <div class="admin_dropdown">
-                  
-                    <button class="dropbtn"> Users
-                    
-                      <i class="fa fa-caret-down"></i>
-                      
-                    </button>
-                    
-                    <div class="dropdown-content">
-                    
-                      <a href="/manage_users">Manage users</a>
-                      
-                      <a href="#">Ссылка 2</a>
-                      
-                      <a href="#">Ссылка 3</a>
-                      
-                    </div>
-                    
-                  </div> 
                   
                 </div>';
         }
@@ -383,7 +356,7 @@ EOT;
                 $tokens = json_decode(file_get_contents($tokenFile), true);
             }
 
-            // Удалим все старые токены для этого user_id
+            // Remove all old tokens for this user_id
             foreach ($tokens as $tk => $info) {
                 if ($info == $login) {
                     unset($tokens[$tk]);
@@ -510,84 +483,91 @@ EOT;
             $translit = str_replace(array("\n", "\r"), " ", $translit); // remove carriage return
             $translit = preg_replace("/\s+/", ' ', $translit); // remove duplicate spaces
             $translit = trim($translit); // remove spaces at the beginning and end of the line
-            $translit = strtr($translit, array(
-                "а"=>"a",
-                "б"=>"b",
-                "в"=>"v",
-                "г"=>"g",
-                "д"=>"d",
-                "е"=>"e",
-                "ё"=>"yo",
-                "ж"=>"j",
-                "з"=>"z",
-                "и"=>"i",
-                "й"=>"ij",
-                "к"=>"k",
-                "л"=>"l",
-                "м"=>"m",
-                "н"=>"n",
-                "о"=>"o",
-                "п"=>"p",
-                "р"=>"r",
-                "с"=>"s",
-                "т"=>"t",
-                "у"=>"y",
-                "ф"=>"f",
-                "х"=>"h",
-                "ц"=>"c",
-                "ч"=>"ch",
-                "ш"=>"sh",
-                "щ"=>"shch",
-                "ы"=>"jj",
-                "э"=>"e",
-                "ю"=>"u",
-                "я"=>"ya",
-                "А"=>"A",
-                "Б"=>"B",
-                "В"=>"V",
-                "Г"=>"G",
-                "Д"=>"D",
-                "Е"=>"E",
-                "Ё"=>"Yo",
-                "Ж"=>"J",
-                "З"=>"Z",
-                "И"=>"I",
-                "Й"=>"I",
-                "К"=>"K",
-                "Л"=>"L",
-                "М"=>"M",
-                "Н"=>"N",
-                "О"=>"O",
-                "П"=>"P",
-                "Р"=>"R",
-                "С"=>"S",
-                "Т"=>"T",
-                "У"=>"Y",
-                "Ф"=>"F",
-                "Х"=>"H",
-                "Ц"=>"C",
-                "Ч"=>"Ch",
-                "Ш"=>"Sh",
-                "Щ"=>"Shch",
-                "Ы"=>"JJ",
-                "Э"=>"E",
-                "Ю"=>"U",
-                "Я"=>"Ya",
-                "ь"=>"'",
-                "Ь"=>"''",
-                "ъ"=>"`",
-                "Ъ"=>"~",
-                "ї"=>"j",
-                "і"=>"i",
-                "ґ"=>"g",
-                "є"=>"ye",
-                "Ї"=>"J",
-                "І"=>"I",
-                "Ґ"=>"G",
-                "Є"=>"YE"
-            ));
-            //$translit = preg_replace("/[^0-9a-z-_ ]/i", "", $translit); // clear the string of invalid characters
-            $translit = str_replace(" ", "-", $translit); // replace spaces with a minus sign
+            
+            // Check if text contains Cyrillic characters
+            $has_cyrillic = preg_match('/[а-яё]/ui', $translit);
+            
+            if ($has_cyrillic) {
+                $translit = strtr($translit, array(
+                    "а"=>"a",
+                    "б"=>"b",
+                    "в"=>"v",
+                    "г"=>"g",
+                    "д"=>"d",
+                    "е"=>"e",
+                    "ё"=>"yo",
+                    "ж"=>"j",
+                    "з"=>"z",
+                    "и"=>"i",
+                    "й"=>"ij",
+                    "к"=>"k",
+                    "л"=>"l",
+                    "м"=>"m",
+                    "н"=>"n",
+                    "о"=>"o",
+                    "п"=>"p",
+                    "р"=>"r",
+                    "с"=>"s",
+                    "т"=>"t",
+                    "у"=>"y",
+                    "ф"=>"f",
+                    "х"=>"h",
+                    "ц"=>"c",
+                    "ч"=>"ch",
+                    "ш"=>"sh",
+                    "щ"=>"shch",
+                    "ы"=>"jj",
+                    "э"=>"e",
+                    "ю"=>"u",
+                    "я"=>"ya",
+                    "А"=>"A",
+                    "Б"=>"B",
+                    "В"=>"V",
+                    "Г"=>"G",
+                    "Д"=>"D",
+                    "Е"=>"E",
+                    "Ё"=>"Yo",
+                    "Ж"=>"J",
+                    "З"=>"Z",
+                    "И"=>"I",
+                    "Й"=>"I",
+                    "К"=>"K",
+                    "Л"=>"L",
+                    "М"=>"M",
+                    "Н"=>"N",
+                    "О"=>"O",
+                    "П"=>"P",
+                    "Р"=>"R",
+                    "С"=>"S",
+                    "Т"=>"T",
+                    "У"=>"Y",
+                    "Ф"=>"F",
+                    "Х"=>"H",
+                    "Ц"=>"C",
+                    "Ч"=>"Ch",
+                    "Ш"=>"Sh",
+                    "Щ"=>"Shch",
+                    "Ы"=>"JJ",
+                    "Э"=>"E",
+                    "Ю"=>"U",
+                    "Я"=>"Ya",
+                    "ь"=>"'",
+                    "Ь"=>"''",
+                    "ъ"=>"`",
+                    "Ъ"=>"~",
+                    "ї"=>"j",
+                    "і"=>"i",
+                    "ґ"=>"g",
+                    "є"=>"ye",
+                    "Ї"=>"J",
+                    "І"=>"I",
+                    "Ґ"=>"G",
+                    "Є"=>"YE"
+                ));
+                // Replace spaces with hyphens only for Cyrillic text
+                $translit = str_replace(" ", "-", $translit); // replace spaces with a minus sign
+            }
+            // For English text, keep spaces as they are
 
             return $translit; // return the result
         }
@@ -669,7 +649,7 @@ EOT;
                 "J"=>"Ї",
                 "I"=>"І",
                 "G"=>"Ґ",
-                "YE"=>"Є"
+                "Є"=>"YE"
             ));
             $translit_reverse = str_replace("-", " ", $translit_reverse); // replace minus signs with spaces
 

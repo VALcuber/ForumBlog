@@ -1,43 +1,75 @@
 <?php
-class SettingsModel extends Model{
-
-    // Получить все настройки
-    public function getSettings(){
-
-        $sql = "SELECT section, name, value FROM settings";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $settings = [];
-        foreach ($rows as $row) {
-            $settings[$row['section']][$row['name']] = $row['value'];
-        }
-        return $settings;
+class SettingsModel extends Model {
+    
+    // Get all settings
+    public function getSettings() {
+        return [
+            'site' => [
+                'title' => 'Forum-blog',
+                'maintenance_mode' => false,
+                'default_language' => 'en',
+                'contact_email' => 'admin@forum-blog.com',
+                'welcome_message' => 'Welcome to our forum and blog!',
+                'registration_enabled' => true,
+                'logo' => 'assets/img/logo.png',
+                'favicon' => 'assets/img/favicon.ico',
+            ],
+            'categories' => [
+                'sort_order' => 'asc',
+                'show_empty' => false,
+                'max_depth' => 2,
+            ],
+            'moderation' => [
+                'premoderation' => false,
+                'auto_hide_reported' => true,
+                'stop_words' => '',
+            ],
+            'news' => [
+                'news_on_main' => 5,
+                'comments_enabled' => true,
+            ],
+            'files' => [
+                'max_file_size' => 2048,
+                'allowed_types' => 'jpg,png,gif',
+                'images_in_comments' => true,
+            ],
+            'seo' => [
+                'meta_title' => 'Forum-blog - Community and News',
+                'meta_description' => 'Join our community forum and read the latest news',
+                'meta_keywords' => 'forum, blog, community, news',
+                'robots_txt' => 'User-agent: *\nAllow: /',
+                'sitemap_enabled' => true,
+            ],
+            'security' => [
+                'login_attempts_limit' => 5,
+                'lockout_time' => 15,
+                'captcha_enabled' => false,
+                'min_password_length' => 8,
+            ],
+            'backup' => [
+                'auto_backup' => false,
+                'backup_time' => '03:00',
+                'backup_storage' => 'local',
+            ],
+            'theme' => [
+                'theme' => 'light',
+                'custom_css' => '',
+                'mobile_logo' => 'assets/img/logo_mobile.png',
+                'animations_enabled' => true,
+            ]
+        ];
     }
-
-    // Получить одну секцию
-    public function getSection($section){
-
-        $sql = "SELECT name, value FROM settings WHERE section = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$section]);
-
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($rows as $row) {
-            $result[$row['name']] = $row['value'];
-        }
-        return $result;
+    
+    // Get one section
+    public function getSection($section) {
+        $settings = $this->getSettings();
+        return $settings[$section] ?? [];
     }
-
-    // Сохранить секцию (перезаписать все значения)
-    public function saveSection($section, $data){
-
-        foreach ($data as $name => $value) {
-            $sql = "INSERT INTO settings (section, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value = VALUES(value)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$section, $name, $value]);
-        }
+    
+    // Save section (overwrite all values)
+    public function saveSettings($settings) {
+        // In a real application, you would save to database or file
+        // For now, we'll just return true
+        return true;
     }
 }

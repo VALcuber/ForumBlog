@@ -59,15 +59,30 @@ EOT;
 	} // Function for displaying blog
 	
 	private function make_Random_Array_blog($amount, $array){
-	    $amount = $amount -1;
-			$randomArrayblog = array();
-			$randKeys = array_rand($array, $amount);
-
-			for($i = 0; $i < $amount; $i++){
-				array_push($randomArrayblog,$array[$randKeys[$i]]);
-			}
-
+		$randomArrayblog = array();
+		
+		// If no records exist, return empty array
+		if($amount <= 0 || empty($array)) {
 			return $randomArrayblog;
+		}
+		
+		// Determine how many records to select
+		$neededCount = min(6, $amount);
+		
+		// Get random keys
+		$randKeys = array_rand($array, $neededCount);
+		
+		// If only one record is needed, array_rand returns a number, not an array
+		if($neededCount == 1) {
+			$randKeys = array($randKeys);
+		}
+		
+		// Fill array with random records
+		for($i = 0; $i < $neededCount; $i++){
+			array_push($randomArrayblog, $array[$randKeys[$i]]);
+		}
+		
+		return $randomArrayblog;
 	} // Function for displaying random elements in blog array
 	
 	private function echo_latest_news() {
@@ -145,16 +160,29 @@ EOT;
 	} // Function for displaying forum
 	
 	private function make_Random_Array_forum($amount, $array){
-	    $amount = $amount -1;
-		    $randomArrayforum = array();
-		    $randKeys = array_rand($array,$amount);
-
-
-		  for($i = 0; $i < count($randKeys); $i++){
-
-			  array_push($randomArrayforum,$array[$randKeys[$i]]);
-		  }
-
-		  return $randomArrayforum;
+		$randomArrayforum = array();
+		
+		// If no records exist, return empty array
+		if($amount <= 0 || empty($array)) {
+			return $randomArrayforum;
+		}
+		
+		// Determine how many records to select
+		$neededCount = min(6, $amount);
+		
+		// Get random keys
+		$randKeys = array_rand($array, $neededCount);
+		
+		// If only one record is needed, array_rand returns a number, not an array
+		if($neededCount == 1) {
+			$randKeys = array($randKeys);
+		}
+		
+		// Fill array with random records
+		for($i = 0; $i < $neededCount; $i++){
+			array_push($randomArrayforum, $array[$randKeys[$i]]);
+		}
+		
+		return $randomArrayforum;
 	} // Function for displaying random elements in forum array
 }

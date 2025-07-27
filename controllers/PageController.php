@@ -69,8 +69,8 @@ class PageController extends Controller {
 
             if($smtppage != NULL ) {
 
-                $pageName = $smtppage["name"];
-                $pageContent = $smtppage["content"];
+                $pageName = $smtppage["Description"];
+                $pageContent = $smtppage["Category"];
 
                 return '<div class="card">
                   <div class="card-header">

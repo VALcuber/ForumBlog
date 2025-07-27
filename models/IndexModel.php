@@ -6,7 +6,7 @@ class IndexModel extends Model {
 		
 		$resultblog=array();
 
-        $sql = "SELECT * FROM `blog` ORDER BY id DESC LIMIT 7";
+        $sql = "SELECT * FROM `blog` ORDER BY id";
         $smtp = $this->db->prepare($sql);
         $smtp->execute();
 
@@ -38,7 +38,7 @@ class IndexModel extends Model {
                 
     	$resultforum=array();
 
-        $sql = "SELECT * FROM `forum` ORDER BY id DESC LIMIT 7";
+        $sql = "SELECT * FROM `forum` ORDER BY id";
 		
 		$smtpf = $this->db->prepare($sql);
 		$smtpf->execute();

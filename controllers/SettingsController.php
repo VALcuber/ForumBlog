@@ -20,7 +20,7 @@ class SettingsController extends Controller{
             $settingsModel = new SettingsModel();
             $settings = $this->getSettings();
 
-            // Сбор данных по секциям
+            // Collect data by sections
             $settings['site'] = [
                 'title' => $_POST['site_title'] ?? '',
                 'maintenance_mode' => isset($_POST['maintenance_mode']),
@@ -31,7 +31,7 @@ class SettingsController extends Controller{
                 'logo' => $settings['site']['logo'],
                 'favicon' => $settings['site']['favicon'],
             ];
-            // Обработка загрузки файлов
+            // Handle file uploads
             if (!empty($_FILES['site_logo']['tmp_name'])) {
                 $logoPath = 'assets/img/logo.png';
                 move_uploaded_file($_FILES['site_logo']['tmp_name'], $logoPath);
@@ -101,8 +101,9 @@ class SettingsController extends Controller{
 
             $settingsModel->saveSettings($settings);
 
+            // Use PRG pattern - redirect after POST
             header('Location: /admin/settings?success=1');
-            exit;
+            exit; // Important to add exit after redirect
         }
     }
 }
