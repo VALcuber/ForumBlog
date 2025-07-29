@@ -66,29 +66,32 @@ class AdminController extends Controller {
 
             // Transform field names to match template expectations
             foreach ($content['blog'] as &$post) {
-                $content['blog']['author'] = ($post['First name'] ?? '') . ' ' . ($post['Last name'] ?? '');
-                $content['blog']['title'] = $post['title'] ?? 'Untitled';
-                $content['blog']['category'] = $post['category_name'] ?? 'Unknown';
-                $content['blog']['status'] = 'published';
+                $post['author'] = ($post['First name'] ?? '') . ' ' . ($post['Last name'] ?? '');
+                $post['title'] = $post['title'] ?? 'Untitled';
+                $post['category'] = $post['category_name'] ?? 'Unknown';
+                $post['status'] = 'published';
             }
 
             // Transform field names to match template expectations
             foreach ($content['forum'] as &$topic) {
-                $content['forum']['author'] = ($topic['First name'] ?? '') . ' ' . ($topic['Last name'] ?? '');
-                $content['forum']['title'] = $topic['title'] ?? 'Untitled';
-                $content['forum']['category'] = $topic['category_name'] ?? 'Unknown';
-                $content['forum']['status'] = 'published';
+                $topic['author'] = ($topic['First name'] ?? '') . ' ' . ($topic['Last name'] ?? '');
+                $topic['title'] = $topic['title'] ?? 'Untitled';
+                $topic['category'] = $topic['category_name'] ?? 'Unknown';
+                $topic['status'] = 'published';
             }
 
             foreach ($content['news'] as &$item) {
                 $item['author'] = 'Admin';
                 $item['status'] = 'published';
             }
-            
+            //var_export($content);
             $this->pageData['title'] = "Content Management - Admin Panel";
             $this->pageData['content'] = $content;
+            $this->pageData['content_blog'] = $this->content_blog($content['blog']);
+            $this->pageData['content_forum'] = $this->content_forum($content['forum']);
+            $this->pageData['content_news'] = $this->content_news($content['news']);
             $this->pageData['admin_page'] = true;
-            
+
             $this->view->render('admin/content', $this->pageData);
         } catch (Exception $e) {
             error_log("Admin content error: " . $e->getMessage());
@@ -121,7 +124,99 @@ class AdminController extends Controller {
             $this->view->render('admin/users', $this->pageData);
         }
     }
-    
+
+    private function content_blog($blogPosts) {
+        $blog_rows = [];
+
+        if (!empty($blogPosts)) {
+            foreach ($blogPosts as $post) {
+                $blog_rows[] = '<tr>'
+                    . '<td>' . htmlspecialchars($post['title']) . '</td>'
+                    . '<td><span class="badge bg-info">' . htmlspecialchars($post['category']) . '</span></td>'
+                    . '<td>' . htmlspecialchars($post['author']) . '</td>'
+                    . '<td><span class="badge bg-success">' . htmlspecialchars(ucfirst($post['status'])) . '</span></td>'
+                    . '<td>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" 
+                            data-content-id="' . htmlspecialchars($post['id'] ?? '') . '" 
+                            data-content-type="blog">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>'
+                    . '</tr>';
+            }
+        } else {
+            $blog_rows[] = '<tr><td colspan="5" class="text-center text-muted">No blog posts found</td></tr>';
+        }
+
+        return $blog_rows;
+    }
+    private function content_forum($forumPosts) {
+        $forum_rows = [];
+
+        if (!empty($forumPosts)) {
+            foreach ($forumPosts as $topic) {
+                $forum_rows[] = '<tr>'
+                    . '<td>' . htmlspecialchars($topic['title']) . '</td>'
+                    . '<td><span class="badge bg-info">' . htmlspecialchars($topic['category']) . '</span></td>'
+                    . '<td>' . htmlspecialchars($topic['author']) . '</td>'
+                    . '<td><span class="badge bg-success">' . htmlspecialchars(ucfirst($topic['status'])) . '</span></td>'
+                    . '<td>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" 
+                            data-content-id="' . htmlspecialchars($topic['id'] ?? '') . '" 
+                            data-content-type="blog">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>'
+                    . '</tr>';
+            }
+        } else {
+            $forum_rows[] = '<tr><td colspan="5" class="text-center text-muted">No blog posts found</td></tr>';
+        }
+
+        return $forum_rows;
+    }
+    private function content_news($newsPosts) {
+        $news_rows = [];
+
+        if (!empty($newsPosts)) {
+            foreach ($newsPosts as $topic) {
+                $news_rows[] = '<tr>'
+                    . '<td>' . htmlspecialchars($topic['title']) . '</td>'
+                    . '<td><span class="badge bg-info">' . htmlspecialchars($topic['content']) . '</span></td>'
+                    . '<td>' . htmlspecialchars($topic['author']) . '</td>'
+                    . '<td><span class="badge bg-success">' . htmlspecialchars(ucfirst($topic['status'])) . '</span></td>'
+                    . '<td>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" 
+                            data-content-id="' . htmlspecialchars($topic['id'] ?? '') . '" 
+                            data-content-type="blog">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>'
+                    . '</tr>';
+            }
+        } else {
+            $news_rows[] = '<tr><td colspan="5" class="text-center text-muted">No blog posts found</td></tr>';
+        }
+
+        return $news_rows;
+    }
+
+
     public function settings() {
         try {
             $this->controller();

@@ -166,32 +166,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php if (!empty($pageData['content']['blog'])): ?>
-                                                <?php foreach ($pageData['content']['blog'] as $post): ?>
-                                                <tr>
-                                                    <td><?= htmlspecialchars($post['title']) ?></td>
-                                                    <td><span class="badge bg-info"><?= htmlspecialchars($post['category']) ?></span></td>
-                                                    <td><?= htmlspecialchars($post['author']) ?></td>
-                                                    <td>
-                                                        <span class="badge bg-success"><?= ucfirst($post['status']) ?></span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="btn-group" role="group">
-                                                            <button type="button" class="btn btn-sm btn-outline-primary">
-                                                                <i class="fas fa-edit"></i>
-                                                            </button>
-                                                            <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" data-content-id="<?= $post['id'] ?>" data-content-type="blog">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <tr>
-                                                    <td colspan="5" class="text-center text-muted">No blog posts found</td>
-                                                </tr>
-                                            <?php endif; ?>
+                                        <?= implode('', $pageData['content_blog']) ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -211,32 +186,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php if (!empty($pageData['content']['forum'])): ?>
-                                                <?php foreach ($pageData['content']['forum'] as $topic): ?>
-                                                <tr>
-                                                    <td><?= htmlspecialchars($topic['title']) ?></td>
-                                                    <td><span class="badge bg-warning"><?= htmlspecialchars($topic['category']) ?></span></td>
-                                                    <td><?= htmlspecialchars($topic['author']) ?></td>
-                                                    <td>
-                                                        <span class="badge bg-success"><?= ucfirst($topic['status']) ?></span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="btn-group" role="group">
-                                                            <button type="button" class="btn btn-sm btn-outline-primary">
-                                                                <i class="fas fa-edit"></i>
-                                                            </button>
-                                                            <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" data-content-id="<?= $topic['id'] ?>" data-content-type="forum">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <tr>
-                                                    <td colspan="5" class="text-center text-muted">No forum topics found</td>
-                                                </tr>
-                                            <?php endif; ?>
+                                        <?= implode('', $pageData['content_forum']) ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -256,32 +206,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php if (!empty($pageData['content']['news'])): ?>
-                                                <?php foreach ($pageData['content']['news'] as $news): ?>
-                                                <tr>
-                                                    <td><?= htmlspecialchars($news['title']) ?></td>
-                                                    <td><?= htmlspecialchars(substr($news['content'], 0, 100)) ?>...</td>
-                                                    <td><?= htmlspecialchars($news['author']) ?></td>
-                                                    <td>
-                                                        <span class="badge bg-success"><?= ucfirst($news['status']) ?></span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="btn-group" role="group">
-                                                            <button type="button" class="btn btn-sm btn-outline-primary">
-                                                                <i class="fas fa-edit"></i>
-                                                            </button>
-                                                            <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" data-content-id="<?= $news['id'] ?>" data-content-type="news">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <tr>
-                                                    <td colspan="5" class="text-center text-muted">No news found</td>
-                                                </tr>
-                                            <?php endif; ?>
+                                        <?= implode('', $pageData['content_news']) ?>
                                         </tbody>
                                     </table>
                                 </div>

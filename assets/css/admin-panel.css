@@ -634,6 +634,10 @@ body {
     background: var(--admin-warning);
 }
 
+.admin-nav-link{
+    color: white;
+}
+
 @keyframes slideIn {
     from {
         transform: translateX(100%);
