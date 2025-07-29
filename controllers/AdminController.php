@@ -10,12 +10,29 @@ class AdminController extends Controller {
     public function index() {
         try {
             $this->controller();
+
+            $stats = [
+                'total_users' => 0,
+                'admin_users' => 0,
+                'blog_posts' => 0,
+                'forum_topics' => 0,
+                'total_comments' => 0,
+                'total_news' => 0,
+                'total_categories' => 0
+            ];
             
             // Get statistics
-            $stats = $this->model->getDashboardStats();
-            
+            $stats = $this->model->getDashboardStats($stats);
+
+            $activities = [
+                'recent_users' => [],
+                'recent_blog_posts' => [],
+                'recent_forum_topics' => [],
+                'recent_news' => []
+            ];
+
             // Get recent activities
-            $recentActivities = $this->model->getRecentActivities();
+            $recentActivities = $this->model->getRecentActivities($activities);
             
             // Get system information
             $systemInfo = $this->model->getSystemInfo();
@@ -38,8 +55,35 @@ class AdminController extends Controller {
     public function content() {
         try {
             $this->controller();
-            
-            $content = $this->model->getAllContent();
+
+            $content = [
+                'blog' => [],
+                'forum' => [],
+                'news' => []
+            ];
+
+            $content = $this->model->getAllContent($content);
+
+            // Transform field names to match template expectations
+            foreach ($content['blog'] as &$post) {
+                $content['blog']['author'] = ($post['First name'] ?? '') . ' ' . ($post['Last name'] ?? '');
+                $content['blog']['title'] = $post['title'] ?? 'Untitled';
+                $content['blog']['category'] = $post['category_name'] ?? 'Unknown';
+                $content['blog']['status'] = 'published';
+            }
+
+            // Transform field names to match template expectations
+            foreach ($content['forum'] as &$topic) {
+                $content['forum']['author'] = ($topic['First name'] ?? '') . ' ' . ($topic['Last name'] ?? '');
+                $content['forum']['title'] = $topic['title'] ?? 'Untitled';
+                $content['forum']['category'] = $topic['category_name'] ?? 'Unknown';
+                $content['forum']['status'] = 'published';
+            }
+
+            foreach ($content['news'] as &$item) {
+                $item['author'] = 'Admin';
+                $item['status'] = 'published';
+            }
             
             $this->pageData['title'] = "Content Management - Admin Panel";
             $this->pageData['content'] = $content;
@@ -58,6 +102,13 @@ class AdminController extends Controller {
             $this->controller();
             
             $users = $this->model->getAllUsers();
+
+            // Transform field names to match template expectations
+            foreach ($users as &$user) {
+                $user['first_name'] = $user['First name'] ?? '';
+                $user['last_name'] = $user['Last name'] ?? '';
+                $user['nickname'] = $user['Nickname'] ?? '';
+            }
             
             $this->pageData['title'] = "User Management - Admin Panel";
             $this->pageData['users'] = $users;
@@ -97,8 +148,19 @@ class AdminController extends Controller {
     public function reports() {
         try {
             $this->controller();
-            
-            $reports = $this->model->getReports();
+
+            $reports = [
+                'total_users' => 0,
+                'total_posts' => 0,
+                'total_comments' => 0,
+                'total_news' => 0,
+                'total_categories' => 0,
+                'user_activity' => [],
+                'blog_activity' => [],
+                'forum_activity' => []
+            ];
+
+            $reports = $this->model->getReports($reports);
             
             $this->pageData['title'] = "Reports and Analytics - Admin Panel";
             $this->pageData['reports'] = $reports;
