@@ -32,7 +32,13 @@ class Routing {
 
             /* Define controller */
 
-            if ($route[1] == 'user_profile') {
+            if (empty($route[1]) || $route[1] == '') {
+                // Главная страница - оставляем дефолтные значения
+                $controllerName = "IndexController";
+                $modelName = "IndexModel";
+            }
+
+            elseif ($route[1] == 'user_profile') {
                 $controllerName = "User_profileController";
                 $modelName = "User_profileModel";
             }
@@ -42,8 +48,9 @@ class Routing {
                 $modelName = "AddNewsModel";
             }
             elseif (isset($route[1]) && $route[1] == 'manage_users') {
-                $controllerName = "ManageUsersController";
-                $modelName = "ManageUsersModel";
+                $controllerName = "AdminController";
+                $modelName = "AdminModel";
+                $action = "users";
             }
             elseif (isset($route[1]) && $route[1] == 'admin') {
                 $controllerName = "AdminController";
@@ -74,10 +81,6 @@ class Routing {
                     $action = "index";
                 }
             }
-            elseif($route[1] == 'settings' && !isset($route[2])){
-                $controllerName = 'SettingsController';
-                $modelName = "SettingsModel";
-            }
 
             elseif ($route[1] == 'news' && isset($route[2])) {
                 $controllerName = "PageController";
@@ -99,7 +102,7 @@ class Routing {
                 $controllerName = "ForumController";
                 $modelName = "ForumModel";
             }*/
-            elseif (!empty($route[1]) && !in_array($route[1], ['forum', 'blog', 'all'], true) && empty($route[2])) {
+            elseif (!empty($route[1]) && !in_array($route[1], ['forum', 'blog', 'all', 'settings'], true) && empty($route[2])) {
                 $controllerName = "ForumBlogController";
                 $modelName = "ForumBlogModel";
             }
@@ -123,9 +126,9 @@ class Routing {
                 $modelName = "All_for_certain_categoryModel";
             }
 
-/*            elseif(!empty($route[1]) && empty($route[2])){
+            else{
                 throw new Exception("Page", 404);
-            }*/
+            }
 
             /** @noinspection PhpIncludeInspection */
             include PATH_C . $controllerName . ".php";      //IndexController.php

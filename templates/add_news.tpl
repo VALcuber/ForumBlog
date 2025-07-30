@@ -6,7 +6,7 @@
             <i class="fas fa-check-circle"></i> <?= $pageData['success_message'] ?>
         </div>
     <?php endif; ?>
-    
+
     <form method="post">
         <div class="form-group row d-flex justify-content-center">
             <div class="col-9">
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-around">
-            <button type="button" class="btn btn-secondary mr-4">Cancel</button>
+            <button type="button" class="btn btn-secondary mr-4" onclick="window.location.href='/'">Cancel</button>
             <input type="submit" name="act" value="Post-NEWS" class="btn btn-primary">
         </div>
     </form>

@@ -197,10 +197,10 @@
                                 <h5><i class="fas fa-info-circle"></i> Data Source Information</h5>
                             </div>
                             <div class="admin-card-body">
-                                <div class="alert alert-info">
+ <!--                               <div class="alert alert-info">
                                     <i class="fas fa-info-circle"></i> <strong>Note:</strong> All data is retrieved directly from your database.
                                 </div>
-                                
+ -->
                                 <div class="row">
                                     <div class="col-md-6">
                                         <h6>User Activity Data:</h6>
