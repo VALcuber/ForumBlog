@@ -138,6 +138,15 @@
                             <input type="submit" class="btn btn-primary btn-lg" name="act" value="Log In">
 
                         </div>
+                        
+                        <!-- Google OAuth Login Button -->
+                        <div class="text-center mt-3">
+                            <hr>
+                            <p class="text-muted mb-2">Or sign in with</p>
+                            <a href="/google-login" class="btn btn-outline-danger btn-lg">
+                                <i class="fab fa-google"></i> Sign in with Google
+                            </a>
+                        </div>
 
                     </form>
 
@@ -181,7 +190,7 @@
 
                             <div class="col-9">
 
-                                <input type="text" name="first-name" class="form-control" required>
+                                <input type="text" id="first-name" name="first-name" class="form-control" required>
 
                             </div>
 
@@ -193,7 +202,7 @@
 
                             <div class="col-9">
 
-                                <input type="text" name="last-name" class="form-control" required>
+                                <input type="text" id="last-name" name="last-name" class="form-control" required>
 
                             </div>
 
@@ -205,7 +214,7 @@
 
                             <div class="col-9">
 
-                                <input type="date" name="birthday" class="form-control" required>
+                                <input type="date" id="birthday" name="birthday" class="form-control" required>
 
                             </div>
 
@@ -217,7 +226,7 @@
 
                             <div class="col-9">
 
-                                <input type="email" name="email" class="form-control"  autocomplete="username" required>
+                                <input type="email" id="email" name="email" class="form-control"  autocomplete="username" required>
 
                             </div>
 
@@ -229,7 +238,7 @@
 
                             <div class="col-9">
 
-                                <input type="password" name="password" class="form-control" autocomplete="current-password" required>
+                                <input type="password" id="password" name="password" class="form-control" autocomplete="current-password" required>
 
                             </div>
 
@@ -239,6 +248,15 @@
 
                             <input type="submit" class="btn btn-primary" name="act" value="Register"/> <!-- data-dismiss="modal" -->
 
+                        </div>
+                        
+                        <!-- Google OAuth Registration Button -->
+                        <div class="text-center mt-3">
+                            <hr>
+                            <p class="text-muted mb-2">Or register with</p>
+                            <a href="/google-login" class="btn btn-outline-danger btn-lg">
+                                <i class="fab fa-google"></i> Sign up with Google
+                            </a>
                         </div>
 
                     </form>

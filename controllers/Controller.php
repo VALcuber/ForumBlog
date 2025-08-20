@@ -32,11 +32,11 @@
                 $this->encrypting_data($user_data);
 
                 if($env['token'] == ''){
-                    header("Location: /");
+                    header('Location: /');
                     exit; // Prevent form resubmission
                 } else {
                     // Successful login - redirect
-                    header("Location: /?success=logged_in");
+                    header("Location: /");
                     exit; // Prevent form resubmission
                 }
             } //Check login info
@@ -46,17 +46,11 @@
             if(isset($env['token']) && $env['token'] !=''){
 
                 if($userID == true) {
-                    $users_logo = $this->logo;
-
                     $data_users = $this->get_decrypted_post_data();
 
                     $this->pageData['nickname'] = $data_users['nickname'];
 
-                    if ($users_logo !== null) {
-                        $user_logo = $users_logo;
-                    } else {
-                        $user_logo = $this->model->check_logo($data_users['id']);
-                    }
+                    $user_logo = $this->model->check_logo($data_users['id']);
 
                     if ($user_logo['logo'] == 'none') {
                         $Fn = str_split($data_users['first_name']);
@@ -83,6 +77,10 @@
                         $adminPanel = $this->admin_panel();
                         $admin_panel_switch = $this->admin_panel_switch();
                     }
+                    else {
+                        $adminPanel = '';
+                        $admin_panel_switch = null;
+                    }
                 }
             } //Check token
             else{
@@ -106,8 +104,7 @@
 
             if($env['act'] == 'Exit'){
                 $this->deleteToken();
-                header("Location: /");
-                exit; // Prevent form resubmission
+                header('Location: /');
             }
 
             if($env['act']=='Register'){
@@ -121,12 +118,14 @@
                 $this->pageData['topmenu'] = $this->echo_topmenu();
             } // For displaying top menu
 
-            if(empty($env['route2']) &&
-                (($env['route1'] == 'blog' || $env['route1'] == 'forum') &&
-                    (empty($env['route3']) || $env['route1'] == 'all' )) ||
-                        (!empty($env['route1']) &&
-                            ($env['route1'] != 'forum' ||  $env['route1'] != 'blog' || $env['route1'] == 'all')
-                        )) {
+            if(!isset($env['route2']) && (
+                    ($env['route1'] == 'blog' || $env['route1'] == 'forum') &&
+                    (empty($env['route3']) || $env['route1'] == 'all' )
+                                        ) ||
+                     (!empty($env['route1']) &&
+                            ($env['route1'] != 'forum' &&  $env['route1'] != 'blog' && $env['route1'] == 'all')
+                     )
+            ) {
                 $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>';
             }  //For categories on blog and forum pages
             else{
@@ -335,7 +334,7 @@ EOT;
 EOT;
         }
 
-        private function LogIn($login){
+        protected function LogIn($login){
 
             try {
                 // Generate a secure random token and convert it to hexadecimal format
@@ -443,7 +442,13 @@ EOT;
             file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/conf/crypto_keys.json', json_encode($data)); //Keys storage
         } //Generate keys for crypt user info
 
-        private function encrypting_data($user_data) {
+        protected function encrypting_data($user_data) {
+
+            if (!is_array($user_data)) {
+                echo "encrypting_data() expects array, got: " . gettype($user_data) . "<br>";
+                var_dump($user_data); // покажет что реально пришло
+                exit;
+            }
 
             $this->generate_crypto_keys();
 

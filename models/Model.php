@@ -49,7 +49,7 @@ class Model{
 
         $resultchkuser = array();
 
-        $sql = "SELECT `id`, `First name` AS `first_name`, `Last name` AS `last_name`,`Nickname` AS `nickname`, `status`, `logo` FROM `users` WHERE `email` = :email and `pass` = :password ";
+        $sql = "SELECT `id`, `first_name`, `last_name`,`nickname`, `status`, `logo` FROM `users` WHERE `email` = :email and `pass` = :password ";
 
         $smtpc = $this->db->prepare($sql);
         $smtpc->bindValue(":email", $email, PDO::PARAM_STR);
@@ -97,7 +97,7 @@ class Model{
 
         elseif($ress == NULL){
 
-            $sql = "INSERT INTO `users` (`First name`,`Last name`,`Nickname`,`birthday`,`email`,`pass` ) VALUES (:first_name,:last_name,:nickname,:birthday,:email,:password)";
+            $sql = "INSERT INTO `users` (`first_name`,`last_name`,`nickname`,`birthday`,`email`,`pass` ) VALUES (:first_name,:last_name,:nickname,:birthday,:email,:password)";
 
             $smtpr = $this->db->prepare($sql);
             $smtpr->bindValue(":first_name", $first_name, PDO::PARAM_STR);

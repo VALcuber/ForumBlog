@@ -9,6 +9,7 @@ $env = [];	// Global array which consist all parameters app
 $env['route'] = $_POST['route'] ?? '';
 include ("conf/db.php");
 include ("conf/router.php");
+include ("conf/google_oauth.php"); // Include Google OAuth configuration
 
 // Initialisation
 $env['id'] = $_POST['id']?? '';

@@ -12,7 +12,8 @@ class Routing {
             $modelName = "IndexModel";
             $action = "index";
 
-            $route = explode("/", $_SERVER['REQUEST_URI']);
+            $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); // только /google-callback
+            $route = explode("/", $uri);
 
             if (isset($route[1])) {
                 $route1 = strtok($route[1], '-');
@@ -82,6 +83,23 @@ class Routing {
                 }
             }
 
+            // Google OAuth routes
+            elseif (isset($route[1]) && $route[1] == 'google-login') {
+                $controllerName = "GoogleAuthController";
+                $modelName = "GoogleAuthModel";
+                $action = "glogin";
+            }
+            elseif (isset($route[1]) && $route[1] == 'google-callback') {
+                $controllerName = "GoogleAuthController";
+                $modelName = "GoogleAuthModel";
+                $action = "callback";
+            }
+            elseif (isset($route[1]) && $route[1] == 'google-logout') {
+                $controllerName = "GoogleAuthController";
+                $modelName = "GoogleAuthModel";
+                $action = "logout";
+            }
+
             elseif ($route[1] == 'news' && isset($route[2])) {
                 $controllerName = "PageController";
                 $modelName = "PageModel";
@@ -102,7 +120,7 @@ class Routing {
                 $controllerName = "ForumController";
                 $modelName = "ForumModel";
             }*/
-            elseif (!empty($route[1]) && !in_array($route[1], ['forum', 'blog', 'all', 'settings'], true) && empty($route[2])) {
+            elseif (!empty($route[1]) && !in_array($route[1], ['forum', 'blog', 'all', 'settings', 'google-login', 'google-callback','google-logout'], true) && empty($route[2])) {
                 $controllerName = "ForumBlogController";
                 $modelName = "ForumBlogModel";
             }

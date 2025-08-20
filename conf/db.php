@@ -101,6 +101,7 @@ class DB{
 	                                                    `pass` TEXT NOT NULL COLLATE 'utf8_general_ci',
 	                                                    `logo` VARCHAR(50) NOT NULL DEFAULT 'none' COLLATE 'utf8_general_ci',
 	                                                    `status` VARCHAR(5) NOT NULL DEFAULT 'user' COLLATE 'utf8_general_ci',
+	                                                    `google_id` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
 	                                                    PRIMARY KEY (`id`) USING BTREE
 
          )";

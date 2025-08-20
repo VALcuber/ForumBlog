@@ -216,21 +216,16 @@ document.addEventListener('DOMContentLoaded', function() {
   const adminPanel = document.getElementById('adminPanel');
   
   if (adminToggle && adminPanel) {
-    console.log('Admin toggle found:', adminToggle);
-    console.log('Admin panel found:', adminPanel);
-    
     // Function to show panel
     function showPanel() {
       adminPanel.classList.remove('hidden');
       document.cookie = 'admin_panel=1; path=/';
-      console.log('Admin panel shown');
     }
     
     // Function to hide panel
     function hidePanel() {
       adminPanel.classList.add('hidden');
       document.cookie = 'admin_panel=0; path=/';
-      console.log('Admin panel hidden');
     }
     
     // Set slider state from cookie
@@ -245,17 +240,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Save state to cookie when changed
     adminToggle.addEventListener('change', function() {
-      console.log('Toggle changed:', this.checked);
       if (this.checked) {
         showPanel();
       } else {
         hidePanel();
       }
     });
-  } else {
-    console.log('Admin toggle or panel not found');
-    console.log('adminToggle:', adminToggle);
-    console.log('adminPanel:', adminPanel);
   }
 });//--------------------------------------------------------------------------------------------------------------------------------------------------------//
 /*

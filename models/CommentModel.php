@@ -6,7 +6,7 @@ class CommentModel extends Model{
 
         global $env;
 
-        $sql = "SELECT `forum_comments`.*, `users`.`First name` AS `name` 
+        $sql = "SELECT `forum_comments`.*, `users`.`first_name` AS `name` 
 	                FROM `forum_comments`
 		                INNER JOIN `users` ON `forum_comments`.`user_id` = `users`.`Id`
 			                WHERE `forum_comments`.`Forum_page` = (SELECT `Id` FROM `forum_category` WHERE `Description` = :page_id)

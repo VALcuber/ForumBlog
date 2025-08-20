@@ -20,7 +20,7 @@ class PageController extends Controller {
     private function echo_page(){
 		global $env;
 
-        if($env['route'] == 'blog' || $env['route'] == 'forum'){
+        if($env['route1'] == 'blog' || $env['route1'] == 'forum'){
 
             $this->pageData['comments'] = $this->echo_html_comments();
             $this->pageData['forum_comments'] = '<script src="/assets/js/forum.comments.js"></script>';
