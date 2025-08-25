@@ -44,14 +44,14 @@ class GoogleAuthController extends Controller {
                 throw new Exception(GOOGLE_ERROR_NO_TOKEN);
             }
 
-            // Получаем данные пользователя с Google только для идентификации (id/email)
+            // Receive user data from Google only for identification (id/email)
             $userInfo = $this->getGoogleUserInfo($tokenData['access_token']);
 
             if (!$userInfo) {
                 throw new Exception(GOOGLE_ERROR_NO_USERINFO);
             }
 
-            // Step 1: Проверяем базу и получаем данные пользователя
+            // Check base and receive user data
             $this->processGoogleUserFromDB($userInfo);
 
         } catch (Exception $e) {
@@ -159,7 +159,7 @@ class GoogleAuthController extends Controller {
         // Create token for user
         $this->pageData['id_login'] = $env['token'] = $this->LogIn($userId);
 
-        // Редирект на главную страницу
+        // Redirect on main page
         header('Location: /');
         exit;
     }
