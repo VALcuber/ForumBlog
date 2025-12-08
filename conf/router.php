@@ -34,7 +34,7 @@ class Routing {
             /* Define controller */
 
             if (empty($route[1]) || $route[1] == '') {
-                // Главная страница - оставляем дефолтные значения
+                // Main page
                 $controllerName = "IndexController";
                 $modelName = "IndexModel";
             }
@@ -115,15 +115,6 @@ class Routing {
                     $modelName = "ForumModel";
                 }
             }
-/*
-            elseif ((isset($route[1]) && ($route[1] == 'forum')) && empty($route[2])) {
-                $controllerName = "ForumController";
-                $modelName = "ForumModel";
-            }*/
-            elseif (!empty($route[1]) && !in_array($route[1], ['forum', 'blog', 'all', 'settings', 'google-login', 'google-callback','google-logout'], true) && empty($route[2])) {
-                $controllerName = "ForumBlogController";
-                $modelName = "ForumBlogModel";
-            }
 
             elseif (isset($route[1]) && $route[1] == 'all') {
                 $controllerName = "Categories_allController";
@@ -142,6 +133,27 @@ class Routing {
             elseif (isset($route[2]) && $route[2] != 'CommentController' && !isset($route[3])) {
                 $controllerName = "All_for_certain_categoryController";
                 $modelName = "All_for_certain_categoryModel";
+            }
+
+            elseif (isset($route[1]) && $route[1] == 'description') {
+                $controllerName = "DescriptionController";
+            }
+/*
+            elseif (isset($route[1]) && $route[1] == 'search') {
+                $controllerName = "SearchController";
+                $modelName = "SearchModel";
+            }
+
+            elseif (isset($route[1]) && $route[1] == 'search_api') {
+                $controllerName = "SearchController";
+                $modelName = "SearchModel";
+                $action = "api";
+            }
+*/
+
+            elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $route[1] === 'search') {
+                $controllerName = "SearchController";
+                $modelName = "SearchModel";
             }
 
             else{

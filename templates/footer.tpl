@@ -18,7 +18,7 @@
 
         <ul class="navbar-nav flex-column">
 
-            <li class="navbar-item py-2"><a href="#" class="navbar-link">DESCRIPTION</a></li>
+            <li class="navbar-item py-2"><a href="/description" class="navbar-link">DESCRIPTION</a></li>
 
             <li class="navbar-item py-2"><a href="#" class="navbar-link">HELP</a></li>
 
@@ -367,6 +367,8 @@
         <form id="hiddenPostForm" method="POST" style="display: none;">
             <input type="hidden" name="token" value="<?= htmlspecialchars($pageData['id_login']) ?>">
         </form> <!-- Token form -->
+
+        <script src="/assets/js/livesearch.js"></script>
     </body>
 
 </html>
