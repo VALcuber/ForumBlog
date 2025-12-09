@@ -2,17 +2,27 @@
 
 class SearchController extends Controller{
 
+    private $pageTpl = '/templates/search_results.tpl';
+
     public function __construct() {
         parent::__construct();
         $this->model = new SearchModel();
     }
 
     public function index(){
+        $this->controller();
+        $this->search();
+
+        //$this->pageData['forum'] = $this->echo_random_forum_topics();
+
+        $this->view->render($this->pageTpl, $this->pageData);
+    }
+
+    private function search (){
         $query = $_POST['query'] ?? '';
         $query = trim($query);
 
         if ($query === '') {
-            echo '<div class="no-results">Enter text to search</div>';
             return;
         }
 
