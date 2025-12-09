@@ -1,38 +1,62 @@
-const searchInput = document.getElementById('search');
-const searchResults = document.getElementById('searchResults');
-let timer;
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("JS loaded");
 
-// check existence (failsafe)
-if (searchInput) {
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('liveSearchResults');
 
-    searchInput.addEventListener('input', function() {
+    let timer = null;
+
+    if (!searchInput) {
+        console.error("searchInput not found");
+        return;
+    }
+
+    if (!searchResults) {
+        console.error("liveSearchResults not found");
+        return;
+    }
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.trim();
+
+        if (query === '') {
+            searchResults.classList.add('hidden');
+            searchResults.innerHTML = '';
+            return;
+        }
+
         clearTimeout(timer);
         timer = setTimeout(() => {
-            const query = encodeURIComponent(searchInput.value);
 
             fetch('/search', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: 'query=' + query
+                body: 'query=' + encodeURIComponent(query)
             })
-                .then(res => res.text())
-                .then(html => searchResults.innerHTML = html);
+                .then(r => r.text())
+                .then(html => {
+                    searchResults.innerHTML = html;
+                    searchResults.classList.remove('hidden');
+                })
+                .catch(err => {
+                    console.error(err);
+                    searchResults.classList.add('hidden');
+                });
+
         }, 300);
     });
 
-    searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-
-            const query = encodeURIComponent(searchInput.value);
-
-            fetch('/search', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: 'query=' + query
-            })
-                .then(res => res.text())
-                .then(html => searchResults.innerHTML = html);
+    // Закрытие при клике вне поиска
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+            searchResults.classList.add('hidden');
         }
     });
-}
+
+    // Повторное открытие при фокусе, если есть текст
+    searchInput.addEventListener('focus', () => {
+        if (searchInput.value.trim() !== '' && searchResults.innerHTML !== '') {
+            searchResults.classList.remove('hidden');
+        }
+    });
+});

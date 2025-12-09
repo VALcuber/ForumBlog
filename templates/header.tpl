@@ -31,25 +31,13 @@
             <div class="header__column d-flex align-items-center justify-content-end">
 
                 <form action="/search" class="header__search mr-sm-4 border-0 rounded-pill d-block" method="POST">
-                    <input type="text" id="search" class="header__search px-3 mr-sm-4 border-0 rounded-pill d-block" name="query" placeholder="Search...">
-                </form>
-                <!-- Контейнер для вывода результатов живого поиска -->
-                <div class="modal fade" id="searchModal" tabindex="-1">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
 
-                            <div class="modal-header">
-                                <h5 class="modal-title">Search results</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
+                    <input type="text" id="searchInput" class="header__search px-3 mr-sm-4 border-0 rounded-pill d-block" name="query" placeholder="Search...">
 
-                            <div class="modal-body" id="searchResults"></div>
-
-                        </div>
+                    <div id="liveSearchResults" class="search-dropdown hidden">
+                        <!-- сюда вставляются результаты -->
                     </div>
-                </div>
-
-                <button data-state = "closed" id="<?= htmlspecialchars($pageData['id_state']) ?>" class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" <?= $pageData['signin_modal_winwow'] ?> > <?= $pageData['check'] ?> </button>
+                </form>
 
             </div>
 
