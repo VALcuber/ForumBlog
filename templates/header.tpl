@@ -30,14 +30,17 @@
 
             <div class="header__column d-flex align-items-center justify-content-end">
 
-                <form action="/search" class="header__search mr-sm-4 border-0 rounded-pill d-block" method="POST">
+                <form action="/search" class="header__search mr-sm-4 border-0 rounded-pill d-block" method="POST" autocomplete="off">
 
                     <input type="text" id="searchInput" class="header__search px-3 mr-sm-4 border-0 rounded-pill d-block" name="query" placeholder="Search...">
 
+                    <!-- Live search results -->
                     <div id="liveSearchResults" class="search-dropdown hidden">
-                        <!-- сюда вставляются результаты -->
+
                     </div>
                 </form>
+
+                <button data-state = "closed" id="<?= htmlspecialchars($pageData['id_state']) ?>" class="toggle-btns header__profile text-center d-none d-sm-block rounded-circle" <?= $pageData['signin_modal_winwow'] ?> > <?= $pageData['check'] ?> </button>
 
             </div>
 

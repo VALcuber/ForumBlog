@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('liveSearchResults');
+    const searchForm = searchInput?.closest('form');
 
     let timer = null;
 
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Живой поиск при вводе
     searchInput.addEventListener('input', () => {
         const query = searchInput.value.trim();
 
@@ -30,7 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             fetch('/search', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
                 body: 'query=' + encodeURIComponent(query)
             })
                 .then(r => r.text())
@@ -59,4 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
             searchResults.classList.remove('hidden');
         }
     });
+
+    // При submit формы - скрываем живой поиск и идём на страницу результатов
+    if (searchForm) {
+        searchForm.addEventListener('submit', () => {
+            searchResults.classList.add('hidden');
+        });
+    }
 });
