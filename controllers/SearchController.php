@@ -10,19 +10,27 @@ class SearchController extends Controller{
     }
 
     public function index(){
-        $this->controller();
-        $this->search();
+        // Проверяем, это AJAX запрос для живого поиска или обычная форма
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
-        //$this->pageData['forum'] = $this->echo_random_forum_topics();
-
-        $this->view->render($this->pageTpl, $this->pageData);
+        if ($isAjax) {
+            // Для живого поиска - только результаты без шаблона
+            $this->liveSearch();
+        } else {
+            // Для обычной страницы - полный шаблон
+            $this->controller();
+            $this->prepareSearchData();
+            $this->view->render($this->pageTpl, $this->pageData);
+        }
     }
 
-    private function search (){
+    private function liveSearch() {
         $query = $_POST['query'] ?? '';
         $query = trim($query);
 
         if ($query === '') {
+            echo '<div class="no-results">Enter text to search</div>';
             return;
         }
 
@@ -41,22 +49,83 @@ class SearchController extends Controller{
         }
     }
 
-    private function generateUrl($item) {
+    private function prepareSearchData() {
+        $query = $_POST['query'] ?? $_GET['query'] ?? '';
+        $query = trim($query);
+
+        $results = [];
+        $resultsHtml = '';
+
+        if ($query !== '') {
+            $searchPattern = '%' . $query . '%';
+            $results = $this->model->search($searchPattern);
+        }
+
+        $count = count($results);
+
+        // Формируем строку с результатами
+        $resultsInfo = '';
+        if ($query) {
+            $plural = $count !== 1 ? 's' : '';
+            $resultsInfo = "Found <strong>{$count}</strong> result{$plural} for \"<strong>" . htmlspecialchars($query) . "</strong>\"";
+        }
+
+        // Формируем HTML результатов
+        if (!empty($results)) {
+            $resultsHtml .= '<div class="results-list">';
+            foreach ($results as $item) {
+                $url = $this->generateUrl($item);
+                $highlightedTitle = $this->highlightQuery($item['title'], $query);
+                $typeLabel = $this->getTypeLabel($item['type']);
+                $badgeClass = 'badge-' . str_replace('_', '-', $item['type']);
+                $path = $this->getPath($item);
+
+                $resultsHtml .= '
+                    <div class="result-card">
+                        <a href="' . $url . '">
+                            <div class="result-title">' . $highlightedTitle . '</div>
+                            <div class="result-meta">
+                                <span class="result-badge ' . $badgeClass . '">' . $typeLabel . '</span>
+                                <span class="result-path">' . htmlspecialchars($path) . '</span>
+                            </div>
+                        </a>
+                    </div>';
+            }
+            $resultsHtml .= '</div>';
+        } elseif ($query) {
+            $resultsHtml = '
+                <div class="no-results-container">
+                    <div class="no-results-icon">😔</div>
+                    <div class="no-results-text">No results found</div>
+                    <div class="no-results-hint">Try different keywords or check your spelling</div>
+                    <a href="/" class="back-link">← Back to Home</a>
+                </div>';
+        } else {
+            $resultsHtml = '
+                <div class="no-results-container">
+                    <div class="no-results-icon">🔎</div>
+                    <div class="no-results-text">Start searching</div>
+                    <div class="no-results-hint">Enter a keyword in the search box above</div>
+                </div>';
+        }
+
+        $this->pageData['query'] = htmlspecialchars($query);
+        $this->pageData['resultsInfo'] = $resultsInfo;
+        $this->pageData['resultsHtml'] = $resultsHtml;
+    }
+
+    public function generateUrl($item) {
         switch ($item['type']) {
             case 'blog':
-                // /blog/Games
                 return '/blog/' . urlencode($item['title']);
 
             case 'blog_category':
-                // /blog/Games/Portal
                 return '/blog/' . urlencode($item['parent_category']) . '/' . urlencode($item['title']);
 
             case 'forum':
-                // /forum/Games
                 return '/forum/' . urlencode($item['title']);
 
             case 'forum_category':
-                // /forum/Games/Portal
                 return '/forum/' . urlencode($item['parent_category']) . '/' . urlencode($item['title']);
 
             default:
@@ -64,7 +133,7 @@ class SearchController extends Controller{
         }
     }
 
-    private function highlightQuery($text, $query) {
+    public function highlightQuery($text, $query) {
         $text = htmlspecialchars($text);
         $query = htmlspecialchars($query);
 
@@ -75,30 +144,30 @@ class SearchController extends Controller{
         );
     }
 
-    private function getTypeLabel($type) {
+    public function getTypeLabel($type) {
         $labels = [
-            'blog' => 'Blog - Category',
-            'blog_category' => 'Blog - Post',
-            'forum' => 'Forum - Category',
-            'forum_category' => 'Forum - Topic'
+            'blog' => 'Blog',
+            'blog_category' => 'Blog Post',
+            'forum' => 'Forum',
+            'forum_category' => 'Forum Topic'
         ];
 
         return $labels[$type] ?? $type;
     }
 
-    private function getDisplayPath($item) {
+    public function getPath($item) {
         switch ($item['type']) {
             case 'blog':
-                return '/blog/' . htmlspecialchars($item['title']);
+                return '/blog/' . $item['title'];
 
             case 'blog_category':
-                return '/blog/' . htmlspecialchars($item['parent_category']) . '/' . htmlspecialchars($item['title']);
+                return '/blog/' . $item['parent_category'] . '/' . $item['title'];
 
             case 'forum':
-                return '/forum/' . htmlspecialchars($item['title']);
+                return '/forum/' . $item['title'];
 
             case 'forum_category':
-                return '/forum/' . htmlspecialchars($item['parent_category']) . '/' . htmlspecialchars($item['title']);
+                return '/forum/' . $item['parent_category'] . '/' . $item['title'];
 
             default:
                 return '';
