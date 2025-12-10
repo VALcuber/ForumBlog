@@ -12,10 +12,11 @@ class CommentController extends Controller{
 
         $this->controller();
 
-        if($env['action'] != 'add_comment') {
-            try {
-                $response = $this->model->forum_comment();
+        $response = $this->model->forum_comment();
 
+        if($env['action'] != 'add_comment') {
+
+            try {
                 header('Content-Type: application/json; charset=utf-8');
                 echo json_encode($response);
             }

@@ -23,7 +23,7 @@ $env['route3'] = '';
 $env['forum_blog'] = '';
 $env['route'] = '';
 $env['status'] = $_POST['userid'] ?? '';
-$env['page_id'] = '';
+$env['page_id'] = $_POST['page_id'] ?? '';;
 $env['action'] = $_POST['action'] ?? '';
 $env['token'] = $_POST['token'] ?? '';
 

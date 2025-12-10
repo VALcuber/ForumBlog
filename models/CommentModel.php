@@ -3,24 +3,24 @@
 class CommentModel extends Model{
 
     public function forum_comment(){
-
         global $env;
 
         $sql = "SELECT `forum_comments`.*, `users`.`first_name` AS `name` 
 	                FROM `forum_comments`
 		                INNER JOIN `users` ON `forum_comments`.`user_id` = `users`.`Id`
-			                WHERE `forum_comments`.`Forum_page` = (SELECT `Id` FROM `forum_category` WHERE `Description` = :page_id)
+			                WHERE `forum_comments`.`Forum_page` = (SELECT `Id` FROM `forum_category` WHERE `Description` = :page_name)
 				                AND `forum_comments`.`structure` = :structure";
 
         $smtppage = $this->db->prepare($sql);
 
-        $smtppage->bindValue(":page_id", $env['route3'], PDO::PARAM_STR);
+        $smtppage->bindValue(":page_name", $env['route3'], PDO::PARAM_STR);
         $smtppage->bindValue(":structure", $env['route1'], PDO::PARAM_STR);
 
         $smtppage->execute();
 
         $comment = $smtppage->fetchall(PDO::FETCH_ASSOC);
 
+        $env['page_id'] = $comment[0]['Forum_page'];
 
         return ($comment);
     }
@@ -29,13 +29,16 @@ class CommentModel extends Model{
         global $env;
 
         $comment_text = ($_POST['comment']) ? $_POST['comment'] : '';
-        $page_id = $_SESSION["page_id"];
-        $userid = $_SESSION['user_id'];
+        $page_id = $env['page_id'];
+        $userid = $env['id'];
         $rout_1 = $env['route1'];
+
+
 
         $sql = "INSERT INTO `forum_comments` (`Comment`, `Forum_page`, `user_id`, `structure`) VALUES ('$comment_text','$page_id','$userid','$rout_1')";
 
         $smtppage = $this->db->prepare($sql);
+        //var_export($env['page_id']);
         $smtppage->execute();
 
         $errorInfo = $smtppage->errorInfo();

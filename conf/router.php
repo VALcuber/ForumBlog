@@ -168,6 +168,7 @@ class Routing {
             $controller = new $controllerName();
             $controller->$action();
         }
+
         catch (PDOException $e) {
             include_once PATH_C . "ErrorController.php";
             $controller = new ErrorController();

@@ -363,7 +363,6 @@
     </div>
 
 </div> <!-- Form for adding content -->
-
         <form id="hiddenPostForm" method="POST" style="display: none;">
             <input type="hidden" name="token" value="<?= htmlspecialchars($pageData['id_login']) ?>">
         </form> <!-- Token form -->

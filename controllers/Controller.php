@@ -21,8 +21,6 @@
             $env['active'] = 'active'; // Need for working blue background on active links
             $this->pageData["slash"] = null; // Need for linking files on different pages
 
-            $this->pageData['id_login'] = $env['token'];
-
             if(($env['act'] == 'Log In') && ($_POST['email'] != '') && ($_POST['password'] != '')){
 
                 $user_data = $this->model->checkUser();
@@ -40,14 +38,13 @@
                     exit; // Prevent form resubmission
                 }
             } //Check login info
-
             $userID = $this->token_check();
 
             if(isset($env['token']) && $env['token'] !=''){
 
                 if($userID == true) {
                     $data_users = $this->get_decrypted_post_data();
-
+                    $env['id'] = $data_users['id'];
                     $this->pageData['nickname'] = $data_users['nickname'];
 
                     $user_logo = $this->model->check_logo($data_users['id']);
@@ -106,6 +103,8 @@
                 $this->deleteToken();
                 header('Location: /');
             }
+
+            $this->pageData['id_login'] = $env['token']; //Send data into hidden form
 
             if($env['act']=='Register'){
                 $this->model->SingIn();
