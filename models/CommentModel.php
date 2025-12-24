@@ -38,7 +38,7 @@ class CommentModel extends Model{
         $sql = "INSERT INTO `forum_comments` (`Comment`, `Forum_page`, `user_id`, `structure`) VALUES ('$comment_text','$page_id','$userid','$rout_1')";
 
         $smtppage = $this->db->prepare($sql);
-        //var_export($env['page_id']);
+
         $smtppage->execute();
 
         $errorInfo = $smtppage->errorInfo();

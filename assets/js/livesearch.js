@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("JS loaded");
+    //console.log("JS loaded");
 
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('liveSearchResults');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Живой поиск при вводе
+    // Live search
     searchInput.addEventListener('input', () => {
         const query = searchInput.value.trim();
 
@@ -51,21 +51,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 300);
     });
 
-    // Закрытие при клике вне поиска
+    // Close when click out of search form
     document.addEventListener('click', (e) => {
         if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
             searchResults.classList.add('hidden');
         }
     });
 
-    // Повторное открытие при фокусе, если есть текст
+    // Reopen when focus if text exist
     searchInput.addEventListener('focus', () => {
         if (searchInput.value.trim() !== '' && searchResults.innerHTML !== '') {
             searchResults.classList.remove('hidden');
         }
     });
 
-    // При submit формы - скрываем живой поиск и идём на страницу результатов
+    // Close live search and redirect on page result if form submit
     if (searchForm) {
         searchForm.addEventListener('submit', () => {
             searchResults.classList.add('hidden');

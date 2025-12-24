@@ -10,15 +10,15 @@ class SearchController extends Controller{
     }
 
     public function index(){
-        // Проверяем, это AJAX запрос для живого поиска или обычная форма
+        // Check this is AJAX or reular form
         $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
             strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
         if ($isAjax) {
-            // Для живого поиска - только результаты без шаблона
+            // Live search
             $this->liveSearch();
         } else {
-            // Для обычной страницы - полный шаблон
+            // Regular form
             $this->controller();
             $this->prepareSearchData();
             $this->view->render($this->pageTpl, $this->pageData);
@@ -63,14 +63,14 @@ class SearchController extends Controller{
 
         $count = count($results);
 
-        // Формируем строку с результатами
+        // Generate form results line
         $resultsInfo = '';
         if ($query) {
             $plural = $count !== 1 ? 's' : '';
             $resultsInfo = "Found <strong>{$count}</strong> result{$plural} for \"<strong>" . htmlspecialchars($query) . "</strong>\"";
         }
 
-        // Формируем HTML результатов
+        // Generate HTML results
         if (!empty($results)) {
             $resultsHtml .= '<div class="results-list">';
             foreach ($results as $item) {

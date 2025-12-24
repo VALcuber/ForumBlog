@@ -15,7 +15,7 @@ html{
 
 .wrapper {
 
-  overflow: hidden;
+ /* overflow: hidden;*/
 
   min-width: 330px;
 
@@ -707,7 +707,7 @@ input:checked + .slider:before {
     display: none !important;
 }
 
-/* Стили для живого поиска */
+/* Styles for live search */
 .search-dropdown {
   position: absolute;
   top: calc(100% + 5px);
@@ -734,7 +734,7 @@ input:checked + .slider:before {
   font-size: 0.95rem;
 }
 
-/* Результаты поиска */
+/* Search results */
 .search-result-item {
   display: block;
   padding: 12px 15px;
@@ -779,12 +779,12 @@ input:checked + .slider:before {
   font-weight: 600;
 }
 
-/* Контейнер для поисковой формы */
+/* Container for search form */
 .header__column form {
   position: relative;
 }
 
-/* Скроллбар для результатов поиска */
+/* Scrollbar for search results */
 .search-dropdown::-webkit-scrollbar {
   width: 6px;
 }

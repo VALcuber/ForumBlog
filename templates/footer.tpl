@@ -2,10 +2,13 @@
 
     <div class="container-fluid h-100">
 
-        <div class="row px-4 py-2 h-100 align-items-center">
+        <div class="row px-4 py-2 h-100 align-items-center justify-content-between">
 
             <h3>Footer</h3>
 
+            <div class="d-flex justify-content-end">
+                <h5>Admin email:<?= htmlspecialchars($pageData['publick_admin_email']['admin_email']) ?></h5>
+            </div>
         </div>
 
     </div>

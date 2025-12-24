@@ -128,26 +128,6 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="allow_comments" class="form-label">Allow Comments</label>
-                                        <select class="form-select" id="allow_comments" name="allow_comments">
-                                            <option value="1" <?= $pageData['settings']['allow_comments'] == '1' ? 'selected' : '' ?>>Yes</option>
-                                            <option value="0" <?= $pageData['settings']['allow_comments'] == '0' ? 'selected' : '' ?>>No</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="moderate_comments" class="form-label">Moderate Comments</label>
-                                        <select class="form-select" id="moderate_comments" name="moderate_comments">
-                                            <option value="1" <?= $pageData['settings']['moderate_comments'] == '1' ? 'selected' : '' ?>>Yes</option>
-                                            <option value="0" <?= $pageData['settings']['moderate_comments'] == '0' ? 'selected' : '' ?>>No</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
                                         <label for="max_upload_size" class="form-label">Max Upload Size (MB)</label>
                                         <input type="number" class="form-control" id="max_upload_size" name="max_upload_size" value="<?= htmlspecialchars($pageData['settings']['max_upload_size']) ?>" min="1" max="100">
                                     </div>
@@ -161,36 +141,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- User settings -->
-                    <div class="admin-card mb-4">
-                        <div class="admin-card-header">
-                            <h5><i class="fas fa-users"></i> User Settings</h5>
-                        </div>
-                        <div class="admin-card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="allow_registration" class="form-label">Allow Registration</label>
-                                        <select class="form-select" id="allow_registration" name="allow_registration">
-                                            <option value="1" <?= $pageData['settings']['allow_registration'] == '1' ? 'selected' : '' ?>>Yes</option>
-                                            <option value="0" <?= $pageData['settings']['allow_registration'] == '0' ? 'selected' : '' ?>>No</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="email_verification" class="form-label">Email Verification</label>
-                                        <select class="form-select" id="email_verification" name="email_verification">
-                                            <option value="1" <?= $pageData['settings']['email_verification'] == '1' ? 'selected' : '' ?>>Required</option>
-                                            <option value="0" <?= $pageData['settings']['email_verification'] == '0' ? 'selected' : '' ?>>Optional</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Save button -->
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary">

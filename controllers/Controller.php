@@ -144,6 +144,7 @@
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['active'] = $active;
             $this->pageData['burger'] = $this->echo_burger();
+            $this->pageData['publick_admin_email'] = $this->model->getSettings();
 
         }
 
@@ -189,8 +190,6 @@
                       <a href="/AddNews">Add News</a>
                       
                       <a href="/manage_users">Manage Users</a>
-                      
-                      <a href="/admin/content">Create Topic</a>
                       
                     </div>
                     
