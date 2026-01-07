@@ -66,7 +66,7 @@ class AdminController extends Controller {
 
             // Transform field names to match template expectations
             foreach ($content['blog'] as &$post) {
-                $post['author'] = ($post['First name'] ?? '') . ' ' . ($post['Last name'] ?? '');
+                $post['author'] = ($post['nickname'] ?? '');
                 $post['title'] = $post['title'] ?? 'Untitled';
                 $post['category'] = $post['category_name'] ?? 'Unknown';
                 $post['status'] = 'published';
@@ -74,7 +74,7 @@ class AdminController extends Controller {
 
             // Transform field names to match template expectations
             foreach ($content['forum'] as &$topic) {
-                $topic['author'] = ($topic['First name'] ?? '') . ' ' . ($topic['Last name'] ?? '');
+                $topic['author'] = ($topic['first_name'] ?? '');
                 $topic['title'] = $topic['title'] ?? 'Untitled';
                 $topic['category'] = $topic['category_name'] ?? 'Unknown';
                 $topic['status'] = 'published';
@@ -84,7 +84,7 @@ class AdminController extends Controller {
                 $item['author'] = 'Admin';
                 $item['status'] = 'published';
             }
-            //var_export($content);
+
             $this->pageData['title'] = "Content Management - Admin Panel";
             $this->pageData['content'] = $content;
             $this->pageData['content_blog'] = $this->content_blog($content['blog']);
@@ -172,7 +172,7 @@ class AdminController extends Controller {
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" 
                             data-content-id="' . htmlspecialchars($topic['id'] ?? '') . '" 
-                            data-content-type="blog">
+                            data-content-type="forum">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -202,7 +202,7 @@ class AdminController extends Controller {
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" 
                             data-content-id="' . htmlspecialchars($topic['id'] ?? '') . '" 
-                            data-content-type="blog">
+                            data-content-type="news">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -300,7 +300,8 @@ class AdminController extends Controller {
                     $contentId = $_POST['content_id'] ?? 0;
                     $contentType = $_POST['content_type'] ?? '';
                     $content = $this->model->getContentById($contentId, $contentType);
-                    echo json_encode(['success' => true, 'content' => $content]);
+                    $categories= $this->model->getContentCategoriesByType($contentType);
+                    echo json_encode(['success' => true, 'content' => $content, "categories" => $categories]);
                     break;
                     
                 case 'update_content':
@@ -320,4 +321,4 @@ class AdminController extends Controller {
             echo json_encode(['success' => false, 'message' => 'An error occurred']);
         }
     }
-} 
+}

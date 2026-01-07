@@ -1,4 +1,6 @@
 Tasks:
 
- - Make work admin panel
+ - Make work admin panel (rework table "news" in db)
+
+ - Create user profile links
 

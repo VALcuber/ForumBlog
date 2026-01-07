@@ -346,11 +346,32 @@ class AdminModel extends Model {
                 if ($type === 'news') {
                     $content['content'] = $content['content'] ?? '';
                 } else {
-                    $content['content'] = $content['title'] ?? '';
+                    $content['content'] = $content['category_name'] ?? '';
                 }
             }
             
             return $content;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public function getContentCategoriesByType($type) {
+        try {
+            if ($type === 'blog') {
+                $sql = "SELECT `Category` as `category_name` FROM `blog`";
+                $stmt = $this->db->prepare($sql);
+            }
+            elseif($type === 'forum') {
+                $sql = "SELECT `Category` as `category_name` FROM `forum`";
+                $stmt = $this->db->prepare($sql);
+            }
+            else{
+                $stmt = '';
+            }
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+
         } catch (Exception $e) {
             return null;
         }

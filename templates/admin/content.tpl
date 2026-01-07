@@ -239,7 +239,8 @@
                     
                     <div class="mb-3">
                         <label for="editContentContent" class="form-label">Content</label>
-                        <textarea class="form-control" id="editContentContent" name="content" rows="5" required></textarea>
+                        <select class="form-select" id="editContentCategory" name="content" required>
+                        </select>
                     </div>
                 </form>
             </div>
@@ -273,24 +274,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: `action=get_content&content_id=${contentId}&content_type=${contentType}`
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.content) {
-                    document.getElementById('editContentId').value = contentId;
-                    document.getElementById('editContentType').value = contentType;
-                    document.getElementById('editContentTitle').value = data.content.title || '';
-                    document.getElementById('editContentContent').value = data.content.content || '';
-                    
-                    const modal = new bootstrap.Modal(document.getElementById('editContentModal'));
-                    modal.show();
-                } else {
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.content) {
+                        document.getElementById('editContentId').value = contentId;
+                        document.getElementById('editContentType').value = contentType;
+                        document.getElementById('editContentTitle').value = data.content.title || '';
+
+                        const select = document.getElementById('editContentCategory');
+                        select.innerHTML = '';
+                        data.categories.forEach(cat => {
+                            const option = document.createElement('option');
+                            option.value = cat;
+                            option.textContent = cat;
+                            if (cat === data.content.category_name) {
+                                option.selected = true;
+                            }
+                            select.appendChild(option);
+                        });
+
+                        const modal = new bootstrap.Modal(document.getElementById('editContentModal'));
+                        modal.show();
+                    } else {
+                        alert('Error loading content data');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                     alert('Error loading content data');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error loading content data');
-            });
+                });
+
         });
     });
     
@@ -352,4 +365,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 </body>
-</html> 
+</html>
