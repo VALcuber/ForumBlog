@@ -204,19 +204,7 @@ class AdminModel extends Model {
         
         return $content;
     }
-    /*
-    public function getSettings() {
-        return [
-            'site_name' => 'Forum-blog',
-            'site_description' => 'A forum and blog platform',
-            'admin_email' => 'lordiccat@gmail.com',
-            'posts_per_page' => 10,
-            'allow_comments' => '1',
-            'max_upload_size' => 10,
-            'allowed_file_types' => 'jpg,jpeg,png',
-        ];
-    }//rework
-    */
+
     public function updateSettings($settings) {
         // In a real application, you would save these to database
         // For now, just return true
@@ -366,9 +354,7 @@ class AdminModel extends Model {
                 $sql = "SELECT `Category` as `category_name` FROM `forum`";
                 $stmt = $this->db->prepare($sql);
             }
-            else{
-                $stmt = '';
-            }
+            else die;
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_COLUMN);
 

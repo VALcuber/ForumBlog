@@ -137,7 +137,7 @@ class AdminController extends Controller {
                     . '<td><span class="badge bg-success">' . htmlspecialchars(ucfirst($post['status'])) . '</span></td>'
                     . '<td>
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-sm btn-outline-primary">
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-content-type="blog">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" 
@@ -167,7 +167,7 @@ class AdminController extends Controller {
                     . '<td><span class="badge bg-success">' . htmlspecialchars(ucfirst($topic['status'])) . '</span></td>'
                     . '<td>
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-sm btn-outline-primary">
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-content-type="forum">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" 
@@ -197,7 +197,7 @@ class AdminController extends Controller {
                     . '<td><span class="badge bg-success">' . htmlspecialchars(ucfirst($topic['status'])) . '</span></td>'
                     . '<td>
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-sm btn-outline-primary">
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-content-type="news">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-danger delete-content-btn" 
@@ -300,8 +300,13 @@ class AdminController extends Controller {
                     $contentId = $_POST['content_id'] ?? 0;
                     $contentType = $_POST['content_type'] ?? '';
                     $content = $this->model->getContentById($contentId, $contentType);
-                    $categories= $this->model->getContentCategoriesByType($contentType);
-                    echo json_encode(['success' => true, 'content' => $content, "categories" => $categories]);
+
+                    $categories = [];
+
+                    if ($contentType !== 'news') {
+                        $categories = $this->model->getContentCategoriesByType($contentType);
+                    }
+                    echo json_encode(['success' => true, 'content' => $content, "categories" => $categories, "type" => $contentType]);
                     break;
                     
                 case 'update_content':

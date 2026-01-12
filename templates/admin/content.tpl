@@ -238,8 +238,9 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="editContentContent" class="form-label">Content</label>
-                        <select class="form-select" id="editContentCategory" name="content" required>
+                        <label id="dynamicFieldLabel" class="form-label"></label>
+                        <!--<select class="form-select" id="editContentCategory" name="content" required>-->
+                        <div id="editContentContent"></div>
                         </select>
                     </div>
                 </form>
@@ -257,6 +258,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/assets/js/admin-panel.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Edit content buttons
@@ -281,21 +283,44 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.getElementById('editContentType').value = contentType;
                         document.getElementById('editContentTitle').value = data.content.title || '';
 
-                        const select = document.getElementById('editContentCategory');
-                        select.innerHTML = '';
-                        data.categories.forEach(cat => {
-                            const option = document.createElement('option');
-                            option.value = cat;
-                            option.textContent = cat;
-                            if (cat === data.content.category_name) {
-                                option.selected = true;
-                            }
-                            select.appendChild(option);
-                        });
+                        const wrapper = document.getElementById('editContentContent');
+                        const label = document.getElementById('dynamicFieldLabel');
 
-                        const modal = new bootstrap.Modal(document.getElementById('editContentModal'));
-                        modal.show();
-                    } else {
+                        wrapper.innerHTML = ''; // clear container
+
+                        if (data.type === 'news') { // For news — textarea
+                            const textarea = document.createElement('textarea');
+                            textarea.className = 'form-control';
+                            textarea.name = 'content';
+                            textarea.rows = 5;
+                            textarea.value = data.content.content || '';
+                            textarea.required = true;
+                            wrapper.appendChild(textarea);
+                            label.textContent = 'Content';
+                        }
+                        else { // For blog/forum — select category
+                            const select = document.createElement('select');
+                            select.className = 'form-select';
+                            select.name = 'category';
+                            data.categories.forEach(cat => {
+                                const option = document.createElement('option');
+                                option.value = cat;
+                                option.textContent = cat;
+                                if (cat === data.content.category_name) {
+                                    option.selected = true;
+                                }
+                                select.appendChild(option);
+                            });
+
+                            wrapper.appendChild(select);
+
+                            label.textContent = 'Category';
+                        }
+
+                        new bootstrap.Modal(document.getElementById('editContentModal')).show();
+
+                    }
+                    else {
                         alert('Error loading content data');
                     }
                 })

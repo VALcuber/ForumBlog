@@ -313,7 +313,7 @@
                                                 <?php foreach ($pageData['recent_activities']['recent_news'] as $news): ?>
                                                 <tr>
                                                     <td><?= htmlspecialchars($news['title']) ?></td>
-                                                    <td><?= htmlspecialchars(substr($news['content'], 0, 50)) ?>...</td>
+                                                    <td><?= htmlspecialchars($news['content']) ?></td>
                                                 </tr>
                                                 <?php endforeach; ?>
                                             <?php else: ?>
