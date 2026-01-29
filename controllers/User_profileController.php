@@ -24,8 +24,7 @@ class User_profileController extends Controller {
         $this->pageData['script_profile'] = '<script src="../assets/js/profile.js"></script>';
         $this->pageData['user_forum_posts'] = $this->user_forum_posts();
         $this->pageData['user_blog_posts'] = $this->user_blog_posts();
-        
-
+        $this->pageData['user_messages_unread_inbox'] = $this->unread_inbox();
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}

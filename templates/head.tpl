@@ -28,6 +28,7 @@
 
     <?= $pageData['script_category'] ?>
     <?= $pageData['script_profile'] ?>
+    <?= $pageData['script_conversation'] ?>
 
 </head>
 

@@ -588,7 +588,7 @@ li{
 .info-container {
   position: relative;
   width: 100%;
-  margin-top: -55px;
+  margin-top: -180px;
   margin-left: 180px;
 }
 
@@ -979,4 +979,31 @@ input:checked + .slider:before {
   text-decoration: none;
   transform: translateY(-2px);
   box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+/* -------------------- messages --------------------------*/
+.user-item:hover {
+  background-color: #f0f0f0; /* hover highlight */
+  cursor: pointer;
+}
+.user-item.active {
+  background-color: #d0e7ff; /* selected highlight */
+}
+#chatOverlay {
+  background: transparent;
+  cursor: default;
+}
+
+.list-group-item.active{
+  text-decoration: none;   /* даже при активном состоянии */
+}
+
+#chatWindow {
+  display: none;
+}
+
+#chatroomCard.chat-open #defaultMessage {
+  display: none !important;
+}
+#chatroomCard.chat-open #chatWindow {
+  display: flex; flex-direction: column;
 }

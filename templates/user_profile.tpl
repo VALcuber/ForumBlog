@@ -1,4 +1,4 @@
-<main class="main" xmlns="http://www.w3.org/1999/html">
+<main class="main">
 
     <div class="container-fluid wrapper bg-white">
 
@@ -24,7 +24,8 @@
                       <button class="list-group-item">SETTINGS</button>
                   </li>
                   <li class="user-profile_li">
-                      <button class="list-group-item">MESSAGES</button>
+                      <input type="hidden" id="hiddenmessagesData" value="<?=htmlspecialchars($pageData['user_messages_unread_inbox'], ENT_QUOTES, 'UTF-8')?>">
+                      <button id="p.b.messages" class="list-group-item">MESSAGES</button>
                   </li>
                   <li class="user-profile_li">
                       <input type="hidden" id="hiddenblogData" value="<?=htmlspecialchars($pageData['user_blog_posts'], ENT_QUOTES, 'UTF-8')?>">

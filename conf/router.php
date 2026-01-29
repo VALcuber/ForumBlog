@@ -39,6 +39,11 @@ class Routing {
                 $modelName = "IndexModel";
             }
 
+            elseif (isset($route[1]) && $route[1] === 'user_profile' && isset($route[2]) && $route[2] === 'messages'){
+                $controllerName = "MessagesController";
+                $modelName = "MessagesModel";
+            }
+
             elseif ($route[1] == 'user_profile') {
                 $controllerName = "User_profileController";
                 $modelName = "User_profileModel";
@@ -138,18 +143,6 @@ class Routing {
             elseif (isset($route[1]) && $route[1] == 'description') {
                 $controllerName = "DescriptionController";
             }
-/*
-            elseif (isset($route[1]) && $route[1] == 'search') {
-                $controllerName = "SearchController";
-                $modelName = "SearchModel";
-            }
-
-            elseif (isset($route[1]) && $route[1] == 'search_api') {
-                $controllerName = "SearchController";
-                $modelName = "SearchModel";
-                $action = "api";
-            }
-*/
 
             elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $route[1] === 'search') {
                 $controllerName = "SearchController";
