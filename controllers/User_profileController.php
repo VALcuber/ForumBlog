@@ -107,6 +107,48 @@ EOT;
 
         return $result_blog_HTML;
     }
+    public function unread_inbox(){
+        global $env;
+
+        $users_inbox = $this->model->users_inbox($env['id']);
+        $senders[] = '';
+
+        if ($users_inbox != NULL){
+            foreach ($users_inbox as $value) {
+                $id = ($value['sender_id'] == $env['id']) ? $value['receiver_id'] : $value['sender_id'];
+                $nickname = htmlspecialchars($value['nickname']);
+
+                $user_posts = <<<"EOT"
+        <div class="card" style="width: 500px; height: 250px; overflow-y: auto;">
+          <div class="card-header text-center">Messages</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" data-user-id="$id" data-user="$nickname" style="cursor:pointer">$nickname</li>
+          </ul>
+          <div class="card-footer text-center">
+            <a href="/user_profile/messages" class="btn btn-sm btn-primary">All messages</a>
+          </div>
+        </div>
+EOT;
+                $senders[] = $user_posts;
+            }
+            $this->pageData['senders'] = implode("\n", $senders);
+        }
+        else{
+            return $user_posts = <<<"EOT"
+        <div class="card" style="width: 500px; height: 250px; overflow-y: auto;">
+          <div class="card-header text-center">Messages</div>
+          <ul class="list-group list-group-flush">
+            <li class="d-flex list-group-item justify-content-center">Please</li>
+            <li class="d-flex list-group-item justify-content-center">start</li>
+            <li class="d-flex list-group-item justify-content-center">conversation</li>
+          </ul>
+          <div class="card-footer text-center">
+            <a href="/user_profile/messages" class="btn btn-sm btn-primary">All messages</a>
+          </div>
+        </div>
+EOT;
+        }
+    }
 
 
 }

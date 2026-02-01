@@ -65,4 +65,22 @@ class User_profileModel extends Model {
         return ($user_blog_posts);
     }
 
+    public function users_inbox($userId){
+        $sql = "SELECT m.sender_id, m.receiver_id, u.nickname
+                    FROM messages m
+                        /* Connect with NOT ME */
+                        INNER JOIN users u ON u.id = IF(m.sender_id = :userId, m.receiver_id, m.sender_id)
+                            INNER JOIN (
+                                SELECT MAX(id) as max_id
+                                    FROM messages
+                                        WHERE receiver_id = :userId OR sender_id = :userId
+                                            /* Group by ID */
+                                            GROUP BY IF(sender_id = :userId, receiver_id, sender_id)
+                                         ) last_msgs ON m.id = last_msgs.max_id
+                                        ORDER BY m.created_at DESC";
+        $smtpc = $this->db->prepare($sql);
+        $smtpc->bindValue(":userId", $userId, PDO::PARAM_STR);
+        $smtpc->execute();
+    }
+
 }

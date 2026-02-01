@@ -133,9 +133,13 @@
 
             if($env['route1'] != 'user_profile'){
                 $this->pageData['script_profile'] = '';
-                if($route[2] != 'messages')
-                    $this->pageData['script_conversation'] = '';
             }  //For script on profile page
+            if(isset($env['route2']) && $env['route2'] == 'messages') {
+                $this->pageData['script_conversation'] = '<script src="../assets/js/conversation.js"></script>';
+                $this->pageData['script_profile'] = '';
+            }
+            else
+                $this->pageData['script_conversation'] = '';
 
             $this->pageData['title'] = "Forum-blog";
             /** @noinspection PhpUndefinedVariableInspection */
@@ -720,19 +724,5 @@ EOT;
 
         }
 
-        public function unread_inbox(){
-        return $user_posts = <<<"EOT"
-<div class="card" style="width: 500px; height: 250px; overflow-y: auto;">
-  <div class="card-header text-center">Messages</div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">User1</li>
-    <li class="list-group-item">User2</li>
-    <li class="list-group-item">User3</li>
-  </ul>
-  <div class="card-footer text-center">
-    <a href="/user_profile/messages" class="btn btn-sm btn-primary">All messages</a>
-  </div>
-</div>
-EOT;
-        }
+
 	}

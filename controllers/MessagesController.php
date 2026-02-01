@@ -28,8 +28,8 @@ class MessagesController extends Controller{
 
 
         $this->inbox();
-        $this->pageData['script_profile'] = '';
-        $this->pageData['script_conversation'] = '<script src="../assets/js/conversation.js"></script>';
+
+
         $this->view->render($this->pageTpl, $this->pageData);
     }
 

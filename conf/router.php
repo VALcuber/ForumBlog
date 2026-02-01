@@ -6,7 +6,7 @@ class Routing {
 
         global $env;
 
-        try {
+        //try {
             /* Default controller and action */
             $controllerName = "IndexController";
             $modelName = "IndexModel";
@@ -159,7 +159,7 @@ class Routing {
             include PATH_M . $modelName . ".php";           //IndexModel.php
 
             $controller = new $controllerName();
-            $controller->$action();
+            $controller->$action();/*
         }
 
         catch (PDOException $e) {
@@ -173,7 +173,7 @@ class Routing {
             $controller = new ErrorController();
             $msg = $controller->handleGeneralException($e);     // Receive message error
             $controller->index("Unexpected error", $msg);       // push in controller
-        }
+        }*/
     }
 
 

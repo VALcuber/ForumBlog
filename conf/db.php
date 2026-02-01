@@ -91,11 +91,27 @@ class DB{
                                                            KEY `forum-categories` (`id_forum`)
         )";
         $conn->query($sql);
+
+        $conn->query($sql);
+        $sql = "CREATE TABLE IF NOT EXISTS `messages` (
+                                                        `id` INT(11) NOT NULL AUTO_INCREMENT,
+	                                                    `sender_id` INT(11) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	                                                    `receiver_id` INT(11) NOT NULL COLLATE 'utf8_general_ci',
+	                                                    `content` TEXT NOT NULL COLLATE 'utf8_general_ci',
+	                                                    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	                                                    `is_read` INT(1) NULL DEFAULT '0' COLLATE 'utf8_general_ci',
+	                                                    PRIMARY KEY (`id`) USING BTREE,
+	                                                    CONSTRAINT `FK_messages_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
+	                                                    CONSTRAINT `FK_messages_receiver` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`)
+
+         )";
+        $conn->query($sql);
+
         $sql = "CREATE TABLE IF NOT EXISTS `users` (
                                                         `id` INT(11) NOT NULL AUTO_INCREMENT,
 	                                                    `First name` TEXT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
 	                                                    `Last name` TEXT NOT NULL COLLATE 'utf8_general_ci',
-	                                                    `Nickname` VARCHAR(50) NULL DEFAULT 'Random user' COLLATE 'utf8_general_ci',
+	                                                    `nickname` VARCHAR(50) NULL DEFAULT 'Random user' COLLATE 'utf8_general_ci',
 	                                                    `birthday` TEXT NOT NULL COLLATE 'utf8_general_ci',
 	                                                    `email` TEXT NOT NULL COLLATE 'utf8_general_ci',
 	                                                    `pass` TEXT NOT NULL COLLATE 'utf8_general_ci',
