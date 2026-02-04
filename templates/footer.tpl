@@ -7,7 +7,7 @@
             <h3>Footer</h3>
 
             <div class="d-flex justify-content-end">
-                <h5>Admin email:<?= htmlspecialchars($pageData['publick_admin_email']['admin_email']) ?></h5>
+                <h5>Admin email:<?= htmlspecialchars($pageData['publick_admin_email']['contact_email']) ?></h5>
             </div>
         </div>
 

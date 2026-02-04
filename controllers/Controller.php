@@ -141,6 +141,14 @@
             else
                 $this->pageData['script_conversation'] = '';
 
+            $settings = $this->model->getSettings();
+            $settings_array = [];
+
+            foreach($settings as $row) {
+                $settings_array[$row['name']] = $row['value'];
+                $env['settings_array'] = $settings_array;
+            }
+
             $this->pageData['title'] = "Forum-blog";
             /** @noinspection PhpUndefinedVariableInspection */
             $this->pageData['panel'] = $adminPanel;
@@ -150,7 +158,7 @@
             $this->pageData['signin_modal_winwow'] = $signin_modal_winwow;
             $this->pageData['active'] = $active;
             $this->pageData['burger'] = $this->echo_burger();
-            $this->pageData['publick_admin_email'] = $this->model->getSettings();
+            $this->pageData['publick_admin_email'] = $settings_array;
 
         }
 

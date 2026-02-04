@@ -107,6 +107,16 @@ class DB{
          )";
         $conn->query($sql);
 
+        $sql = " CREATE TABLE IF NOT EXISTS `settings` (
+                                            `id` INT(11) NOT NULL AUTO_INCREMENT,
+	                                        `section` VARCHAR(50) NOT NULL COLLATE 'utf8_general_ci',
+	                                        `name` VARCHAR(50) NOT NULL COLLATE 'utf8_general_ci',
+	                                        `value` TEXT NOT NULL COLLATE 'utf8_general_ci',
+	                                        PRIMARY KEY (`id`) USING BTREE,
+	                                        UNIQUE INDEX `section` (`section`, `name`) USING BTREE
+        )";
+        $conn->query($sql);
+
         $sql = "CREATE TABLE IF NOT EXISTS `users` (
                                                         `id` INT(11) NOT NULL AUTO_INCREMENT,
 	                                                    `First name` TEXT NULL DEFAULT NULL COLLATE 'utf8_general_ci',

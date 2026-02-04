@@ -92,13 +92,13 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="site_name" class="form-label">Site Name</label>
-                                        <input type="text" class="form-control" id="site_name" name="site_name" value="<?= htmlspecialchars($pageData['settings']['site_name']) ?>" required>
+                                        <input type="text" class="form-control" id="site_name" name="site_name" value="<?= htmlspecialchars($pageData['settings']['title']) ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="site_description" class="form-label">Site Description</label>
-                                        <input type="text" class="form-control" id="site_description" name="site_description" value="<?= htmlspecialchars($pageData['settings']['site_description']) ?>">
+                                        <input type="text" class="form-control" id="site_description" name="site_description" value="<?= htmlspecialchars($pageData['settings']['description']) ?>">
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +106,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="admin_email" class="form-label">Admin Email</label>
-                                        <input type="email" class="form-control" id="admin_email" name="admin_email" value="<?= htmlspecialchars($pageData['settings']['admin_email']) ?>" required>
+                                        <input type="email" class="form-control" id="admin_email" name="admin_email" value="<?= htmlspecialchars($pageData['settings']['contact_email']) ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -129,7 +129,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="max_upload_size" class="form-label">Max Upload Size (MB)</label>
-                                        <input type="number" class="form-control" id="max_upload_size" name="max_upload_size" value="<?= htmlspecialchars($pageData['settings']['max_upload_size']) ?>" min="1" max="100">
+                                        <input type="number" class="form-control" id="max_upload_size" name="max_upload_size" value="<?= htmlspecialchars($pageData['settings']['max_upload_size']) ?>" min="1" max="256">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -143,9 +143,11 @@
                     </div>
                     <!-- Save button -->
                     <div class="text-end">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Save Settings
-                        </button>
+                        <form method="post">
+                            <button type="submit" name="act" value="settings" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Settings
+                            </button>
+                        </form>
                     </div>
                 </form>
             </div>
