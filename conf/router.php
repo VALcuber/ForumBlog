@@ -128,11 +128,11 @@ class Routing {
 
             elseif ((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[3])) {
                 $controllerName = "PageController";
-                $modelName = "PageModel";
+                $modelName = "PageModel";/*
                 if (!empty($route[4]) && $route[4] == 'CommentController') {
                     $controllerName = "CommentController";
                     $modelName = "CommentModel";
-                }
+                }*/
             }
 
             elseif (isset($route[2]) && $route[2] != 'CommentController' && !isset($route[3])) {

@@ -371,6 +371,7 @@
         </form> <!-- Token form -->
 
         <script src="/assets/js/livesearch.js"></script>
+        <?= $pageData['script_page_all'] ?>
     </body>
 
 </html>

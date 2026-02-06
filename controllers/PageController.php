@@ -2,121 +2,62 @@
 /** @used-by Router */
 class PageController extends Controller {
 
-	private $pageTpl = '/templates/page.tpl';
+    private $pageTpl = '/templates/page.tpl';
 
-	public function __construct() {
+    public function __construct() {
         parent::__construct();
-		$this->model = new PageModel();
-		$this->view = new View();
-	}
+        $this->model = new PageModel();
+        $this->view = new View();
+    }
 
-	public function index() {
+    public function index() {
+        global $env;
         $this->controller();
-        $this->pageData['page'] = $this->echo_page();
 
-		$this->view->render($this->pageTpl, $this->pageData);
-	}
-
-    private function echo_page(){
-		global $env;
-
-        if($env['route1'] == 'blog' || $env['route1'] == 'forum'){
-
-            $this->pageData['comments'] = $this->echo_html_comments();
-            $this->pageData['forum_comments'] = '<script src="/assets/js/forum.comments.js"></script>';
-
-            $temporary = $env['route2'];
-
-            $smtppage = $this->model->get_page($temporary);
-
-            if($smtppage != NULL ) {
-
-                $post_author = $this->model->post_author($smtppage['user_id']);
-
-                $nickname = $env['nickname'] = $post_author['Nickname'];
-
-                $pageName=$smtppage["Category"];
-                $pageContent=$smtppage["Description"];
-
-                return '<div class="card">
-                      <div class="card-header">
-                        <h2 class="text-center p-2">'.
-                            $pageName
-                        .'</h2>
-                      </div>
-                      <div class="card-body">
-                        <p class="p-2">'.
-                            $pageContent
-                        .'</p>
-                        <p class="p-1 text-right">by '.$nickname.'</p>
-                      </div>
-                    </div>';
-            }
-            else{
-                throw new Exception("Page", 404);
-            }
-
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $env['act'] == 'Commit') {
+            echo 1;
+            $this->model->add_comment();
+            exit;
         }
 
-        else{
-            $nickname = "Admin";
-            $this->pageData['forum_comments'] = '';
-            $this->pageData['comments'] = '';
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+            $per_page = 5; // Comments on page numbers = 1
+            // 1. Receive commets through SQL (LIMIT/OFFSET)
+            $comments = $this->model->get_comments($page, $per_page);
 
-            $temporary = $this->translit_reverse($env['route-2']);
+            $total_rows = $this->model->get_comments_count();
 
-            $smtppage = $this->model->get_page($temporary);
+            // 2. Count page numbers
+            $total_pages = ceil($total_rows / $per_page);
 
-            if($smtppage != NULL ) {
+            header('Content-Type: application/json');
 
-                $pageName = $smtppage["Description"];
-                $pageContent = $smtppage["Category"];
-
-                return '<div class="card">
-                  <div class="card-header">
-                    <h2 class="text-center p-2">' .
-                    $pageName
-                    . '</h2>
-                  </div>
-                  <div class="card-body">
-                    <p class="p-2">' .
-                    $pageContent
-                    . '</p>
-                    <p class="p-1 text-right">by ' . $nickname . '</p>
-                  </div>
-                </div>';
-            }
-            else{
-                throw new Exception("Page", 404);
-            }
+            // 4. Send in JS "package" with keys
+            echo json_encode([
+                'items' => $comments,
+                'total_pages' => $total_pages,
+                'current_page' => $page
+            ]);
+            exit;
         }
-	}
 
-    private function echo_html_comments(){
 
-        return '<div>
-        <ul id="messages" class=" row px-5 message">
-        </ul>
-      </div>
+        $this->prepare_page();
+        $this->view->render($this->pageTpl, $this->pageData);
+    }
 
-      <div class="row px-4">
+    private function prepare_page() {
+        global $env;
 
-        <form method="post" id="comments-send" class="row gy-2 gx-3 align-items-center col-lg-10 col-md-12 mx-auto my-2">
+        $this->pageData['forum_comments'] = '<script src="/assets/js/forum.comments.js"></script>';
 
-          <div class="col-10">
+        $data = $this->model->get_page();
 
-            <input  type="text" id="comment_text" class="form-control" name="forum_commit" required>
+        $author = $this->model->post_author($data['user_id']);
+        $this->pageData['title'] = $data['Category'] ?? $data['Description'];
+        $this->pageData['content'] = $data['Description'] ?? $data['Category'];
+        $this->pageData['nickname'] = $author['Nickname'] ?? 'Admin';
 
-          </div>
-
-          <div class="col-1.5">
-
-            <input type="submit" class="btn btn-primary btn-lg" name="act" value="Commit">
-
-          </div>
-
-        </form>
-
-      </div>';
-  }
+    }
 }

@@ -131,26 +131,15 @@ class Model{
 
     }
 
-    public function getSettings() {
+    public function getSettings(){
+
         $sql = "SELECT `id`,`name`,`value` FROM `settings`";
 
         $smtpt = $this->db->prepare($sql);
         $smtpt->execute();
 
         return $smtpt->fetchall(PDO::FETCH_ASSOC);
-
-
-
- /*return [
-            'site_name' => 'Forum-blog',
-            'site_description' => 'A forum and blog platform',
-            'admin_email' => 'lordiccat@gmail.com',
-            'posts_per_page' => 10,
-            'allow_comments' => '1',
-            'max_upload_size' => 10,
-            'allowed_file_types' => 'jpg,jpeg,png',
-        ];*/
-    }//rework
+    }
 
 }
 

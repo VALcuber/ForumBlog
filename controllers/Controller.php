@@ -141,13 +141,17 @@
             else
                 $this->pageData['script_conversation'] = '';
 
+            if(isset($env['route1']) && $env['route1'] != 'all'){
+                $this->pageData['script_page_all'] = '';
+            }
+
             $settings = $this->model->getSettings();
             $settings_array = [];
 
             foreach($settings as $row) {
                 $settings_array[$row['name']] = $row['value'];
                 $env['settings_array'] = $settings_array;
-            }
+            } // Get settings from DB
 
             $this->pageData['title'] = "Forum-blog";
             /** @noinspection PhpUndefinedVariableInspection */
