@@ -117,16 +117,15 @@
                 $this->pageData['topmenu'] = $this->echo_topmenu();
             } // For displaying top menu
 
-            if(!isset($env['route2']) && (
+            if(($env['route2'] != '') && (
                     ($env['route1'] == 'blog' || $env['route1'] == 'forum') &&
-                    (empty($env['route3']) || $env['route1'] == 'all' )
-                                        ) ||
-                     (!empty($env['route1']) &&
-                            ($env['route1'] != 'forum' &&  $env['route1'] != 'blog' && $env['route1'] == 'all')
-                     )
+                    (empty($env['route3'])) )
             ) {
                 $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>';
             }  //For categories on blog and forum pages
+            elseif($env['route1'] != '' && $env['route2'] == ''){
+                $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>';
+            }
             else{
                 $this->pageData['script_category'] = '';
             }
@@ -134,16 +133,18 @@
             if($env['route1'] != 'user_profile'){
                 $this->pageData['script_profile'] = '';
             }  //For script on profile page
-            if(isset($env['route2']) && $env['route2'] == 'messages') {
+            if($env['route2'] == 'messages') {
                 $this->pageData['script_conversation'] = '<script src="../assets/js/conversation.js"></script>';
                 $this->pageData['script_profile'] = '';
             }
             else
                 $this->pageData['script_conversation'] = '';
 
-            if(isset($env['route1']) && $env['route1'] != 'all'){
-                $this->pageData['script_page_all'] = '';
+            if($env['route3'] != ''){
+                $this->pageData['script_page_all'] = '<script src="../assets/js/page_all.js"></script>';
             }
+            else
+                $this->pageData['script_page_all'] = '';
 
             $settings = $this->model->getSettings();
             $settings_array = [];

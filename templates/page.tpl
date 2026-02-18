@@ -13,7 +13,11 @@
           </div>
         </div>
 
-        <?php global $env; if ($env['route1'] == 'blog' || $env['route1'] == 'forum'): ?>
+        <?php
+          global $env;
+          if ($env['route1'] == 'blog' || $env['route1'] == 'forum'):
+        ?>
+
         <div>
           <ul id="messages" class="row px-5 message list-unstyled"></ul>
           <div id="pagination" class="d-flex justify-content-center my-4"></div>

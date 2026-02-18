@@ -16,7 +16,6 @@ class Categories_allController extends Controller {
         // This method now populates $this->pageData['page_all_titles']
         $this->echo_pagealltitles();
 
-        $this->pageData['script_page_all'] = '<script src="../assets/js/page_all.js"></script>';
         $this->view->render($this->pageTpl, $this->pageData);
     }
 

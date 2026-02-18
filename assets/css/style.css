@@ -324,6 +324,32 @@ input[type="file"] {
 
 }
 
+
+
+/* Remove max-width so Bootstrap classes can control the width effectively */
+.col-12.col-md-4.col-lg-3 aside {
+  max-width: none;
+  width: 100%;
+}
+
+/* Target the column directly to force its width and remove padding */
+.col-lg-3.pe-0 {
+  padding-right: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .col-4 aside {
+    max-width: none;
+  }
+  .right-column-content {
+    max-width: none;
+  }
+}
+
+.right-column-content {
+  position: relative;
+}
+
 .add-article-menu {
   display: none;
 
@@ -348,9 +374,6 @@ input[type="file"] {
   display: flex;
   position: absolute; /* Added for proper positioning */
   z-index: 1000; /* So the window is above other elements */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   background: #ccc; /* For background visibility */
   padding: 10px;
   border: 1px solid #ccc;

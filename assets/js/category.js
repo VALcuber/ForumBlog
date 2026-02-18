@@ -14,18 +14,41 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  // Function for calculating coordinates when window resize
+  function updateMenuPosition() {
+    if (addArticleMenu.classList.contains('add-article-menu_open')) {
+      const coords = getButtonCoordinates();
+      const menuWidth = addArticleMenu.offsetWidth;
+      const screenWidth = window.innerWidth;
+      const padding = 10;
+
+      // Vertical position
+      addArticleMenu.style.top = (coords.top + coords.height + 10) + 'px';
+
+      // Horizontal centering relative to the button
+      let leftPos = (coords.left + (coords.width / 2)) - (menuWidth / 2);
+
+      // Screen boundary checks
+      if (leftPos < padding) {
+        leftPos = padding;
+      } else if (leftPos + menuWidth > screenWidth - padding) {
+        leftPos = screenWidth - menuWidth - padding;
+      }
+
+      addArticleMenu.style.left = leftPos + 'px';
+    }
+  }
+
   // Click handler for opening and closing menu
   function toggleMenuHandler() {
     addArticleMenu.classList.toggle('add-article-menu_open'); // Open/close menu
-
-    // Position the menu
-    if (addArticleMenu.classList.contains('add-article-menu_open')) {
-      const coords = getButtonCoordinates();
-      // Position menu relative to button
-      addArticleMenu.style.top = (coords.top + coords.height + 10) + 'px';
-      addArticleMenu.style.left = (coords.left - addArticleMenu.offsetWidth + coords.width) + 'px';
-    }
+    updateMenuPosition();
   }
+
+  // Call on window resize
+  window.addEventListener('resize', () => {
+    updateMenuPosition();
+  });
 
   // Click handler for button to open/close menu
   toggleBtn.addEventListener('click', function(event) {

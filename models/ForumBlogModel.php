@@ -41,7 +41,7 @@ class ForumBlogModel extends Model{
         $sql = "SELECT `id` FROM `blog` WHERE `Category`= :forumblog_topic";
 
         $smtps = $this->db->prepare($sql);
-        $smtps->bindValue(":topic", $blog_topic, PDO::PARAM_STR);
+        $smtps->bindValue(":topic", $forumblog_topic, PDO::PARAM_STR);
         $smtps->execute();
 
         $ress=$smtps->fetch(PDO::FETCH_ASSOC);
@@ -56,10 +56,10 @@ class ForumBlogModel extends Model{
 
 
             $forumblog = $this->db->prepare($sql);
-            $forumblog->bindValue(":blog_topic", $blog_topic, PDO::PARAM_STR);
-            $forumblog->bindValue(":blog_title", $blog_title, PDO::PARAM_STR);
+            $forumblog->bindValue(":blog_topic", $forumblog_topic, PDO::PARAM_STR);
+            $forumblog->bindValue(":blog_title", $forumblog_title, PDO::PARAM_STR);
             $forumblog->execute();
-            return ($forum);
+            return ($forumblog);
         }
     }
 

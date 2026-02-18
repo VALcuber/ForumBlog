@@ -1,5 +1,5 @@
 document.addEventListener('click', function (e) {
-    // Ищем клик по кнопке с классом js-ajax-page
+    // Search click on button with class js-ajax-page
     const btn = e.target.closest('.js-ajax-page');
     if (btn) {
         const page = btn.getAttribute('data-page');
@@ -10,14 +10,13 @@ document.addEventListener('click', function (e) {
             return;
         }
 
-        // Визуальный отклик (прозрачность), пока идет загрузка
         container.style.opacity = '0.4';
 
-        // Создаем данные для отправки (FormData)
+        // Create data for send (FormData)
         const formData = new FormData();
         formData.append('page', page);
 
-        // Отправляем запрос на текущий URL
+        // Send request for current URL
         fetch(window.location.href, {
             method: 'POST',
             body: formData
@@ -30,7 +29,7 @@ document.addEventListener('click', function (e) {
                 window.scrollTo({ top: container.offsetTop - 20, behavior: 'smooth' });
             })
             .catch(err => {
-                console.error('Ошибка загрузки:', err);
+                console.error('Load error:', err);
                 container.style.opacity = '1';
             });
     }

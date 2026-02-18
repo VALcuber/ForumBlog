@@ -110,32 +110,23 @@ class Routing {
                 $modelName = "PageModel";
             }
 
-            elseif ((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && empty($route[2])) {
-                if($route[1] == 'blog'){
-                    $controllerName = "BlogController";
-                    $modelName = "BlogModel";
-                }
-                elseif($route[1] == 'forum'){
-                    $controllerName = "ForumController";
-                    $modelName = "ForumModel";
-                }
-            }
 
             elseif (isset($route[1]) && $route[1] == 'all') {
                 $controllerName = "Categories_allController";
                 $modelName = "Categories_allModel";
             }
 
-            elseif ((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[3])) {
-                $controllerName = "PageController";
-                $modelName = "PageModel";/*
-                if (!empty($route[4]) && $route[4] == 'CommentController') {
-                    $controllerName = "CommentController";
-                    $modelName = "CommentModel";
-                }*/
+            elseif (isset($route[1]) && empty($route[2])) {
+                $controllerName = "ForumBlogController";
+                $modelName = "ForumBlogModel";
             }
 
-            elseif (isset($route[2]) && $route[2] != 'CommentController' && !isset($route[3])) {
+            elseif ((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[3])) {
+                $controllerName = "PageController";
+                $modelName = "PageModel";
+            }
+
+            elseif (isset($route[2]) && !isset($route[3])) {
                 $controllerName = "All_for_certain_categoryController";
                 $modelName = "All_for_certain_categoryModel";
             }

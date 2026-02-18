@@ -15,7 +15,6 @@ class PageController extends Controller {
         $this->controller();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $env['act'] == 'Commit') {
-            echo 1;
             $this->model->add_comment();
             exit;
         }
@@ -23,7 +22,7 @@ class PageController extends Controller {
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
             $per_page = 5; // Comments on page numbers = 1
-            // 1. Receive commets through SQL (LIMIT/OFFSET)
+            // 1. Receive comets through SQL (LIMIT/OFFSET)
             $comments = $this->model->get_comments($page, $per_page);
 
             $total_rows = $this->model->get_comments_count();
@@ -48,7 +47,6 @@ class PageController extends Controller {
     }
 
     private function prepare_page() {
-        global $env;
 
         $this->pageData['forum_comments'] = '<script src="/assets/js/forum.comments.js"></script>';
 

@@ -23,12 +23,7 @@
     <script src="/assets/js/jquery.min.js"></script>
 
     <script src="/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/js/index.js"></script>
 
-
-    <?= $pageData['script_category'] ?>
-    <?= $pageData['script_profile'] ?>
-    <?= $pageData['script_conversation'] ?>
 
 </head>
 
