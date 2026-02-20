@@ -211,13 +211,14 @@ class AdminModel extends Model {
                 SET `value` = CASE `name`
                     WHEN 'title'              THEN :title
                     WHEN 'description'        THEN :description
+                    WHEN 'help'               THEN :help
                     WHEN 'admin_email'        THEN :email
                     WHEN 'posts_per_page'     THEN :posts_per_page
                     WHEN 'max_upload_size'    THEN :max_upload_size
                     WHEN 'allowed_file_types' THEN :allowed_file_types
                     ELSE `value`
                 END
-                WHERE `name` IN ('title', 'description', 'admin_email', 'posts_per_page', 'max_upload_size', 'allowed_file_types')";
+                WHERE `name` IN ('title', 'description','help', 'admin_email', 'posts_per_page', 'max_upload_size', 'allowed_file_types')";
 
             $stmt = $this->db->prepare($sql);
 
@@ -225,6 +226,7 @@ class AdminModel extends Model {
             // This is where the "magic" happens:
             $stmt->bindValue(':title',              $d['title'],       PDO::PARAM_STR);
             $stmt->bindValue(':description',        $d['site_description'], PDO::PARAM_STR);
+            $stmt->bindValue(':help',               $d['site_help'], PDO::PARAM_STR);
             $stmt->bindValue(':email',              $d['admin_email'], PDO::PARAM_STR);
             $stmt->bindValue(':posts_per_page',     $d['posts_per_page'], PDO::PARAM_STR);
             $stmt->bindValue(':max_upload_size',    $d['max_upload_size'], PDO::PARAM_STR);
@@ -233,8 +235,7 @@ class AdminModel extends Model {
         } catch (Exception $e) {
             return false;
         }
-        //return true;
-    }//rework
+    }
     
     public function getReports($reports) {
 

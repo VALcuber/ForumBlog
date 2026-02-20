@@ -110,6 +110,16 @@ class Routing {
                 $modelName = "PageModel";
             }
 
+            elseif (isset($route[1]) && ($route[1] == 'description' || $route[1] == 'help' ) ) {
+                $controllerName = "Description_HelpController";
+                $modelName = "Description_HelpModel";
+
+                if ($route[1] == 'help') {
+                    $action = "help";
+                } else {
+                    $action = "index";
+                }
+            }
 
             elseif (isset($route[1]) && $route[1] == 'all') {
                 $controllerName = "Categories_allController";
@@ -131,9 +141,7 @@ class Routing {
                 $modelName = "All_for_certain_categoryModel";
             }
 
-            elseif (isset($route[1]) && $route[1] == 'description') {
-                $controllerName = "DescriptionController";
-            }
+
 
             elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $route[1] === 'search') {
                 $controllerName = "SearchController";

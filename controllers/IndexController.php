@@ -45,11 +45,11 @@ class IndexController extends Controller {
                  $blogName = $resultblog[$i]["Category"];
 
                  $htmlblog = <<<"EOT"
-		        	  <div class="d-flex justify-content-between align-items-center flex-grow-1">
+		        	  <div class="d-flex justify-content-between align-items-center">
 				        <h5 class="card-title">$blogName</h5>
 				        <a href="/blog/$blogName" class="card-link">Go to category</a>
 			          </div>
-			          <p class="card-text flex-grow-1">$blogName  Category</p>
+			          <p class="card-text">$blogName  Category</p>
 EOT;
                  $resultHTML = $resultHTML . $htmlblog;
 
@@ -105,11 +105,11 @@ EOT;
                     if ($news != NULL) {
 
                         $htmlnews = <<<"EOT"
-                    <div class="d-flex justify-content-between align-items-center flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center">
                       <h5 class="card-title">$newsName</h5>
                       <a href="/news/$reversearray" class="card-link">Go to news</a>
                     </div>
-                    <p class="card-text flex-grow-1">$newsContent</p>
+                    <p class="card-text">$newsContent</p>
 EOT;
                     }
                     else {
@@ -147,11 +147,11 @@ EOT;
                 $forumName = $resultforum[$i]["Category"];
 
                 $htmlforum = <<<"EOT"
-			  <div class="d-flex justify-content-between align-items-center flex-grow-1">
+			  <div class="d-flex justify-content-between align-items-center">
 				<h5 class="card-title">$forumName</h5>
 				<a href="/forum/$forumName" class="card-link">Go to post</a>
 			  </div>
-			  <p class="card-text flex-grow-1">$forumName Category</p>
+			  <p class="card-text">$forumName Category</p>
 EOT;
                 $resulthtmlforum = $resulthtmlforum . $htmlforum;
             }

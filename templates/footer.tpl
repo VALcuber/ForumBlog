@@ -6,7 +6,7 @@
 
                     <li class="navbar-item py-2"><a href="/description" class="navbar-link">DESCRIPTION</a></li>
 
-                    <li class="navbar-item py-2"><a href="#" class="navbar-link">HELP</a></li>
+                    <li class="navbar-item py-2"><a href="/help" class="navbar-link">HELP</a></li>
 
                     <li class="navbar-item py-2" id="categories-btn"><a href="/all" class="navbar-link">CATEGORIES</a></li>
 
@@ -38,7 +38,7 @@
 
                     <li class="navbar-item py-2"><a href="/user_profile" class="navbar-link">PROFILE</a></li>
 
-                    <li class="navbar-item py-2"><a href="#" class="navbar-link">MESSAGES</a></li>
+                    <li class="navbar-item py-2"><a href="/user_profile/messages" class="navbar-link">MESSAGES</a></li>
 
                     <li class="navbar-item py-2"><a href="#" class="navbar-link">SETTINGS</a></li>
 

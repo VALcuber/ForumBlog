@@ -75,10 +75,15 @@
             <!-- Content -->
             <div class="admin-content">
                 <?php if (isset($pageData['success_message'])): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <?= $pageData['success_message'] ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?= $pageData['success_message'] ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php elseif(isset($pageData['error_message'])): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?= $pageData['error_message'] ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
                 <?php endif; ?>
 
                 <form method="post" action="/admin/settings">
@@ -99,6 +104,12 @@
                                     <div class="mb-3">
                                         <label for="site_description" class="form-label">Site Description</label>
                                         <input type="text" class="form-control" id="site_description" name="site_description" value="<?= htmlspecialchars($pageData['settings']['description']) ?>">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="site_description" class="form-label">Site Help</label>
+                                        <input type="text" class="form-control" id="site_help" name="site_help" value="<?= htmlspecialchars($pageData['settings']['help']) ?>">
                                     </div>
                                 </div>
                             </div>

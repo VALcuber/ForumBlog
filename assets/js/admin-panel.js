@@ -12,8 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Main initialization
 function initAdminPanel() {
-    console.log('Administrative panel initialized');
-    
     // Highlight active menu item
     highlightActiveMenuItem();
     

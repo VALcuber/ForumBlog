@@ -117,13 +117,15 @@
                 $this->pageData['topmenu'] = $this->echo_topmenu();
             } // For displaying top menu
 
+            $excludedPages = ['news', 'description', 'help'];
+
             if(($env['route2'] != '') && (
                     ($env['route1'] == 'blog' || $env['route1'] == 'forum') &&
                     (empty($env['route3'])) )
             ) {
                 $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>';
             }  //For categories on blog and forum pages
-            elseif($env['route1'] != '' && $env['route2'] == ''){
+            elseif($env['route1'] != '' && !in_array($env['route1'], $excludedPages) && $env['route2'] == ''){
                 $this->pageData['script_category'] = '<script src="/assets/js/category.js"></script>';
             }
             else{

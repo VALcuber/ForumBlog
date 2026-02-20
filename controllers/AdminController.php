@@ -226,28 +226,30 @@ class AdminController extends Controller {
                 $data = [
                     'title'               => $_POST['site_name'] ?? '',
                     'site_description'    => $_POST['site_description'] ?? '0',
+                    'site_help'           => $_POST['site_help'] ?? '0',
                     'admin_email'         => $_POST['email'] ?? '',
                     'posts_per_page'      => $_POST['posts_per_page'] ?? '',
                     'max_upload_size'     => $_POST['max_upload_size'] ?? '0',
                     'allowed_file_types'  => $_POST['allowed_file_types'] ?? ''
                 ];
+                    if ($this->model->updateSettings($data)) {
+                        $this->pageData['success_message'] = "Settings updated successfully";
 
-                if($this->model->updateSettings($data)){
-                    $this->pageData['success_message'] = "Settings updated successfully";
+                        // Refreshing data in pageData to show new values in the form
+                        // Assuming method to get settings is named getSettings()
+                        $settings = $this->model->getSettings();
+                        $settings_array = [];
 
-                    // Refreshing data in pageData to show new values in the form
-                    // Assuming your method to get settings is named getSettings()
-                    $settings = $this->model->getSettings();
-                    $settings_array = [];
-
-                    foreach($settings as $row) {
-                        $settings_array[$row['name']] = $row['value'];
-                        $env['settings_array'] = $settings_array;
+                        foreach ($settings as $row) {
+                            $settings_array[$row['name']] = $row['value'];
+                            $env['settings_array'] = $settings_array;
+                        }
                     }
-                }
-
+                    else {
+                        $this->pageData['error_message'] = "An error occurred while update settings. Please try again.";
+                    }
             }
-            
+
             $this->pageData['title'] = "Site Settings - Admin Panel";
             $this->pageData['admin_page'] = true;
 
