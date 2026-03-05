@@ -9,8 +9,10 @@
         <?php endif; ?>
 
         <div class="row px-4 py-2 align-items-center g-0">
-            <div class="col-md-8 col-lg-9 ps-4">
-                <h4 class="m-0"><?= $pageData['category_name'] ?></h4>
+            <div class="col-md-8 col-lg-9 ps-4 pl-0">
+                <h4 class="pt-1" style="font-size: 2.2em; font-weight: bold;">
+                    <?= $pageData['category_name'] ?>
+                </h4>
             </div>
 
             <div class="col-12 col-md-4 col-lg-3 px-0">
@@ -26,25 +28,42 @@
             </div>
         </div>
 
-        <div class="row py-2 gx-0">
-            <div class="col-md-8 col-lg-9 ps-4 pe-0">
-                <div class="subcategories-box p-3">
-                    <nav>
-                        <ul class="p-0 blog_topics row row-cols-3">
-                            <?php if(!empty($pageData['topics_list'])): ?>
-                            <?php foreach($pageData['topics_list'] as $topic): ?>
-                            <li class="blog-content py-2 col d-flex justify-content-left">
-                                <a href="/<?= $topic['structure'] ?>/<?= $topic['Category'] ?>/<?= $topic['translit'] ?>">
-                                    <?= $topic['Description'] ?>
-                                </a>
-                            </li>
-                            <?php endforeach;
-                                  endif; ?>
-                        </ul>
-                    </nav>
+        <div class="row pt-0 gx-0">
+
+            <div class="d-flex row col-md-8 col-lg-9 ps-4 pe-0 justify-content-center">
+
+                <div class="col-lg-4 d-flex">
+
+                    <div class="card mx-2 mb-4 flex-grow-1">
+
+                        <div class="card-header d-flex justify-content-center align-items-center">
+
+                            <h5 class="card-title">BLOG FOR THIS CATEGORY</h5>
+
+                        </div>
+
+                        <div class="card-body d-flex flex-column" id="pagination-target-blog"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 d-flex">
+
+                    <div class="card mx-2 mb-4 flex-grow-1">
+
+                        <div class="card-header d-flex justify-content-center align-items-center">
+
+                            <h5 class="card-title">FORUM FOR THIS CATEGORY</h5>
+
+                        </div>
+
+                        <div class="card-body d-flex flex-column" id="pagination-target-forum"></div>
+
+                    </div>
+
                 </div>
             </div>
-
 
             <div class="col-12 col-md-4 col-lg-3">
                 <aside class="h-100">
@@ -73,15 +92,4 @@
 
     </div>
 
-    <aside class="add-article-menu flex-column p-3">
-        <button class="add-article-menu__close-btn">
-            <i class="bi bi-x"></i>
-        </button>
-        <h4 class="text-center pt-2">ADD AN ARTICLE</h4>
-        <div class="add-article-menu__navigation flex-grow-1 d-flex align-items-center justify-content-around">
-            <a href="#" class="text-dark font-weight-bold">TO BLOG</a>
-            <div class="add-article-menu__separator"></div>
-            <a href="#" class="text-dark font-weight-bold">TO FORUM</a>
-        </div>
-    </aside>
 </main>

@@ -25,7 +25,7 @@ document.addEventListener('click', function (e) {
             .then(html => {
                 container.innerHTML = html;
                 container.style.opacity = '1';
-                // Скроллим к началу списка
+                // Scroll to the start
                 window.scrollTo({ top: container.offsetTop - 20, behavior: 'smooth' });
             })
             .catch(err => {

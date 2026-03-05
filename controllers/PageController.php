@@ -41,8 +41,8 @@ class PageController extends Controller {
             exit;
         }
 
-
         $this->prepare_page();
+
         $this->view->render($this->pageTpl, $this->pageData);
     }
 

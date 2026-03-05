@@ -12,7 +12,7 @@ $(document).ready(function() {
     const url = window.location.pathname;
 
     function load(page = 1) {
-        currentPage = page; // Remember curent page
+        currentPage = page; // Remember current page
 
         $.ajax({
             url: window.location.pathname,
@@ -59,14 +59,14 @@ $(document).ready(function() {
         const group = $('<div class="btn-group" role="group"></div>');
 
         // Кнопка Назад
-        const prevBtn = $(`<button class="btn btn-outline-primary ${currentPage <= 1 ? 'disabled' : ''}">Назад</button>`);
+        const prevBtn = $(`<button class="btn btn-outline-primary ${currentPage <= 1 ? 'disabled' : ''}">Back</button>`);
         prevBtn.on('click', function() {
             if (currentPage > 1) load(currentPage - 1);
         });
 
         const pageInfo = $(`<button class="btn btn-outline-primary disabled">Стр. ${currentPage} из ${totalPages}</button>`);
 
-        const nextBtn = $(`<button class="btn btn-outline-primary ${currentPage >= totalPages ? 'disabled' : ''}">Вперед</button>`);
+        const nextBtn = $(`<button class="btn btn-outline-primary ${currentPage >= totalPages ? 'disabled' : ''}">Front</button>`);
         nextBtn.on('click', function() {
             if (currentPage < totalPages) load(currentPage + 1);
         });

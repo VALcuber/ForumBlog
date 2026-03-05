@@ -338,6 +338,18 @@
             <input type="hidden" name="token" value="<?= htmlspecialchars($pageData['id_login']) ?>">
         </form> <!-- Token form -->
 
+        <aside class="add-article-menu flex-column p-3">
+            <button class="add-article-menu__close-btn">
+                <i class="bi bi-x"></i>
+            </button>
+            <h4 class="text-center pt-2">ADD AN ARTICLE</h4>
+            <div class="add-article-menu__navigation flex-grow-1 d-flex align-items-center justify-content-around">
+                <a href="#" class="text-dark font-weight-bold">TO BLOG</a>
+                <div class="add-article-menu__separator"></div>
+                <a href="#" class="text-dark font-weight-bold">TO FORUM</a>
+            </div>
+        </aside>
+
         <footer class="footer bg-secondary">
 
             <div class="container-fluid h-100">
@@ -361,6 +373,7 @@
             <?= $pageData['script_category'] ?>
             <?= $pageData['script_profile'] ?>
             <?= $pageData['script_conversation'] ?>
+            <?= $pageData['script_page_pagination'] ?>
 
         </footer>
     </body>

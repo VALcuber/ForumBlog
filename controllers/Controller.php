@@ -135,6 +135,7 @@
             if($env['route1'] != 'user_profile'){
                 $this->pageData['script_profile'] = '';
             }  //For script on profile page
+
             if($env['route2'] == 'messages') {
                 $this->pageData['script_conversation'] = '<script src="../assets/js/conversation.js"></script>';
                 $this->pageData['script_profile'] = '';
@@ -147,6 +148,12 @@
             }
             else
                 $this->pageData['script_page_all'] = '';
+
+            if($env['route1'] != ''){
+                $this->pageData['script_page_pagination'] = '<script src="../assets/js/page_pagination.js"></script>';
+            }
+            else
+                $this->pageData['script_page_pagination'] = '';
 
             $settings = $this->model->getSettings();
             $settings_array = [];
@@ -738,6 +745,5 @@ EOT;
 EOT;
 
         }
-
 
 	}
