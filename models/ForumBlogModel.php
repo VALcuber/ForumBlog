@@ -1,9 +1,11 @@
 <?php
 
-class ForumBlogModel extends Model{
+class ForumBlogModel extends Model
+{
 
 
-    public function get_ForumBlog_topic($route){
+    public function get_ForumBlog_topic($route)
+    {
 
         $result_page_all = array();
 
@@ -22,47 +24,75 @@ class ForumBlogModel extends Model{
         $page_all->bindValue(":route", $route, PDO::PARAM_STR);
         $page_all->execute();
 
-        while($res_page_all=$page_all->fetch(PDO::FETCH_ASSOC)){
+        while ($res_page_all = $page_all->fetch(PDO::FETCH_ASSOC)) {
 
-            array_push($result_page_all,$res_page_all);
+            array_push($result_page_all, $res_page_all);
 
         }
 
-        return($result_page_all);
+        return ($result_page_all);
 
     }
 
-    public function add_ForumBlog_content(){
+    public function add_ForumBlog_content($target){
+        global $env;
+        try {
+            $forumblog_topic = $_POST['Category'] ?? '';
+            $forumblog_title = $_POST['Category_Description'] ?? '';
+            $forumblog_subcategory = $_POST['Subcategory'] ?? '';
+            $forumblog_description = $_POST['Description'] ?? '';
 
-        $forumblog_topic = $_POST['Category'] ?? '';
-        $forumblog_title = $_POST['Category_Description'] ?? '';
+            $table = ($target === 'forum') ? 'forum' : 'blog';
+            // Fix: Removed 'to_forum' check as the target is passed as 'forum' or 'blog' from data-act
+            $childTable = ($target === 'forum') ? 'forum_category' : 'blog_category';
 
-        $sql = "SELECT `id` FROM `blog` WHERE `Category`= :forumblog_topic";
+            // Check if category already exists
+            $sql = "SELECT `id` FROM `$table` WHERE `Category` = :topic LIMIT 1";
+            $smtps = $this->db->prepare($sql);
+            $smtps->bindValue(":topic", $forumblog_topic, PDO::PARAM_STR);
+            $smtps->execute();
+            $existingCategory = $smtps->fetch(PDO::FETCH_ASSOC);
 
-        $smtps = $this->db->prepare($sql);
-        $smtps->bindValue(":topic", $forumblog_topic, PDO::PARAM_STR);
-        $smtps->execute();
+            $this->db->beginTransaction();
 
-        $ress=$smtps->fetch(PDO::FETCH_ASSOC);
+            if (!empty($existingCategory)) {
+                // Category exists, get its ID to link the subcategory
+                $categoryId = $existingCategory['id'];
+            } else {
+                // Category is new, insert it into the parent table
+                $sql1 = "INSERT INTO `$table` (`Category`, `Category_Description`) VALUES (:category, :cat_desc)";
+                $stmt1 = $this->db->prepare($sql1);
+                $stmt1->bindValue(":category", $forumblog_topic, PDO::PARAM_STR);
+                $stmt1->bindValue(":cat_desc", $forumblog_title, PDO::PARAM_STR);
+                $stmt1->execute();
 
-        if(!empty($ress)){
-            return  'Forum or Blog already exists';
-        }
+                // Get the newly created ID
+                $categoryId = $this->db->lastInsertId();
+            }
 
-        elseif($ress == NULL) {
+            // Insert the subcategory into the child table, linked by category_id
+            $sql2 = "INSERT INTO `$childTable` (`Category`, `Subcategory`, `Description`, `user_id`) 
+                 VALUES (:category_id, :sub, :descr, :user_id)";
+            $stmt2 = $this->db->prepare($sql2);
+            $stmt2->bindValue(":category_id", $categoryId, PDO::PARAM_INT);
+            $stmt2->bindValue(":sub", $forumblog_subcategory, PDO::PARAM_STR);
+            $stmt2->bindValue(":descr", $forumblog_description, PDO::PARAM_STR);
+            // Ensure $env['id'] is cast properly
+            $stmt2->bindValue(":user_id", $env['id'] ?? 0, PDO::PARAM_INT);
+            $stmt2->execute();
 
-            $sql = "INSERT INTO `blog` (`Category`,`Category_Description`) VALUES (:blog_topic,:blog_title)";
+            $this->db->commit();
+            return true;
 
-
-            $forumblog = $this->db->prepare($sql);
-            $forumblog->bindValue(":blog_topic", $forumblog_topic, PDO::PARAM_STR);
-            $forumblog->bindValue(":blog_title", $forumblog_title, PDO::PARAM_STR);
-            $forumblog->execute();
-            return ($forumblog);
+        } catch (Exception $e) {
+            // Rollback transaction on failure
+            $this->db->rollBack();
+            return "Error: " . $e->getMessage();
         }
     }
 
-    public function latest_ForumBlog_posts(){
+    public function latest_ForumBlog_posts()
+    {
 
         $result_forum = array();
 
@@ -71,11 +101,34 @@ class ForumBlogModel extends Model{
         $request = $this->db->prepare($sql);
         $request->execute();
 
-        while($res_forum = $request->fetch(PDO::FETCH_ASSOC)){
-            array_push($result_forum,$res_forum);
+        while ($res_forum = $request->fetch(PDO::FETCH_ASSOC)) {
+            array_push($result_forum, $res_forum);
         }
 
         return $result_forum;
     }
 
+// Get unique categories for a specific table (blog or forum)
+    public function get_all_categories($type)
+    {
+        // Determine the correct table based on the type
+        $table = ($type === 'forum') ? 'forum' : 'blog';
+
+        $sql = "SELECT `id`, `Category`, `Category_Description` FROM `$table` ORDER BY `Category` ASC";
+        $request = $this->db->prepare($sql);
+        $request->execute();
+
+        return $request->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
+/*
+            $sql = "INSERT INTO `blog` (`Category`,`Category_Description`) VALUES (:blog_topic,:blog_title)
+                        UNION ";
+
+
+            $forumblog = $this->db->prepare($sql);
+            $forumblog->bindValue(":blog_topic", $forumblog_topic, PDO::PARAM_STR);
+            $forumblog->bindValue(":blog_title", $forumblog_title, PDO::PARAM_STR);
+            $forumblog->execute();
+            return ($forumblog);
+            */

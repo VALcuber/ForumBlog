@@ -210,6 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
 // Admin panel toggle functionality
 document.addEventListener('DOMContentLoaded', function() {
   const adminToggle = document.getElementById('adminPanelToggle');
@@ -247,7 +248,101 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-});//--------------------------------------------------------------------------------------------------------------------------------------------------------//
+});
+//--------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Используем jQuery для прослушивания события модалки (специфика Bootstrap 4)
+  $('#forum_blog_formModal').on('show.bs.modal', function (event) {
+    // В jQuery объект события немного другой, берем кнопку через event.relatedTarget
+    const button = event.relatedTarget;
+
+    // Извлекаем данные из атрибутов кнопки
+    const titleText = button.getAttribute('data-title');
+    const actValue = button.getAttribute('data-act');
+
+    // Находим элементы в модалке (используем стандартный JS или jQuery - не важно)
+    const modalTypeSpan = document.getElementById('modal-type-text');
+    const modalActInput = document.getElementById('modal-act-input');
+
+    // Если данные есть, подставляем их
+    if (titleText && modalTypeSpan) {
+      modalTypeSpan.textContent = titleText;
+    }
+
+    if (actValue && modalActInput) {
+      modalActInput.value = actValue;
+    }
+  });
+});
+
+// Function to synchronize category name and description inputs based on selection
+function syncCategoryData() {
+  const select = document.getElementById('category-select');
+  const nameInput = document.getElementById('category-input');
+  const descInput = document.getElementById('category-desc-input');
+
+  // Exit if elements are missing
+  if (!select || !nameInput || !descInput) return;
+
+  // Get the selected option element
+  const selectedOption = select.options[select.selectedIndex];
+
+  // Get description from data-desc attribute (ensure it handles null/undefined gracefully)
+  const description = selectedOption.getAttribute('data-desc') || '';
+
+  if (select.value !== "") {
+    // 1. Existing category selected: Hide manual name input and use select value
+    nameInput.value = select.value;
+    nameInput.style.display = 'none';
+
+    // 2. Fill description from DB, make it readonly, and apply visual disabled state
+    descInput.value = description;
+    descInput.readOnly = true;
+    descInput.style.backgroundColor = '#e9ecef'; // Light grey background
+    descInput.style.pointerEvents = 'none'; // Prevent interactions entirely
+  } else {
+    // 3. "Create new" selected: Clear inputs, show manual name field, and enable description
+    nameInput.value = '';
+    nameInput.style.display = 'block';
+
+    descInput.value = '';
+    descInput.readOnly = false;
+    descInput.style.backgroundColor = '#ffffff'; // White background
+    descInput.style.pointerEvents = 'auto'; // Restore interactions
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Bind the sync function to the select element's change event
+  const categorySelect = document.getElementById('category-select');
+  if (categorySelect) {
+    categorySelect.addEventListener('change', syncCategoryData);
+  }
+
+  // Handle modal show event to reset and filter categories
+  $('#forum_blog_formModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget);
+    const targetAct = button.data('act'); // 'blog' or 'forum'
+    const select = document.getElementById('category-select');
+
+    if (!select) return;
+
+    const options = select.querySelectorAll('.cat-option');
+
+    // Reset select to default option
+    select.value = "";
+
+    // Hide or show options based on data-type attribute
+    options.forEach(function(option) {
+      option.style.display = (option.getAttribute('data-type') === targetAct) ? 'block' : 'none';
+    });
+
+    // Apply visual reset and set initial state for inputs
+    syncCategoryData();
+  });
+});
+
 /*
 function removeAdd(){
   document.body.children[document.body.children.length-1].remove();

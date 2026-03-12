@@ -16,8 +16,8 @@ class ForumBlogController extends Controller {
         $this->controller();
 
         // Handle post request
-        if (($env['act'] ?? '') === 'Post') {
-            $this->model->add_blog_content();
+        if ($env['act']  === 'Post') {
+            $this->model->add_ForumBlog_content($_POST['act'] ?? '');
         }
 
         // Prepare raw data for the view
@@ -32,6 +32,10 @@ class ForumBlogController extends Controller {
                 $post['translit'] = $this->translit($post['Category'] ?? '');
             }
         }
+
+        // Add this in your index() method before $this->view->render(...)
+        $this->pageData['blog_categories'] = $this->model->get_all_categories('blog');
+        $this->pageData['forum_categories'] = $this->model->get_all_categories('forum');
 
         $this->echo_page_pagination();
 

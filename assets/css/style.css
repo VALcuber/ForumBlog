@@ -212,6 +212,7 @@ height: 7.9vh;
   z-index: 1;
 
 }
+
 .user_image {
   width: 10rem !important;
   display: flex;
@@ -320,8 +321,6 @@ input[type="file"] {
   list-style: none;
   columns: 4;
 }
-
-
 
 /* Remove max-width so Bootstrap classes can control the width effectively */
 .col-12.col-md-4.col-lg-3 aside {
@@ -433,7 +432,6 @@ input[type="file"] {
   align-self: end;
 }
 
-
 #profileModal{
   top: 12% !important;
   left: 89% !important;
@@ -446,7 +444,6 @@ input[type="file"] {
   padding: 0.5rem 0.5rem !important;
   font-size: 1rem !important;
   line-height: 0.5 !important;
-
 }
 
 .py-4{
@@ -537,6 +534,10 @@ input[type="file"] {
 .admin_dropdown:hover .dropdown-content {
   display: block;
 }
+
+.hidden {
+  display: none !important;
+}
 /*----------------------------------------------------------------------------------*/
 select{
   text-align: center;
@@ -601,6 +602,7 @@ li{
   text-decoration: none;
   color: #333;
 }
+
 .info-box-forum a:hover, .info-box-blog a:hover {
   background-color: #d6d8db;
 }
@@ -632,6 +634,7 @@ h4.py-2{
   flex: 0 0 79%;
   max-width: 79%;
 }
+
 .nav-item{
   justify-items: center;
 }
@@ -720,11 +723,6 @@ input:checked + .slider:before {
 .toggle-label {
   font-weight: bold;
   color: #333;
-}
-
-/* Admin panel styles */
-.hidden {
-    display: none !important;
 }
 
 /* Styles for live search */
@@ -946,10 +944,21 @@ input:checked + .slider:before {
   letter-spacing: 0.5px;
 }
 
-.badge-blog { background: #e3f2fd; color: #1976d2; }
-.badge-blog-post { background: #e1f5fe; color: #0288d1; }
-.badge-forum { background: #e8f5e9; color: #388e3c; }
-.badge-forum-topic { background: #fff3e0; color: #f57c00; }
+.badge-blog {
+  background: #e3f2fd; color: #1976d2;
+}
+
+.badge-blog-post {
+  background: #e1f5fe; color: #0288d1;
+}
+
+.badge-forum {
+  background: #e8f5e9; color: #388e3c;
+}
+
+.badge-forum-topic {
+  background: #fff3e0; color: #f57c00;
+}
 
 .result-path {
   color: #28a745;
@@ -1000,14 +1009,17 @@ input:checked + .slider:before {
   transform: translateY(-2px);
   box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
 }
+
 /* -------------------- messages --------------------------*/
 .user-item:hover {
   background-color: #f0f0f0; /* hover highlight */
   cursor: pointer;
 }
+
 .user-item.active {
   background-color: #d0e7ff; /* selected highlight */
 }
+
 #chatOverlay {
   background: transparent;
   cursor: default;
@@ -1024,6 +1036,28 @@ input:checked + .slider:before {
 #chatroomCard.chat-open #defaultMessage {
   display: none !important;
 }
+
 #chatroomCard.chat-open #chatWindow {
   display: flex; flex-direction: column;
+}
+
+/* Reset default browser styles for the buttons */
+.custom-menu-btn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+/* Optional: add a small hover effect for better UX */
+.custom-menu-btn:hover {
+  text-decoration: underline;
+}
+
+/* Ensure the separator has a visible height */
+.add-article-menu__separator {
+  width: 1px;
+  height: 40px;
+  background-color: #000;
 }

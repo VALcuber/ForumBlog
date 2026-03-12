@@ -265,9 +265,11 @@
 
                     <div class="modal-header">
 
-                        <h5 class="modal-title" id="forum_blog_formModalLabel">Form for adding content to Forum</h5>
+                        <h5 class="modal-title" id="forum_blog_formModalLabel">
+                            <span id="modal-type-text"></span>
+                        </h5>
 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
 
                             <span aria-hidden="true">&times;</span>
 
@@ -282,45 +284,58 @@
                             <form method="post">
 
                                 <div class="form-group row">
-
-                                    <label for="first-name" class="col-3 col-form-label">Topic</label>
-
+                                    <label for="category-select" class="col-3 col-form-label">Category</label>
                                     <div class="col-9">
+                                        <select id="category-select" class="form-control mb-2">
+                                            <option value="" data-desc="">-- Create new category --</option>
 
-                                        <input type="text" name="Topic" class="form-control">
+                                            <?php if(!empty($pageData['blog_categories'])): ?>
+                                            <?php foreach($pageData['blog_categories'] as $cat): ?>
+                                            <option value="<?= htmlspecialchars($cat['Category']) ?>" data-type="blog" data-desc="<?= htmlspecialchars($cat['Category_Description']) ?>" class="cat-option">
+                                                <?= htmlspecialchars($cat['Category']) ?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                            <?php endif; ?>
+
+                                            <?php if(!empty($pageData['forum_categories'])): ?>
+                                            <?php foreach($pageData['forum_categories'] as $cat): ?>
+                                            <option value="<?= htmlspecialchars($cat['Category']) ?>" data-type="forum" data-desc="<?= htmlspecialchars($cat['Category_Description']) ?>" class="cat-option">
+                                                <?= htmlspecialchars($cat['Category']) ?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </select>
+
+                                        <input type="text" name="Category" id="category-input" class="form-control" placeholder="Enter new category name...">
 
                                     </div>
-
                                 </div>
 
                                 <div class="form-group row">
-
-                                    <label for="last-name" class="col-3 col-form-label">Title</label>
-
+                                    <label for="category-desc-input" class="col-3 col-form-label">Category Description</label>
                                     <div class="col-9">
-
-                                        <input type="text" name="Title" class="form-control">
-
+                                        <input type="text" id="category-desc-input" name="Category_Description" class="form-control">
                                     </div>
-
                                 </div>
 
                                 <div class="form-group row">
-
-                                    <label for="birthday" class="col-3 col-form-label">description</label>
-
+                                    <label for="subcategory-input" class="col-3 col-form-label">Subcategory</label>
                                     <div class="col-9">
-
-                                        <input type="text" name="description" class="form-control description">
-
+                                        <input type="text" id="subcategory-input" name="Subcategory" class="form-control">
                                     </div>
-
                                 </div>
+
+                                <div class="form-group row">
+                                    <label for="description-input" class="col-3 col-form-label">Description</label>
+                                    <div class="col-9">
+                                        <input type="text" id="description-input" name="Description" class="form-control description">
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="act" id="modal-act-input" value="">
 
                                 <div class="d-flex justify-content-end">
-
-                                    <input type="submit" class="btn btn-primary" name="act" value="Post"/> <!-- data-dismiss="modal" -->
-
+                                    <input type="submit" class="btn btn-primary" name="act" value="Post"/>
                                 </div>
 
                             </form>
@@ -334,6 +349,7 @@
             </div>
 
         </div> <!-- Form for adding content -->
+
         <form id="hiddenPostForm" method="POST" style="display: none;">
             <input type="hidden" name="token" value="<?= htmlspecialchars($pageData['id_login']) ?>">
         </form> <!-- Token form -->
@@ -343,12 +359,33 @@
                 <i class="bi bi-x"></i>
             </button>
             <h4 class="text-center pt-2">ADD AN ARTICLE</h4>
+
             <div class="add-article-menu__navigation flex-grow-1 d-flex align-items-center justify-content-around">
-                <a href="#" class="text-dark font-weight-bold">TO BLOG</a>
-                <div class="add-article-menu__separator"></div>
-                <a href="#" class="text-dark font-weight-bold">TO FORUM</a>
+                <div class="d-flex w-100 align-items-center justify-content-around">
+                    <button type="button"
+                            class="custom-menu-btn text-dark font-weight-bold"
+                            data-toggle="modal"
+                            data-target="#forum_blog_formModal"
+                            data-title="Form for adding content to BLOG"
+                            data-type="Blog"
+                            data-act="blog">
+                        TO BLOG
+                    </button>
+
+                    <div class="add-article-menu__separator"></div>
+
+                    <button type="button"
+                            class="custom-menu-btn text-dark font-weight-bold"
+                            data-toggle="modal"
+                            data-target="#forum_blog_formModal"
+                            data-title="Form for adding content to FORUM"
+                            data-type="Forum"
+                            data-act="forum">
+                        TO FORUM
+                    </button>
+                </div>
             </div>
-        </aside>
+        </aside> <!-- Choose buttons popup window  -->
 
         <footer class="footer bg-secondary">
 
