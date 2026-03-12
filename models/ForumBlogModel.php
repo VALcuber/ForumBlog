@@ -42,6 +42,10 @@ class ForumBlogModel extends Model
             $forumblog_subcategory = $_POST['Subcategory'] ?? '';
             $forumblog_description = $_POST['Description'] ?? '';
 
+            if (!in_array($target, ['forum', 'blog'], true)) {
+                return "Error: Invalid target";
+            }
+
             $table = ($target === 'forum') ? 'forum' : 'blog';
             // Fix: Removed 'to_forum' check as the target is passed as 'forum' or 'blog' from data-act
             $childTable = ($target === 'forum') ? 'forum_category' : 'blog_category';

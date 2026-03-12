@@ -306,7 +306,7 @@
                                             <?php endif; ?>
                                         </select>
 
-                                        <input type="text" name="Category" id="category-input" class="form-control" placeholder="Enter new category name...">
+                                        <input type="text" autocomplete="off" name="Category" id="category-input" class="form-control" placeholder="Enter new category name...">
 
                                     </div>
                                 </div>
@@ -314,25 +314,25 @@
                                 <div class="form-group row">
                                     <label for="category-desc-input" class="col-3 col-form-label">Category Description</label>
                                     <div class="col-9">
-                                        <input type="text" id="category-desc-input" name="Category_Description" class="form-control">
+                                        <input type="text" autocomplete="off" id="category-desc-input" name="Category_Description" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="subcategory-input" class="col-3 col-form-label">Subcategory</label>
                                     <div class="col-9">
-                                        <input type="text" id="subcategory-input" name="Subcategory" class="form-control">
+                                        <input type="text" autocomplete="off" id="subcategory-input" name="Subcategory" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="description-input" class="col-3 col-form-label">Description</label>
                                     <div class="col-9">
-                                        <input type="text" id="description-input" name="Description" class="form-control description">
+                                        <input type="text" autocomplete="off" id="description-input" name="Description" class="form-control description">
                                     </div>
                                 </div>
 
-                                <input type="hidden" name="act" id="modal-act-input" value="">
+                                <input type="hidden" name="target" id="modal-act-input" value="">
 
                                 <div class="d-flex justify-content-end">
                                     <input type="submit" class="btn btn-primary" name="act" value="Post"/>
