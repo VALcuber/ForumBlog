@@ -21,17 +21,26 @@
                         <i class="bi bi-plus text-white"></i>
                     </button>
                     <div class="ms-2">
-                        <a href="#" class="text-uppercase mr-3">Forum</a>
-                        <a href="#" class="text-uppercase">Blog</a>
+                        <a href="/forum" class="text-uppercase mr-3">Forum</a>
+                        <a href="/blog" class="text-uppercase">Blog</a>
                     </div>
                 </div>
             </div>
         </div>
 
+        <?php
+            global $env;
+            $showOnlyBlog = isset($env['route1']) && $env['route1'] === 'blog' && empty($env['route2']);
+            $showOnlyForum = isset($env['route1']) && $env['route1'] === 'forum' && empty($env['route2']);
+            $showBlogColumn = $showOnlyBlog || (!$showOnlyBlog && !$showOnlyForum);
+            $showForumColumn = $showOnlyForum || (!$showOnlyBlog && !$showOnlyForum);
+        ?>
+
         <div class="row pt-0 gx-0">
 
             <div class="d-flex row col-md-8 col-lg-9 ps-4 pe-0 justify-content-center">
 
+                <?php if($showBlogColumn): ?>
                 <div class="col-lg-4 d-flex">
 
                     <div class="card mx-2 mb-4 flex-grow-1">
@@ -47,7 +56,9 @@
                     </div>
 
                 </div>
+                <?php endif; ?>
 
+                <?php if($showForumColumn): ?>
                 <div class="col-lg-4 d-flex">
 
                     <div class="card mx-2 mb-4 flex-grow-1">
@@ -63,6 +74,7 @@
                     </div>
 
                 </div>
+                <?php endif; ?>
             </div>
 
             <div class="col-12 col-md-4 col-lg-3">

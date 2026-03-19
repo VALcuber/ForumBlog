@@ -6,7 +6,7 @@ class Routing {
 
         global $env;
 
-        //try {
+        try {
             /* Default controller and action */
             $controllerName = "IndexController";
             $modelName = "IndexModel";
@@ -29,6 +29,11 @@ class Routing {
             if (isset($route[3])) {
                 $route3 = urldecode($route[3]);
                 $env['route3'] = $route3;
+            }
+
+            if (isset($route[4])) {
+                $route4 = urldecode($route[4]);
+                $env['route4'] = $route4;
             }
 
             /* Define controller */
@@ -126,22 +131,20 @@ class Routing {
                 $modelName = "Categories_allModel";
             }
 
-            elseif (isset($route[1]) && empty($route[2])) {
+            elseif (isset($route[1]) && ($route[1] != 'blog' || $route[1] != 'forum') && empty($route[2])) {
                 $controllerName = "ForumBlogController";
                 $modelName = "ForumBlogModel";
             }
 
-            elseif ((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[3])) {
+            elseif ((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[4])) {
                 $controllerName = "PageController";
                 $modelName = "PageModel";
             }
 
-            elseif (isset($route[2]) && !isset($route[3])) {
+            elseif ((isset($route[2]) && !isset($route[3])) || (isset($route[2]) && isset($route[3]) && !isset($route[4]))) {
                 $controllerName = "All_for_certain_categoryController";
                 $modelName = "All_for_certain_categoryModel";
             }
-
-
 
             elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $route[1] === 'search') {
                 $controllerName = "SearchController";
@@ -158,7 +161,7 @@ class Routing {
             include PATH_M . $modelName . ".php";           //IndexModel.php
 
             $controller = new $controllerName();
-            $controller->$action();/*
+            $controller->$action();
         }
 
         catch (PDOException $e) {
@@ -172,7 +175,8 @@ class Routing {
             $controller = new ErrorController();
             $msg = $controller->handleGeneralException($e);     // Receive message error
             $controller->index("Unexpected error", $msg);       // push in controller
-        }*/
+        }
+
     }
 
 

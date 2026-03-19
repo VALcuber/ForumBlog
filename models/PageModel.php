@@ -22,7 +22,7 @@ class PageModel extends Model {
         }
 
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(":description", $env['route3'], PDO::PARAM_STR);
+        $stmt->bindValue(":description", $env['route4'], PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

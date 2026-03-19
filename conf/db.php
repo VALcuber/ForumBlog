@@ -132,7 +132,7 @@ class DB{
 
                 "user_settings" => "CREATE TABLE IF NOT EXISTS `user_settings` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
-                    PRIMARY KEY (`id`),
+                    PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB"
             ];
 

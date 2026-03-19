@@ -12,8 +12,8 @@
                         <i class="bi bi-plus text-white"></i>
                     </button>
                     <div class="ms-2">
-                        <a href="#" class="text-uppercase mr-3">Forum</a>
-                        <a href="#" class="text-uppercase">Blog</a>
+                        <a href="/forum" class="text-uppercase mr-3">Forum</a>
+                        <a href="/blog" class="text-uppercase">Blog</a>
                     </div>
                 </div>
             </div>
@@ -25,13 +25,13 @@
                     <nav>
                         <ul class="category-list p-0 m-0">
                             <?php if (!empty($pageData['subcategories'])): ?>
-                            <?php foreach ($pageData['subcategories'] as $item): ?>
-                            <li class="py-2">
-                                <a href="/<?= $item['structure'] ?>/<?= $item['Category'] ?>/<?= $item['Description'] ?>">
-                                    <?= $item['Description'] ?>
-                                </a>
-                            </li>
-                            <?php endforeach; ?>
+                                <?php foreach ($pageData['subcategories'] as $item): ?>
+                                    <li class="py-2">
+                                        <a href="/<?= $item['structure'] ?>/<?= $item['Category'] ?>/<?= $item['Subcategory'] ?>/<?= $item['Description'] ?>">
+                                            <?= $item['Description'] ?>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
                             <?php endif; ?>
                         </ul>
                     </nav>

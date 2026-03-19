@@ -33,7 +33,6 @@ class ForumBlogController extends Controller {
             }
         }
 
-        // Add this in your index() method before $this->view->render(...)
         $this->pageData['blog_categories'] = $this->model->get_all_categories('blog');
         $this->pageData['forum_categories'] = $this->model->get_all_categories('forum');
 
@@ -55,7 +54,7 @@ class ForumBlogController extends Controller {
         $forum_page = isset($_POST['forum_page']) ? (int)$_POST['forum_page'] : 1;
 
         // Pass both pages to the content collector
-        $content = $this->forum_content($blog_page, $forum_page);
+        $content = $this->forumblog_content($blog_page, $forum_page);
 
         if (isset($_POST['blog_page'])) {
             if (ob_get_level()) ob_clean();
@@ -65,7 +64,7 @@ class ForumBlogController extends Controller {
         }
     }
 
-    private function forum_content($blog_page, $forum_page) {
+    private function forumblog_content($blog_page, $forum_page) {
         global $env;
         $per_page = $env['settings_array']['posts_per_page'] ?? 10;
 
@@ -73,6 +72,7 @@ class ForumBlogController extends Controller {
 
         foreach ($all_topics as &$topic) {
             $topic['translit'] = $this->translit($topic['Description'] ?? '');
+            $topic['translit2'] = str_replace(" ", "_", $topic['Subcategory'] ?? '');
         }
 
         $blogs_all = array_filter($all_topics, function($t) { return $t['structure'] === 'blog'; });

@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchData(blogPage, forumPage, lastClickedType = 'all') {
         // Visual feedback
-        if (lastClickedType === 'blog' || lastClickedType === 'all') containerBlog.style.opacity = '0.4';
-        if (lastClickedType === 'forum' || lastClickedType === 'all') containerForum.style.opacity = '0.4';
+        if (containerBlog && (lastClickedType === 'blog' || lastClickedType === 'all')) containerBlog.style.opacity = '0.4';
+        if (containerForum && (lastClickedType === 'forum' || lastClickedType === 'all')) containerForum.style.opacity = '0.4';
 
         const formData = new FormData();
         formData.append('blog_page', blogPage);
@@ -45,8 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 renderContent(data);
-                containerBlog.style.opacity = '1';
-                containerForum.style.opacity = '1';
+                if (containerBlog) containerBlog.style.opacity = '1';
+                if (containerForum) containerForum.style.opacity = '1';
             });
     }
 
@@ -54,9 +54,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const buildItemHtml = (item) => `
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="card-title">${item.Subcategory}</h5>
+                 <a href="/${item.structure}/${item.Category}/${item.translit2}" class="card-link">Go to category</a>
             </div>
             <p class="card-text mb-3">
-                <a href="/${item.structure}/${item.Category}/${item.translit}">${item.Description}</a>
+                <a href="/${item.structure}/${item.Category}/${item.translit2}/${item.translit}">${item.Description}</a>
             </p>`;
 
         // Added 'type' parameter to buttons

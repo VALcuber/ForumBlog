@@ -26,7 +26,8 @@ class All_for_certain_categoryController extends Controller{
 
         // Pass data to the view
         $this->pageData['category_name'] = $categoryName;
-        $this->pageData['subcategories'] = $subcategories ?: [];
+        $this->pageData['subcategories'] = str_replace(' ', '_', $subcategories ?? '') ?: [];
+
 
         $this->view->render($this->pageTpl, $this->pageData);
     }
