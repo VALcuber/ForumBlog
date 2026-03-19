@@ -51,14 +51,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderContent(data) {
-        const buildItemHtml = (item) => `
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title">${item.Subcategory}</h5>
-                 <a href="/${item.structure}/${item.Category}/${item.translit2}" class="card-link">Go to category</a>
-            </div>
-            <p class="card-text mb-3">
-                <a href="/${item.structure}/${item.Category}/${item.translit2}/${item.translit}">${item.Description}</a>
-            </p>`;
+        const buildItemHtml = (item) => {
+            const posts = (item.posts || []).map((post) =>
+                `<a href="${post.link}" class="mr-4">${post.title}</a>`
+            ).join('');
+
+            return `
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-2">${item.Subcategory}</h5>
+                        <a href="${item.category_link}">Go to category</a>
+                    </div>
+                    <div class="card-text mb-0">${posts}</div>
+                </div>`;
+        };
 
         // Added 'type' parameter to buttons
         const buildPaginationHtml = (pagination, type) => {

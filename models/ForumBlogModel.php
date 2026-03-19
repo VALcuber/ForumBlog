@@ -18,7 +18,8 @@ class ForumBlogModel extends Model
                  SELECT b.structure, b.Category, bc.id, bc.Subcategory, bc.Description, bc.user_id
                     FROM blog_category bc
                         JOIN blog b ON bc.Category = b.id
-                            WHERE b.Category = :route)";
+                            WHERE b.Category = :route)
+                                ORDER BY structure, Subcategory, Description";
 
         $page_all = $this->db->prepare($sql);
         $page_all->bindValue(":route", $route, PDO::PARAM_STR);
