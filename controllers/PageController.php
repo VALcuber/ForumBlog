@@ -47,15 +47,24 @@ class PageController extends Controller {
     }
 
     private function prepare_page() {
-
+    global $env;
         $this->pageData['forum_comments'] = '<script src="/assets/js/forum.comments.js"></script>';
 
         $data = $this->model->get_page();
 
-        $author = $this->model->post_author($data['user_id']);
-        $this->pageData['title'] = $data['Category'] ?? $data['Description'];
-        $this->pageData['content'] = $data['Description'] ?? $data['Category'];
-        $this->pageData['nickname'] = $author['Nickname'] ?? 'Admin';
+        if($env['route1'] == 'blog' || $env['route1'] == 'forum') {
+            $author = $this->model->post_author($data['user_id']);
+            $this->pageData['title'] = $data['Category'] ?? $data['Description'];
+            $this->pageData['content'] = $data['Description'] ?? $data['Category'];
+            $this->pageData['nickname'] = $author['Nickname'] ?? 'Admin';
+        }
+        elseif($env['route1'] == 'news'){
+            $this->pageData['title'] = $data['name'] ?? $data['content'];
+            $this->pageData['content'] = $data['content'] ?? $data['name'];
+            $this->pageData['nickname'] = 'Admin';
+        }
+        else
+            die;
 
     }
 }

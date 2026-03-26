@@ -13,7 +13,7 @@
 
               <h5 class="card-title">BLOG</h5>
 
-              <a href="/blog" class="card-link">Go to Blog</a>
+              <a href="/Blog" class="card-link">Go to Blog</a>
 
             </div>
 
@@ -55,7 +55,7 @@
 
               <h5 class="card-title">FORUM</h5>
 
-              <a href="/forum" class="card-link">Go to Forum</a>
+              <a href="/Forum" class="card-link">Go to Forum</a>
 
             </div>
 

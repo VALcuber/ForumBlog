@@ -43,11 +43,12 @@ class IndexController extends Controller {
         for($i = 0; $i < $arrSize; $i++){
 
                  $blogName = $resultblog[$i]["Category"];
+                 $blogStructure = $resultblog[$i]["structure"];
 
                  $htmlblog = <<<"EOT"
 		        	  <div class="d-flex justify-content-between align-items-center">
 				        <h5 class="card-title">$blogName</h5>
-				        <a href="/blog/$blogName" class="card-link">Go to category</a>
+				        <a href="/$blogStructure/$blogName" class="card-link">Go to category</a>
 			          </div>
 			          <p class="card-text">$blogName  Category</p>
 EOT;
@@ -101,7 +102,7 @@ EOT;
                     $newsName = $news[$i]["name"];
                     $newsContent = $news[$i]["content"];
 
-                    $reversearray = $this->translit($newsName);
+                    $reversearray = $this->translit_reverse($newsName);
                     if ($news != NULL) {
 
                         $htmlnews = <<<"EOT"
@@ -145,11 +146,12 @@ EOT;
 		    }
             else {
                 $forumName = $resultforum[$i]["Category"];
+                $forumStructure = $resultforum[$i]["structure"];
 
                 $htmlforum = <<<"EOT"
 			  <div class="d-flex justify-content-between align-items-center">
 				<h5 class="card-title">$forumName</h5>
-				<a href="/forum/$forumName" class="card-link">Go to post</a>
+				<a href="/$forumStructure/$forumName" class="card-link">Go to post</a>
 			  </div>
 			  <p class="card-text">$forumName Category</p>
 EOT;

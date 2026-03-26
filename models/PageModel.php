@@ -11,18 +11,22 @@ class PageModel extends Model {
                     JOIN `forum` ON `forum`.`id` = `forum_category`.`Category`
                     JOIN `users` ON `users`.`id` = `forum_category`.`user_id`
                     WHERE `forum_category`.`Description` = :description";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":description", $env['route4'], PDO::PARAM_STR);
         } elseif ($env['route1'] == 'news') {
-            $sql = "SELECT `id`, `name`, `content` FROM `news` WHERE `name` = :description";
+            $sql = "SELECT `id`, `name`, `content` FROM `news` WHERE `name` = :news_name";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":news_name", $env['route2'], PDO::PARAM_STR);
         } elseif ($env['route1'] == 'blog') {
             $sql = "SELECT `blog_category`.`Description`, `blog`.`Category`, `blog_category`.`id`, `blog_category`.`user_id`
                     FROM `blog_category`
                     JOIN `blog` ON `blog`.`id` = `blog_category`.`Category`
                     JOIN `users` ON `users`.`id` = `blog_category`.`user_id`
                     WHERE `blog_category`.`Description` = :description";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":description", $env['route4'], PDO::PARAM_STR);
         }
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(":description", $env['route4'], PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

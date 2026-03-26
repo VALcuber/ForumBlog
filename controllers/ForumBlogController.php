@@ -66,24 +66,22 @@ class ForumBlogController extends Controller {
 
     private function forumblog_content($blog_page, $forum_page) {
         global $env;
+        // Keep the pagination limit at 10 as requested
         $per_page = $env['settings_array']['posts_per_page'] ?? 10;
-        $subcategory_limit = 4;
 
         $all_topics = $this->model->get_ForumBlog_topic($env['route1']);
 
+        // Filter by structure type
         $blogs_all = array_filter($all_topics, function($t) { return $t['structure'] === 'blog'; });
         $forums_all = array_filter($all_topics, function($t) { return $t['structure'] === 'forum'; });
 
+        // Group topics and slice for the last 4 posts inside each
         $blogs_grouped = $this->group_topics_by_subcategory($blogs_all);
         $forums_grouped = $this->group_topics_by_subcategory($forums_all);
 
-        // Calculate offsets separately
+        // Calculate pagination offsets
         $blog_offset = ($blog_page - 1) * $per_page;
         $forum_offset = ($forum_page - 1) * $per_page;
-
-        // Show only the latest subcategories in each category block
-        $blogs_grouped = array_slice($blogs_grouped, 0, $subcategory_limit);
-        $forums_grouped = array_slice($forums_grouped, 0, $subcategory_limit);
 
         return [
             'blog' => [
@@ -103,15 +101,13 @@ class ForumBlogController extends Controller {
         ];
     }
 
-
     private function group_topics_by_subcategory(array $topics): array {
         $grouped = [];
 
+        // 1. First, group ALL posts by subcategory
         foreach ($topics as $topic) {
             $subcategory = $topic['Subcategory'] ?? '';
-            if ($subcategory === '') {
-                continue;
-            }
+            if ($subcategory === '') continue;
 
             if (!isset($grouped[$subcategory])) {
                 $grouped[$subcategory] = [
@@ -124,14 +120,19 @@ class ForumBlogController extends Controller {
             }
 
             $description = trim((string)($topic['Description'] ?? ''));
-            if ($description === '') {
-                continue;
+            if ($description !== '') {
+                $grouped[$subcategory]['posts'][] = [
+                    'title' => $description,
+                    'link' => '/' . $topic['structure'] . '/' . $topic['Category'] . '/' . $this->translit($description)
+                ];
             }
+        }
 
-            $grouped[$subcategory]['posts'][] = [
-                'title' => $description,
-                'link' => '/' . $topic['structure'] . '/' . $topic['Category'] . '/' . $this->translit($description)
-            ];
+        // 2. Now, iterate through grouped categories and keep only the LAST 4 posts
+        foreach ($grouped as &$item) {
+            // array_slice with -4 takes elements from the end of the array
+            // This ensures we get the most recently added posts in the list
+                $item['posts'] = array_reverse(array_slice($item['posts'], -4));
         }
 
         return array_values($grouped);

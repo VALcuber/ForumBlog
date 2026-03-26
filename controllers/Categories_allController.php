@@ -59,7 +59,8 @@ class Categories_allController extends Controller {
             if (count($subs) > 0) {
                 // Store subcategories inside the object to avoid calling the model again later
                 $cat['subs_data'] = $subs;
-                $cat['category_link'] = lcfirst($cat['Category']);
+                $cat['category_link'] = $cat['Category'];
+                $cat['category_structure'] = $cat['structure'];
                 $valid_categories[] = $cat;
             }
         }

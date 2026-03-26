@@ -136,7 +136,7 @@ class Routing {
                 $modelName = "ForumBlogModel";
             }
 
-            elseif ((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[4])) {
+            elseif ((isset($route[1]) && ($route[1] == 'blog' || $route[1] == 'forum')) && isset($route[3])) {
                 $controllerName = "PageController";
                 $modelName = "PageModel";
             }
