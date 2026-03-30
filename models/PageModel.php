@@ -47,13 +47,13 @@ class PageModel extends Model {
         $sql = "SELECT `forum_comments`.*, `users`.`nickname` AS `name` 
                 FROM `forum_comments`
                 INNER JOIN `users` ON `forum_comments`.`user_id` = `users`.`Id`
-                WHERE `forum_comments`.`Forum_page` = (SELECT `id` FROM `forum_category` WHERE `Description` = :page_name)
+                WHERE `forum_comments`.`Forum_page` = (SELECT `id` FROM `forum_category` WHERE `Description` = :description)
                 AND `forum_comments`.`structure` = :structure
                 ORDER BY id DESC 
                 LIMIT :limit OFFSET :offset";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(":page_name", $env['route3'], PDO::PARAM_STR);
+        $stmt->bindValue(":description", $env['route4'], PDO::PARAM_STR);
         $stmt->bindValue(":structure", $env['route1'], PDO::PARAM_STR);
         $stmt->bindValue(":limit", (int)$per_page, PDO::PARAM_INT);
         $stmt->bindValue(":offset", (int)$offset, PDO::PARAM_INT);
@@ -66,12 +66,12 @@ class PageModel extends Model {
 
         $text = $_POST['comment'] ?? '';
         $sql = "INSERT INTO `forum_comments` (`Comment`, `Forum_page`, `user_id`, `structure`) 
-                VALUES (:comment, (SELECT `Id` FROM `forum_category` WHERE `Description` = :page_name), :user_id, :structure)";
+                VALUES (:comment, (SELECT `Id` FROM `forum_category` WHERE `Description` = :description), :user_id, :structure)";
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute([
             ':comment' => $text,
-            ':page_name' => $env['route3'],
+            ':description' => $env['route4'],
             ':user_id' => $env['id'] ?? 0,
             ':structure' => $env['route1']
         ]);

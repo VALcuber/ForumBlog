@@ -235,14 +235,14 @@
 
             shuffle($category);
 
-            $category = array_slice($category, 0, 12);
+            $category = array_slice($category, 0, 9);
 
             if (count($category) > 0) {
 
                 foreach ($category as $cat) {
 
                     $route_title = $cat['table_name'];
-                    $category = $cat['Category'];
+                    $category = $cat['Subcategory'];
 
                     if (isset($env['route1'], $env['route2'], $env['route3']) && $env['route1'] == $route_title && $env['route2'] == $category) {
                         $activist = 'active';
@@ -259,9 +259,9 @@
                     }
 
                     $html_category = <<<"EOT"
-            <li class="nav-item">
-                <a href="/$route_title/$category" class="nav-link $activist categories__link text-nowrap">$categories</a>
-            </li>
+                        <li class="nav-item">
+                            <a href="/$route_title/$category" class="nav-link $activist categories__link text-nowrap">$categories</a>
+                        </li>
 EOT;
                     $result_html_category .= $html_category;
                 }

@@ -12,8 +12,8 @@ class Model{
 
         $categories = array();
 
-        $sql = "SELECT 'blog' AS `table_name`, `id`, `Category` from `blog`
-                    UNION ALL SELECT 'forum' AS table_name, `id`, `Category` FROM `forum` ORDER BY `id`";
+        $sql = "SELECT 'blog' AS `table_name`, `id`, `Subcategory` from `blog_category`
+                    UNION ALL SELECT 'forum' AS table_name, `id`, `Subcategory` FROM `forum_category` ORDER BY `id`";
 
         $smtpt = $this->db->prepare($sql);
         $smtpt->execute();

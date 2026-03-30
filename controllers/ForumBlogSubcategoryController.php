@@ -1,12 +1,12 @@
 <?php
 /** @used-by Router */
-class ForumBlogController extends Controller {
+class ForumBlogSubcategoryController extends Controller{
 
-    private $pageTpl = '/templates/forum-blog.tpl';
+    private $pageTpl = '/templates/forum-blog-sub.tpl';
 
     public function __construct() {
         parent::__construct();
-        $this->model = new ForumBlogModel();
+        $this->model = new ForumBlogSubcategoryModel();
         $this->view = new View();
     }
 
@@ -17,7 +17,7 @@ class ForumBlogController extends Controller {
 
         // Handle post request
         if ($env['act']  === 'Post') {
-            $this->model->add_ForumBlog_content($_POST['target'] ?? '');
+            $this->model->add_ForumBlog_sub_content($_POST['target'] ?? '');
         }
 
         // Prepare raw data for the view
@@ -25,7 +25,7 @@ class ForumBlogController extends Controller {
 
 
         // Get latest posts and process translit
-        $latest = $this->model->latest_ForumBlog_posts();
+        $latest = $this->model->latest_ForumBlog_sub_posts();
 
         if (!empty($latest)) {
             foreach ($latest as &$post) {
@@ -38,7 +38,7 @@ class ForumBlogController extends Controller {
 
         $this->echo_page_pagination();
 
-        $this->pageData['route_name'] = ucfirst($route1);
+        $this->pageData['subcategory_name'] = $env['route3'];
         $this->pageData['route_upper'] = strtoupper($env['route'] ?? '');
         $this->pageData['current_route'] = $env['route'] ?? '';
         $this->pageData['latest_posts_list'] = $latest ?? [];
@@ -69,15 +69,15 @@ class ForumBlogController extends Controller {
         // Keep the pagination limit at 10 as requested
         $per_page = $env['settings_array']['posts_per_page'] ?? 10;
 
-        $all_topics = $this->model->get_ForumBlog_topic($env['route1']);
+        $all_topics = $this->model->get_ForumBlog_sub_topic($env['route3']);
 
         // Filter by structure type
         $blogs_all = array_filter($all_topics, function($t) { return $t['structure'] === 'blog'; });
         $forums_all = array_filter($all_topics, function($t) { return $t['structure'] === 'forum'; });
 
         // Group topics and slice for the last 4 posts inside each
-        $blogs_grouped = $this->group_topics_by_category($blogs_all);
-        $forums_grouped = $this->group_topics_by_category($forums_all);
+        $blogs_grouped = $this->group_topics_by_description($blogs_all);
+        $forums_grouped = $this->group_topics_by_description($forums_all);
 
         // Calculate pagination offsets
         $blog_offset = ($blog_page - 1) * $per_page;
@@ -101,28 +101,24 @@ class ForumBlogController extends Controller {
         ];
     }
 
-    private function group_topics_by_category(array $topics): array {
+    private function group_topics_by_description(array $topics): array {
         $grouped = [];
 
         // 1. First, group ALL posts by subcategory
         foreach ($topics as $topic) {
-            $category = $topic['Category'] ?? '';
-            if ($category === '') continue;
+            $Description = $topic['Description'] ?? '';
+            if ($Description === '') continue;
 
-            if (!isset($grouped[$category])) {
-                $grouped[$category] = [
+            if (!isset($grouped[$Description])) {
+                $grouped[$Description] = [
                     'structure' => $topic['structure'],
-                    'Category' => $category,
-                    'category_link' => '/' . $topic['structure'] . '/' . $this->translit($category),
+                    'Category' => $topic['Category'],
+                    'Subcategory' => $topic['Subcategory'],
+                    'Description' => $Description,
+                    'category_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']),
+                    'subcategory_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']) . '/' . $this->translit($topic['Subcategory']),
+                    'description_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']) . '/' . $this->translit($topic['Subcategory']). '/' . $this->translit($Description),
                     'posts' => []
-                ];
-            }
-
-            $description = trim((string)($topic['Subcategory'] ?? ''));
-            if ($description !== '') {
-                $grouped[$category]['posts'][] = [
-                    'title' => $description,
-                    'link' => '/' . $topic['structure'] . '/' . $category . '/' . $topic['Subcategory']
                 ];
             }
         }
@@ -131,7 +127,7 @@ class ForumBlogController extends Controller {
         foreach ($grouped as &$item) {
             // array_slice with -4 takes elements from the end of the array
             // This ensures we get the most recently added posts in the list
-                $item['posts'] = array_reverse(array_slice($item['posts'], -4));
+            $item['posts'] = array_reverse(array_slice($item['posts'], -4));
         }
 
         return array_values($grouped);

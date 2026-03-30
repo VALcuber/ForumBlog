@@ -55,19 +55,27 @@ class Categories_allController extends Controller {
         // This ensures we only count and display categories with content
         $valid_categories = [];
         foreach ($all_titles as $cat) {
+            $cat_key = $cat['Category']; // Use category name as a unique key
+            // Skip if we already processed this category to avoid duplicates
+            if (isset($valid_categories[$cat_key])) {
+                continue;
+            }
             $subs = $this->model->get_all_subcategories($cat['Category']);
             if (count($subs) > 0) {
                 // Store subcategories inside the object to avoid calling the model again later
                 $cat['subs_data'] = $subs;
                 $cat['category_link'] = $cat['Category'];
                 $cat['category_structure'] = $cat['structure'];
-                $valid_categories[] = $cat;
+                $valid_categories[$cat_key] = $cat;
             }
         }
 
+        // Reset array keys to sequential numbers (0, 1, 2...) for array_slice to work properly
+        $valid_categories = array_values($valid_categories);
+
         // 3. Now calculate totals based on VALID categories only
         $total_items = count($valid_categories);
-        $total_pages = ceil($total_items / $items_per_page);
+        $total_pages = $items_per_page > 0 ? ceil($total_items / $items_per_page) : 1;
 
         // 4. Slice the FILTERED array to get exactly 10 items for the current page
         $offset = ($page - 1) * $items_per_page;

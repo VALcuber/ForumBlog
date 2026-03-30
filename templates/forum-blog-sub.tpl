@@ -1,4 +1,5 @@
 <main class="main">
+
     <div class="container-fluid">
 
         <?php if(isset($pageData['success_message'])): ?>
@@ -8,9 +9,9 @@
         <?php endif; ?>
 
         <div class="row px-4 py-2 align-items-center g-0">
-            <div class="col-md-8 col-lg-9 ps-4">
+            <div class="col-md-8 col-lg-9 ps-4 pl-0">
                 <h4 class="pt-1" style="font-size: 2.2em; font-weight: bold;">
-                    <?= $pageData['route_name'] ?>
+                    <?= $pageData['subcategory_name'] ?>
                 </h4>
             </div>
 
@@ -46,11 +47,11 @@
 
                         <div class="card-header d-flex justify-content-center align-items-center">
 
-                            <h5 class="card-title">BLOG FOR THIS SUBCATEGORY</h5>
+                            <h5 class="card-title">BLOG FOR THIS CATEGORY</h5>
 
                         </div>
 
-                        <div class="card-body d-flex flex-column" id="pagination-target-blog"></div>
+                        <div class="card-body d-flex flex-column" id="pagination-target-blog-sub"></div>
 
                     </div>
 
@@ -64,11 +65,11 @@
 
                         <div class="card-header d-flex justify-content-center align-items-center">
 
-                            <h5 class="card-title">FORUM FOR THIS SUBCATEGORY</h5>
+                            <h5 class="card-title">FORUM FOR THIS CATEGORY</h5>
 
                         </div>
 
-                        <div class="card-body d-flex flex-column" id="pagination-target-forum"></div>
+                        <div class="card-body d-flex flex-column" id="pagination-target-forum-sub"></div>
 
                     </div>
 
@@ -81,20 +82,26 @@
                     <div class="right-column-content h-100">
                         <div class="card border border-dark h-100" style="border-right: none; border-radius: 0;">
                             <div class="card-body">
-                                <h5 class="d-flex card-title mb-4 justify-content-center text-center">RECENT NEWS BY THIS CATEGORY</h5>
-                                <h5 class="card-title">Interface</h5>
-                                <p class="card-text small">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita rerum voluptatibus dignissimos asperiores sapiente, quo dolorum inventore fugiat commodi dicta.</p>
-                                <h5 class="card-title">UX</h5>
-                                <p class="card-text small">Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae veniam unde velit sunt, assumenda esse magni ab veritatis vel doloribus?</p>
-                                <h5 class="card-title">UI</h5>
-                                <p class="card-text small">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugit alias omnis optio animi magnam illo ipsum obcaecati tenetur quidem sunt.</p>
+                                <h5 class="card-title mb-4">LATEST POSTS FROM FORUM & BLOG CATEGORYS</h5>
+
+                                <?php if(!empty($pageData['latest_posts_list'])):
+                                         foreach($pageData['latest_posts_list'] as $post): ?>
+                                <li class="py-2">
+                                    <a href="/<?= $pageData['current_route'] ?><?= $post['translit'] ?>">
+                                        <?= $post['Category'] ?>
+                                    </a>
+                                </li>
+                                <?php     endforeach;
+                                      endif; ?>
                             </div>
                         </div>
                     </div>
                 </aside>
+
             </div>
 
         </div>
 
     </div>
+
 </main>

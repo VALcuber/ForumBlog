@@ -1,21 +1,23 @@
 <?php
 
-class ForumBlogModel extends Model{
+class ForumBlogSubcategoryModel extends Model{
 
-    public function get_ForumBlog_topic($route)
+    public function get_ForumBlog_sub_topic($route)
     {
 
         $result_page_all = array();
 
-        $sql = "SELECT `structure`, `Category`
-                    FROM forum
-                        WHERE `structure` = :route
+        $sql = "SELECT f.structure, f.Category, fc.id, fc.Subcategory, fc.Description, fc.user_id
+                    FROM forum_category fc
+                        JOIN forum f ON fc.Category = f.id
+                            WHERE fc.Subcategory = :route
                  UNION(
                      
-                 SELECT `structure`, `Category`
-                    FROM blog
-                        WHERE `structure` = :route
-                            ORDER BY structure)";
+                 SELECT b.structure, b.Category, bc.id, bc.Subcategory, bc.Description, bc.user_id
+                    FROM blog_category bc
+                        JOIN blog b ON bc.Category = b.id
+                            WHERE bc.Subcategory = :route)
+                                ORDER BY structure, Subcategory, Description";
 
         $page_all = $this->db->prepare($sql);
         $page_all->bindValue(":route", $route, PDO::PARAM_STR);
@@ -31,7 +33,7 @@ class ForumBlogModel extends Model{
 
     }
 
-    public function add_ForumBlog_content($target){
+    public function add_ForumBlog_sub_content($target){
         global $env;
         try {
             $forumblog_topic = $_POST['Category'] ?? '';
@@ -92,7 +94,7 @@ class ForumBlogModel extends Model{
         }
     }
 
-    public function latest_ForumBlog_posts()
+    public function latest_ForumBlog_sub_posts()
     {
 
         $result_forum = array();

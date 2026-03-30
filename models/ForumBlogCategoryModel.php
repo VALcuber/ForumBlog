@@ -1,21 +1,23 @@
 <?php
 
-class ForumBlogModel extends Model{
+class ForumBlogCategoryModel extends Model{
 
     public function get_ForumBlog_topic($route)
     {
 
         $result_page_all = array();
 
-        $sql = "SELECT `structure`, `Category`
-                    FROM forum
-                        WHERE `structure` = :route
+        $sql = "SELECT f.structure, f.Category, fc.id, fc.Subcategory, fc.Description, fc.user_id
+                    FROM forum_category fc
+                        JOIN forum f ON fc.Category = f.id
+                            WHERE f.Category = :route
                  UNION(
                      
-                 SELECT `structure`, `Category`
-                    FROM blog
-                        WHERE `structure` = :route
-                            ORDER BY structure)";
+                 SELECT b.structure, b.Category, bc.id, bc.Subcategory, bc.Description, bc.user_id
+                    FROM blog_category bc
+                        JOIN blog b ON bc.Category = b.id
+                            WHERE b.Category = :route)
+                                ORDER BY structure, Subcategory, Description";
 
         $page_all = $this->db->prepare($sql);
         $page_all->bindValue(":route", $route, PDO::PARAM_STR);
@@ -122,3 +124,14 @@ class ForumBlogModel extends Model{
         return $request->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+/*
+            $sql = "INSERT INTO `blog` (`Category`,`Category_Description`) VALUES (:blog_topic,:blog_title)
+                        UNION ";
+
+
+            $forumblog = $this->db->prepare($sql);
+            $forumblog->bindValue(":blog_topic", $forumblog_topic, PDO::PARAM_STR);
+            $forumblog->bindValue(":blog_title", $forumblog_title, PDO::PARAM_STR);
+            $forumblog->execute();
+            return ($forumblog);
+            */
