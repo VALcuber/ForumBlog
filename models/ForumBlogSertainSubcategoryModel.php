@@ -1,22 +1,22 @@
 <?php
 
-class ForumBlogCategoryModel extends Model{
+class ForumBlogSertainSubcategoryModel extends Model{
 
-    public function get_ForumBlog_cat_topic($route){
+    public function get_ForumBlog_sertain_sub_topic($route){
 
         $result_page_all = array();
 
         $sql = "SELECT f.structure, f.Category, fc.id, fc.Subcategory, fc.Description, fc.user_id
                     FROM forum_category fc
                         JOIN forum f ON fc.Category = f.id
-                            WHERE f.Category = :route
+                            WHERE fc.Description = :route
                  UNION(
                      
                  SELECT b.structure, b.Category, bc.id, bc.Subcategory, bc.Description, bc.user_id
                     FROM blog_category bc
                         JOIN blog b ON bc.Category = b.id
-                            WHERE b.Category = :route)
-                                ORDER BY structure, Category, Subcategory, Description";
+                            WHERE bc.Description = :route)
+                                ORDER BY structure, Subcategory, Description";
 
         $page_all = $this->db->prepare($sql);
         $page_all->bindValue(":route", $route, PDO::PARAM_STR);
@@ -32,7 +32,7 @@ class ForumBlogCategoryModel extends Model{
 
     }
 
-    public function add_ForumBlog_content($target){
+    public function add_ForumBlog_sertain_sub_content($target){
         global $env;
         try {
             $forumblog_topic = $_POST['Category'] ?? '';
@@ -93,11 +93,11 @@ class ForumBlogCategoryModel extends Model{
         }
     }
 
-    public function latest_ForumBlog_posts(){
+    public function latest_ForumBlog_sertain_sub_posts(){
 
         $result_forum = array();
 
-        $sql = "SELECT * FROM `blog` UNION ALL SELECT * FROM `forum` ORDER BY id DESC LIMIT 10";
+        $sql = "SELECT `id`,`Category` FROM `blog` UNION ALL SELECT `id`,`Category` FROM `forum` ORDER BY id DESC LIMIT 10";
 
         $request = $this->db->prepare($sql);
         $request->execute();
@@ -107,17 +107,5 @@ class ForumBlogCategoryModel extends Model{
         }
 
         return $result_forum;
-    }
-
-// Get unique categories for a specific table (blog or forum)
-    public function get_all_categories($type){
-        // Determine the correct table based on the type
-        $table = ($type === 'forum') ? 'forum' : 'blog';
-
-        $sql = "SELECT `id`, `Category`, `Category_Description` FROM `$table` ORDER BY `Category` ASC";
-        $request = $this->db->prepare($sql);
-        $request->execute();
-
-        return $request->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -47,7 +47,7 @@
 
                         <div class="card-header d-flex justify-content-center align-items-center">
 
-                            <h5 class="card-title">BLOG FOR THIS CATEGORY</h5>
+                            <h5 class="card-title">BLOG FOR THIS SUBCATEGORY</h5>
 
                         </div>
 
@@ -65,7 +65,7 @@
 
                         <div class="card-header d-flex justify-content-center align-items-center">
 
-                            <h5 class="card-title">FORUM FOR THIS CATEGORY</h5>
+                            <h5 class="card-title">FORUM FOR THIS SUBCATEGORY</h5>
 
                         </div>
 

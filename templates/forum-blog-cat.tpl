@@ -87,7 +87,7 @@
                                 <?php if(!empty($pageData['latest_posts_list'])):
                                          foreach($pageData['latest_posts_list'] as $post): ?>
                                 <li class="py-2">
-                                    <a href="/<?= $pageData['current_route'] ?><?= $post['translit'] ?>">
+                                    <a href="/<?= $post['structure'] ?>/<?= $post['translit'] ?>">
                                         <?= $post['Category'] ?>
                                     </a>
                                 </li>

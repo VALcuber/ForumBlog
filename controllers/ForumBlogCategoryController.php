@@ -23,7 +23,6 @@ class ForumBlogCategoryController extends Controller {
         // Prepare raw data for the view
         $route2 = $env['route2'] ?? '';
 
-
         // Get latest posts and process translit
         $latest = $this->model->latest_ForumBlog_posts();
 
@@ -33,21 +32,16 @@ class ForumBlogCategoryController extends Controller {
             }
         }
 
-        $this->pageData['blog_categories'] = $this->model->get_all_categories('blog');
-        $this->pageData['forum_categories'] = $this->model->get_all_categories('forum');
-
-        $this->echo_page_pagination($route2);
+        $this->echo_cat_page_pagination($route2);
 
         $this->pageData['category_name'] = ucfirst($route2);
         $this->pageData['route_upper'] = strtoupper($env['route'] ?? '');
-        $this->pageData['current_route'] = $env['route'] ?? '';
         $this->pageData['latest_posts_list'] = $latest ?? [];
 
         $this->view->render($this->pageTpl, $this->pageData);
     }
 
-    private function echo_page_pagination($route2) {
-        global $env;
+    protected function echo_cat_page_pagination($route2) {
 
         // Get separate pages for each block
         $blog_page = isset($_POST['blog_page']) ? (int)$_POST['blog_page'] : 1;
@@ -69,7 +63,7 @@ class ForumBlogCategoryController extends Controller {
         // Keep the pagination limit at 10 as requested
         $per_page = $env['settings_array']['posts_per_page'] ?? 10;
 
-        $all_topics = $this->model->get_ForumBlog_topic($route2);
+        $all_topics = $this->model->get_ForumBlog_cat_topic($route2);
 
         // Filter by structure type
         $blogs_all = array_filter($all_topics, function($t) { return $t['structure'] === 'blog'; });

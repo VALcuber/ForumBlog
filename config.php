@@ -30,10 +30,27 @@ $env['action'] = $_POST['action'] ?? '';
 $env['token'] = $_POST['token'] ?? '';
 
 // Downloading settings
+// Register an autoloader function
+spl_autoload_register(function ($class_name) {
 
-include PATH_C. 'Controller.php'; // Connecting controller
-include PATH_M. 'Model.php';
-include PATH_V. 'View.php';
+    // Define an array of directories where classes might be located
+    $directories = [
+        PATH_C,
+        PATH_M,
+        PATH_V
+    ];
+
+    // Loop through each directory to find the class file
+    foreach ($directories as $directory) {
+        $file = $directory . $class_name . '.php';
+
+        // If the file exists, require it and stop searching
+        if (file_exists($file)) {
+            require_once $file;
+            return;
+        }
+    }
+});
 
 Routing::buildRoute();
 

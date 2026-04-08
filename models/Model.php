@@ -12,8 +12,31 @@ class Model{
 
         $categories = array();
 
-        $sql = "SELECT 'blog' AS `table_name`, `id`, `Subcategory` from `blog_category`
-                    UNION ALL SELECT 'forum' AS table_name, `id`, `Subcategory` FROM `forum_category` ORDER BY `id`";
+        $sql = "SELECT 
+                    table_name, 
+                    Category, 
+                    Subcategory, 
+                    MAX(id) AS id
+                        FROM (
+                            SELECT 
+                                'blog' AS `table_name`, 
+                                b.Category, 
+                                bc.Subcategory,
+                                bc.id
+                                    FROM blog_category bc
+                                        JOIN blog b ON bc.Category = b.id
+                        UNION ALL 
+                            SELECT 
+                                'forum' AS `table_name`, 
+                                f.Category, 
+                                fc.Subcategory,
+                                fc.id
+                                    FROM forum_category fc
+                                        JOIN forum f ON fc.Category = f.id
+                        ) AS combined_results
+                            GROUP BY table_name, Category, Subcategory
+                                ORDER BY RAND()
+                                    LIMIT 9";
 
         $smtpt = $this->db->prepare($sql);
         $smtpt->execute();

@@ -21,7 +21,7 @@ class ForumBlogSubcategoryController extends Controller{
         }
 
         // Prepare raw data for the view
-        $route1 = $env['route1'] ?? '';
+        $route3 = $env['route3'] ?? '';
 
 
         // Get latest posts and process translit
@@ -33,10 +33,7 @@ class ForumBlogSubcategoryController extends Controller{
             }
         }
 
-        $this->pageData['blog_categories'] = $this->model->get_all_categories('blog');
-        $this->pageData['forum_categories'] = $this->model->get_all_categories('forum');
-
-        $this->echo_page_pagination();
+        $this->echo_sub_cat_page_pagination($route3);
 
         $this->pageData['subcategory_name'] = $env['route3'];
         $this->pageData['route_upper'] = strtoupper($env['route'] ?? '');
@@ -46,15 +43,14 @@ class ForumBlogSubcategoryController extends Controller{
         $this->view->render($this->pageTpl, $this->pageData);
     }
 
-    private function echo_page_pagination() {
-        global $env;
+    protected function echo_sub_cat_page_pagination($route3) {
 
         // Get separate pages for each block
         $blog_page = isset($_POST['blog_page']) ? (int)$_POST['blog_page'] : 1;
         $forum_page = isset($_POST['forum_page']) ? (int)$_POST['forum_page'] : 1;
 
         // Pass both pages to the content collector
-        $content = $this->forumblog_content($blog_page, $forum_page);
+        $content = $this->forumblog_content($route3, $blog_page, $forum_page);
 
         if (isset($_POST['blog_page'])) {
             if (ob_get_level()) ob_clean();
@@ -64,12 +60,12 @@ class ForumBlogSubcategoryController extends Controller{
         }
     }
 
-    private function forumblog_content($blog_page, $forum_page) {
+    private function forumblog_content($route3, $blog_page, $forum_page) {
         global $env;
         // Keep the pagination limit at 10 as requested
         $per_page = $env['settings_array']['posts_per_page'] ?? 10;
 
-        $all_topics = $this->model->get_ForumBlog_sub_topic($env['route3']);
+        $all_topics = $this->model->get_ForumBlog_sub_topic($route3);
 
         // Filter by structure type
         $blogs_all = array_filter($all_topics, function($t) { return $t['structure'] === 'blog'; });
