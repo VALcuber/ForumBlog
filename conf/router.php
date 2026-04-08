@@ -109,6 +109,7 @@ class Routing {
                 $modelName = "GoogleAuthModel";
                 $action = "logout";
             }
+            //
 
             elseif ($route[1] == 'news' && isset($route[2])) {
                 $controllerName = "PageController";
@@ -131,24 +132,10 @@ class Routing {
                 $modelName = "Categories_allModel";
             }
 
-            elseif (isset($route[1]) && ($route[1] === 'blog' || $route[1] === 'forum') && empty($route[2])) {
+            elseif ((isset($route[1]) && ($route[1] === 'blog' || $route[1] === 'forum') && empty($route[2])) ||
+                     isset($route[1]) && ($route[1] != 'blog' || $route[1] != 'forum') && empty($route[2])) {
                 $controllerName = "ForumBlogController";
                 $modelName = "ForumBlogModel";
-            }
-
-            elseif (isset($route[2]) && !isset($route[3])) {
-                $controllerName = "ForumBlogCategoryController";
-                $modelName = "ForumBlogCategoryModel";
-            }
-
-            elseif (isset($route[1]) && ($route[1] != 'blog' && $route[1] != 'forum') && isset($route[2]) && isset($route[3]) && !isset($route[4])) {
-                $controllerName = "ForumBlogSertainSubcategoryController";
-                $modelName = "ForumBlogSertainSubcategoryModel";
-            }
-
-            elseif (isset($route[1]) && ($route[1] === 'blog' || $route[1] === 'forum') && isset($route[2]) && isset($route[3]) && !isset($route[4])) {
-                $controllerName = "ForumBlogSubcategoryController";
-                $modelName = "ForumBlogSubcategoryModel";
             }
 
             elseif ((isset($route[1]) && ($route[1] === 'blog' || $route[1] === 'forum')) && isset($route[4])) {
@@ -156,8 +143,18 @@ class Routing {
                 $modelName = "PageModel";
             }
 
-            elseif (isset($route[1]) && ($route[1] != 'blog' || $route[1] != 'forum') && empty($route[2])) {
-                $controllerName = "ForumBlogController";
+            elseif (isset($route[2]) && !isset($route[3])) {
+                $controllerName = "ForumBlogCategoryController";
+                $modelName = "ForumBlogModel";
+            }
+
+            elseif (isset($route[1]) && ($route[1] === 'blog' || $route[1] === 'forum') && isset($route[2]) && isset($route[3]) && !isset($route[4])) {
+                $controllerName = "ForumBlogSubcategoryController";
+                $modelName = "ForumBlogModel";
+            }
+
+            elseif (isset($route[1]) && ($route[1] != 'blog' && $route[1] != 'forum') && isset($route[2]) && isset($route[3]) && !isset($route[4])) {
+                $controllerName = "ForumBlogSertainSubcategoryController";
                 $modelName = "ForumBlogModel";
             }
 

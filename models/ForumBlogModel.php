@@ -2,12 +2,15 @@
 
 class ForumBlogModel extends Model{
 
-    public function get_ForumBlog_topic($route)
-    {
+    public function get_ForumBlog_topic($route){
+        global $env;
 
         $result_page_all = array();
 
-        $sql = "SELECT `structure`, `Category`
+        if((!empty($env['route1']) && ($env['route1'] === 'blog' || $env['route1'] === 'forum') && empty($env['route2'])) ||
+           (!empty($env['route1']) && ($env['route1'] != 'blog' || $env['route1'] != 'forum') && empty($env['route2']))){
+
+            $sql = "SELECT `structure`, `Category`
                     FROM forum
                         WHERE `structure` = :route
                  UNION(
@@ -16,11 +19,73 @@ class ForumBlogModel extends Model{
                     FROM blog
                         WHERE `structure` = :route
                             ORDER BY structure)";
+        }
+
+        elseif(!empty($env['route1']) && ($env['route1'] === 'blog' || $env['route1'] === 'forum') && !empty($env['route2']) && empty($env['route3'])){
+            $sql = "SELECT f.structure, f.Category, fc.id, fc.Subcategory, fc.Description, fc.user_id
+                    FROM forum_category fc
+                        JOIN forum f ON fc.Category = f.id
+                            WHERE f.Category = :route
+                 UNION(
+                     
+                 SELECT b.structure, b.Category, bc.id, bc.Subcategory, bc.Description, bc.user_id
+                    FROM blog_category bc
+                        JOIN blog b ON bc.Category = b.id
+                            WHERE b.Category = :route)
+                                ORDER BY structure, Category, Subcategory, Description";
+        }
+
+        elseif(!empty($env['route1']) && ($env['route1'] != 'blog' || $env['route1'] != 'forum') && !empty($env['route2']) && empty($env['route3'])){
+            $sql = "SELECT f.structure, f.Category, fc.id, fc.Subcategory, fc.Description, fc.user_id
+                    FROM forum_category fc
+                        JOIN forum f ON fc.Category = f.id
+                            WHERE fc.Subcategory = :route
+                 UNION(
+                     
+                 SELECT b.structure, b.Category, bc.id, bc.Subcategory, bc.Description, bc.user_id
+                    FROM blog_category bc
+                        JOIN blog b ON bc.Category = b.id
+                            WHERE bc.Subcategory = :route)
+                                ORDER BY structure, Category, Subcategory, Description";
+        }
+
+        elseif(!empty($env['route1']) && ($env['route1'] === 'blog' || $env['route1'] === 'forum') && !empty($env['route2']) &&
+            !empty($env['route3']) && empty($env['route4'])){
+            $sql = "SELECT f.structure, f.Category, fc.id, fc.Subcategory, fc.Description, fc.user_id
+                    FROM forum_category fc
+                        JOIN forum f ON fc.Category = f.id
+                            WHERE fc.Subcategory = :route
+                 UNION(
+                     
+                 SELECT b.structure, b.Category, bc.id, bc.Subcategory, bc.Description, bc.user_id
+                    FROM blog_category bc
+                        JOIN blog b ON bc.Category = b.id
+                            WHERE bc.Subcategory = :route)
+                                ORDER BY structure, Subcategory, Description";
+        }
+
+        elseif(!empty($env['route1']) && ($env['route1'] != 'blog' || $env['route1'] != 'forum') && !empty($env['route2']) &&
+            !empty($env['route3']) && empty($env['route4'])){
+            $sql = "SELECT f.structure, f.Category, fc.id, fc.Subcategory, fc.Description, fc.user_id
+                    FROM forum_category fc
+                        JOIN forum f ON fc.Category = f.id
+                            WHERE fc.Description = :route
+                 UNION(
+                     
+                 SELECT b.structure, b.Category, bc.id, bc.Subcategory, bc.Description, bc.user_id
+                    FROM blog_category bc
+                        JOIN blog b ON bc.Category = b.id
+                            WHERE bc.Description = :route)
+                                ORDER BY structure, Subcategory, Description";
+        }
+
+        else {
+            die;
+        }
 
         $page_all = $this->db->prepare($sql);
         $page_all->bindValue(":route", $route, PDO::PARAM_STR);
         $page_all->execute();
-
         while ($res_page_all = $page_all->fetch(PDO::FETCH_ASSOC)) {
 
             array_push($result_page_all, $res_page_all);
@@ -92,12 +157,11 @@ class ForumBlogModel extends Model{
         }
     }
 
-    public function latest_ForumBlog_posts()
-    {
+    public function latest_ForumBlog_posts(){
 
         $result_forum = array();
 
-        $sql = "SELECT `id`,`Category` FROM `blog` UNION ALL SELECT `id`,`Category` FROM `forum` ORDER BY id DESC LIMIT 10";
+        $sql = "SELECT * FROM `blog` UNION ALL SELECT * FROM `forum` ORDER BY id DESC LIMIT 10";
 
         $request = $this->db->prepare($sql);
         $request->execute();
@@ -107,18 +171,5 @@ class ForumBlogModel extends Model{
         }
 
         return $result_forum;
-    }
-
-// Get unique categories for a specific table (blog or forum)
-    public function get_all_categories($type)
-    {
-        // Determine the correct table based on the type
-        $table = ($type === 'forum') ? 'forum' : 'blog';
-
-        $sql = "SELECT `id`, `Category`, `Category_Description` FROM `$table` ORDER BY `Category` ASC";
-        $request = $this->db->prepare($sql);
-        $request->execute();
-
-        return $request->fetchAll(PDO::FETCH_ASSOC);
     }
 }

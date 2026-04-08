@@ -33,7 +33,7 @@ class ForumBlogController extends Controller {
             }
         }
 
-        $this->echo_page_pagination();
+        $this->echo_page_pagination($route1);
 
         $this->pageData['route_name'] = ucfirst($route1);
         $this->pageData['route_upper'] = strtoupper($env['route'] ?? '');
@@ -43,14 +43,14 @@ class ForumBlogController extends Controller {
         $this->view->render($this->pageTpl, $this->pageData);
     }
 
-    protected function echo_page_pagination() {
+    protected function echo_page_pagination($route1) {
 
         // Get separate pages for each block
         $blog_page = isset($_POST['blog_page']) ? (int)$_POST['blog_page'] : 1;
         $forum_page = isset($_POST['forum_page']) ? (int)$_POST['forum_page'] : 1;
 
         // Pass both pages to the content collector
-        $content = $this->forumblog_content($blog_page, $forum_page);
+        $content = $this->forumblog_content($route1, $blog_page, $forum_page);
 
         if (isset($_POST['blog_page'])) {
             if (ob_get_level()) ob_clean();
@@ -60,12 +60,12 @@ class ForumBlogController extends Controller {
         }
     }
 
-    private function forumblog_content($blog_page, $forum_page) {
+    private function forumblog_content($route1, $blog_page, $forum_page) {
         global $env;
         // Keep the pagination limit at 10 as requested
         $per_page = $env['settings_array']['posts_per_page'] ?? 10;
 
-        $all_topics = $this->model->get_ForumBlog_topic($env['route1']);
+        $all_topics = $this->model->get_ForumBlog_topic($route1);
 
         // Filter by structure type
         $blogs_all = array_filter($all_topics, function($t) { return $t['structure'] === 'blog'; });
@@ -98,30 +98,108 @@ class ForumBlogController extends Controller {
     }
 
     private function group_topics_by_category(array $topics): array {
+        global $env;
         $grouped = [];
 
-        // 1. First, group ALL posts by subcategory
-        foreach ($topics as $topic) {
-            $category = $topic['Category'] ?? '';
-            if ($category === '') continue;
+            // 1. First, group ALL posts by subcategory
+            foreach ($topics as $topic) {
+                if ((!empty($env['route1']) && ($env['route1'] === 'blog' || $env['route1'] === 'forum') && empty($env['route2'])) ||
+                    (!empty($env['route1']) && ($env['route1'] != 'blog' || $env['route1'] != 'forum') && empty($env['route2']))) {
 
-            if (!isset($grouped[$category])) {
-                $grouped[$category] = [
-                    'structure' => $topic['structure'],
-                    'Category' => $category,
-                    'category_link' => '/' . $topic['structure'] . '/' . $this->translit($category),
-                    'posts' => []
-                ];
-            }
+                    $category = $topic['Category'] ?? '';
+                    if ($category === '') continue;
 
-            $description = trim((string)($topic['Subcategory'] ?? ''));
-            if ($description !== '') {
-                $grouped[$category]['posts'][] = [
-                    'title' => $description,
-                    'link' => '/' . $topic['structure'] . '/' . $category . '/' . $topic['Subcategory']
-                ];
+                    if (!isset($grouped[$category])) {
+                        $grouped[$category] = [
+                            'structure' => $topic['structure'],
+                            'Category' => $category,
+                            'category_link' => '/' . $topic['structure'] . '/' . $this->translit($category),
+                            'posts' => []
+                        ];
+                    }
+
+                    $description = trim((string)($topic['Subcategory'] ?? ''));
+                    if ($description !== '') {
+                        $grouped[$category]['posts'][] = [
+                            'title' => $description,
+                            'link' => '/' . $topic['structure'] . '/' . $category . '/' . $topic['Subcategory']
+                        ];
+                    }
+                } // ForumBlogController
+
+                elseif(!empty($env['route1']) && ($env['route1'] === 'blog' || $env['route1'] === 'forum') && !empty($env['route2']) &&
+                       !empty($env['route3']) && empty($env['route4'])){
+
+                    // 1. First, group ALL posts by subcategory
+                    $Description = $topic['Description'] ?? '';
+                    if ($Description === '') continue;
+
+                    if (!isset($grouped[$Description])) {
+                        $grouped[$Description] = [
+                            'structure' => $topic['structure'],
+                            'Category' => $topic['Category'],
+                            'Subcategory' => $topic['Subcategory'],
+                            'Description' => $Description,
+                            'category_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']),
+                            'subcategory_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']) . '/' . $this->translit($topic['Subcategory']),
+                            'description_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']) . '/' . $this->translit($topic['Subcategory']). '/' . $this->translit($Description),
+                            'posts' => []
+                        ];
+                    }
+                } // ForumBlogSubcategoryController
+
+                elseif(isset($env['route1']) && ($env['route1'] != 'blog' || $env['route1'] != 'forum') && !empty($env['route2']) &&
+                    !empty($env['route3']) && empty($env['route4'])){
+
+                    // 1. First, group ALL posts by subcategory
+                    $Description = $topic['Description'] ?? '';
+                    if ($Description === '') continue;
+
+                    if (!isset($grouped[$Description])) {
+                        $grouped[$Description] = [
+                            'structure' => $topic['structure'],
+                            'Category' => $topic['Category'],
+                            'Subcategory' => $topic['Subcategory'],
+                            'Description' => $Description,
+                            'category_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']),
+                            'subcategory_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']) . '/' . $this->translit($topic['Subcategory']),
+                            'description_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']) . '/' . $this->translit($topic['Subcategory']). '/' . $this->translit($Description),
+                            'posts' => []
+                        ];
+                    }
+                } // ForumBlogSertainSubcategoryController
+
+                elseif(!empty($env['route2']) && empty($env['route3'])){
+
+                    // 1. First, group ALL posts by subcategory
+                    $subcategory = $topic['Subcategory'] ?? '';
+                    if ($subcategory === '') continue;
+
+                    if (!isset($grouped[$subcategory])) {
+                        $grouped[$subcategory] = [
+                            'structure' => $topic['structure'],
+                            'Category' => $topic['Category'],
+                            'Subcategory' => $subcategory,
+                            'category_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']),
+                            'subcategory_link' => '/' . $topic['structure'] . '/' . $this->translit($topic['Category']) . '/' . $this->translit($subcategory),
+                            'posts' => []
+                        ];
+                    }
+
+                    $description = trim((string)($topic['Description'] ?? ''));
+                    if ($description !== '') {
+                        $grouped[$subcategory]['posts'][] = [
+                            'title' => $description,
+                            'link' => '/' . $topic['structure'] . '/' . $topic['Category'] . '/' . $topic['Subcategory'] . '/' . $this->translit($description)
+                        ];
+                    }
+
+                } // ForumBlogCategoryController
+
+                else{
+                    die;
+                }
             }
-        }
 
         // 2. Now, iterate through grouped categories and keep only the LAST 4 posts
         foreach ($grouped as &$item) {
