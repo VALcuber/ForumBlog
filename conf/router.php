@@ -6,7 +6,7 @@ class Routing {
 
         global $env;
 
-        try {
+        //try {
             /* Default controller and action */
             $controllerName = "IndexController";
             $modelName = "IndexModel";
@@ -132,6 +132,11 @@ class Routing {
                 $modelName = "Categories_allModel";
             }
 
+            elseif (isset($route[1]) && $route[1] === 'search') {
+                $controllerName = "SearchController";
+                $modelName = "SearchModel";
+            }
+
             elseif ((isset($route[1]) && ($route[1] === 'blog' || $route[1] === 'forum') && empty($route[2])) ||
                      isset($route[1]) && ($route[1] != 'blog' || $route[1] != 'forum') && empty($route[2])) {
                 $controllerName = "ForumBlogController";
@@ -157,16 +162,11 @@ class Routing {
                 $controllerName = "ForumBlogSertainSubcategoryController";
                 $modelName = "ForumBlogModel";
             }
-
-            elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $route[1] === 'search') {
-                $controllerName = "SearchController";
-                $modelName = "SearchModel";
-            }
-
+/*
             else{
                 throw new Exception("Page", 404);
             }
-
+*/
             /** @noinspection PhpIncludeInspection */
             include_once PATH_C . $controllerName . ".php";      //IndexController.php
             /** @noinspection PhpIncludeInspection */
@@ -175,7 +175,7 @@ class Routing {
             $controller = new $controllerName();
             $controller->$action();
         }
-
+/*
         catch (PDOException $e) {
             include_once PATH_C . "ErrorController.php";
             $controller = new ErrorController();
@@ -190,6 +190,6 @@ class Routing {
         }
 
     }
-
+*/
 
 }

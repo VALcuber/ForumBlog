@@ -119,14 +119,20 @@ class SearchController extends Controller{
             case 'blog':
                 return '/blog/' . urlencode($item['title']);
 
-            case 'blog_category':
-                return '/blog/' . urlencode($item['parent_category']) . '/' . urlencode($item['title']);
+            case 'blog_subcategory':
+                return '/blog/' . urlencode($item['parent_category']) . '/' . urlencode($item['Subcategory']);
+
+            case 'blog_post':
+                return '/blog/' . urlencode($item['parent_category']) . '/' . urlencode($item['Subcategory']) . '/' . urlencode($item['title']);
 
             case 'forum':
                 return '/forum/' . urlencode($item['title']);
 
-            case 'forum_category':
-                return '/forum/' . urlencode($item['parent_category']) . '/' . urlencode($item['title']);
+            case 'forum_subcategory':
+                return '/forum/' . urlencode($item['parent_category']) . '/' . urlencode($item['Subcategory']);
+
+            case 'forum_post':
+                return '/forum/' . urlencode($item['parent_category']) . '/' . urlencode($item['Subcategory']) . '/' . urlencode($item['title']);
 
             default:
                 return '#';
@@ -161,13 +167,13 @@ class SearchController extends Controller{
                 return '/blog/' . $item['title'];
 
             case 'blog_category':
-                return '/blog/' . $item['parent_category'] . '/' . $item['title'];
+                return '/blog/' . $item['parent_category'] . '/' . $item['Subcategory']. '/' . $item['title'];
 
             case 'forum':
                 return '/forum/' . $item['title'];
 
             case 'forum_category':
-                return '/forum/' . $item['parent_category'] . '/' . $item['title'];
+                return '/forum/' . $item['parent_category'] . '/' . $item['Subcategory']. '/' . $item['title'];
 
             default:
                 return '';

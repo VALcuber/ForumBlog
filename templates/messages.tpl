@@ -1,4 +1,4 @@
-<main>
+<main class="flex-grow-1">
     <div class="container-fluid wrapper bg-white">
         <div class="row px-4 py-4">
 
