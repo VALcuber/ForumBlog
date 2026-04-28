@@ -202,7 +202,7 @@
                                                     <td><?= htmlspecialchars($user['nickname']) ?></td>
                                                     <td><?= htmlspecialchars($user['email']) ?></td>
                                                     <td>
-                                                        <span class="badge bg-<?= $user['status'] === 'admin' ? 'danger' : 'success' ?>">
+                                                        <span class="badge bg-<?= $user['status'] === 'admin' ? 'danger' : ($user['status'] === 'moderator' ? 'warning text-dark' : 'success') ?>">
                                                             <?= ucfirst($user['status']) ?>
                                                         </span>
                                                     </td>

@@ -252,20 +252,20 @@ document.addEventListener('DOMContentLoaded', function() {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Используем jQuery для прослушивания события модалки (специфика Bootstrap 4)
+  // Use jQuery to listen for the modal event because of Bootstrap 4 specifics
   $('#forum_blog_formModal').on('show.bs.modal', function (event) {
-    // В jQuery объект события немного другой, берем кнопку через event.relatedTarget
+    // In jQuery the event object is slightly different, so read the button via event.relatedTarget
     const button = event.relatedTarget;
 
-    // Извлекаем данные из атрибутов кнопки
+    // Read data from the button attributes
     const titleText = button.getAttribute('data-title');
     const actValue = button.getAttribute('data-act');
 
-    // Находим элементы в модалке (используем стандартный JS или jQuery - не важно)
+    // Find the modal elements
     const modalTypeSpan = document.getElementById('modal-type-text');
     const modalActInput = document.getElementById('modal-act-input');
 
-    // Если данные есть, подставляем их
+    // Apply values if data is available
     if (titleText && modalTypeSpan) {
       modalTypeSpan.textContent = titleText;
     }

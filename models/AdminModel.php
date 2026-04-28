@@ -150,7 +150,7 @@ class AdminModel extends Model {
             return [];
         }
     }
-    
+
     public function getAllContent($content) {
 
         // Get blog posts with category names
@@ -248,6 +248,26 @@ class AdminModel extends Model {
         } catch (Exception $e) {
             $reports['total_users'] = 0;
         }
+
+        try {
+            $sql = "SELECT `status`, COUNT(*) as total FROM `users` GROUP BY `status`";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $reports['users_by_status'] = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+        } catch (Exception $e) {
+            $reports['users_by_status'] = [];
+        }
+
+        try {
+            $sql = "SELECT `first_name`, `last_name`, `nickname`, `status`, `birthday`
+                        FROM `users`
+                        ORDER BY `id` DESC";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $reports['users_list'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            $reports['users_list'] = [];
+        }
         
         // Get blog statistics
         try {
@@ -258,6 +278,16 @@ class AdminModel extends Model {
         } catch (Exception $e) {
             $reports['total_posts'] = 0;
         }
+
+        // Get blog statistics
+        try {
+            $sql = "SELECT COUNT(*) as total FROM `forum_category`";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $reports['total_topics'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+        } catch (Exception $e) {
+            $reports['total_topics'] = 0;
+        }
         
         // Get comments statistics
         try {
@@ -267,6 +297,16 @@ class AdminModel extends Model {
             $reports['total_comments'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
         } catch (Exception $e) {
             $reports['total_comments'] = 0;
+        }
+
+        //Get content statistics
+        try {
+            $sql = "SELECT SUM(total) AS total FROM (SELECT COUNT(*) AS total FROM `blog_category` UNION ALL SELECT COUNT(*) FROM `forum_category`) AS combined_count";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $reports['total_content'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+        } catch (Exception $e) {
+            $reports['total_content'] = 0;
         }
         
         // Get news statistics
@@ -304,6 +344,51 @@ class AdminModel extends Model {
             return false;
         }
     }
+
+    public function createUser($userData) {
+        try {
+            if (
+                $userData['first_name'] === '' ||
+                $userData['last_name'] === '' ||
+                $userData['nickname'] === '' ||
+                $userData['birthday'] === '' ||
+                $userData['email'] === '' ||
+                $userData['password'] === ''
+            ) {
+                return ['success' => false, 'message' => 'All fields are required.'];
+            }
+
+            $allowedStatuses = ['user', 'moderator', 'admin'];
+            if (!in_array($userData['status'], $allowedStatuses, true)) {
+                $userData['status'] = 'user';
+            }
+
+            $checkSql = "SELECT `id` FROM `users` WHERE `email` = :email LIMIT 1";
+            $checkStmt = $this->db->prepare($checkSql);
+            $checkStmt->bindValue(':email', $userData['email'], PDO::PARAM_STR);
+            $checkStmt->execute();
+
+            if ($checkStmt->fetch(PDO::FETCH_ASSOC)) {
+                return ['success' => false, 'message' => 'A user with this email already exists.'];
+            }
+
+            $sql = "INSERT INTO `users` (`first_name`, `last_name`, `nickname`, `birthday`, `email`, `pass`, `status`)
+                    VALUES (:first_name, :last_name, :nickname, :birthday, :email, :password, :status)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':first_name', $userData['first_name'], PDO::PARAM_STR);
+            $stmt->bindValue(':last_name', $userData['last_name'], PDO::PARAM_STR);
+            $stmt->bindValue(':nickname', $userData['nickname'], PDO::PARAM_STR);
+            $stmt->bindValue(':birthday', $userData['birthday'], PDO::PARAM_STR);
+            $stmt->bindValue(':email', $userData['email'], PDO::PARAM_STR);
+            $stmt->bindValue(':password', $userData['password'], PDO::PARAM_STR);
+            $stmt->bindValue(':status', $userData['status'], PDO::PARAM_STR);
+            $stmt->execute();
+
+            return ['success' => true];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => 'Failed to create user.'];
+        }
+    }
     
     public function updateUserStatus($userId, $status) {
         try {
@@ -312,6 +397,71 @@ class AdminModel extends Model {
             return $stmt->execute([$status, $userId]);
         } catch (Exception $e) {
             return false;
+        }
+    }
+
+    public function updateUser($userId, $userData) {
+        try {
+            if ($userId <= 0) {
+                return ['success' => false, 'message' => 'Invalid user ID.'];
+            }
+
+            $allowedStatuses = ['user', 'moderator', 'admin'];
+            if (!in_array($userData['status'], $allowedStatuses, true)) {
+                $userData['status'] = 'user';
+            }
+
+            if ($userData['email'] !== '') {
+                $checkSql = "SELECT `id` FROM `users` WHERE `email` = :email AND `id` != :id LIMIT 1";
+                $checkStmt = $this->db->prepare($checkSql);
+                $checkStmt->bindValue(':email', $userData['email'], PDO::PARAM_STR);
+                $checkStmt->bindValue(':id', $userId, PDO::PARAM_INT);
+                $checkStmt->execute();
+
+                if ($checkStmt->fetch(PDO::FETCH_ASSOC)) {
+                    return ['success' => false, 'message' => 'A user with this email already exists.'];
+                }
+            }
+
+            $fields = ['`status` = :status'];
+            $params = [
+                ':status' => $userData['status'],
+                ':id' => $userId
+            ];
+
+            if ($userData['first_name'] !== '') {
+                $fields[] = '`first_name` = :first_name';
+                $params[':first_name'] = $userData['first_name'];
+            }
+
+            if ($userData['last_name'] !== '') {
+                $fields[] = '`last_name` = :last_name';
+                $params[':last_name'] = $userData['last_name'];
+            }
+
+            if ($userData['nickname'] !== '') {
+                $fields[] = '`nickname` = :nickname';
+                $params[':nickname'] = $userData['nickname'];
+            }
+
+            if ($userData['email'] !== '') {
+                $fields[] = '`email` = :email';
+                $params[':email'] = $userData['email'];
+            }
+
+            $sql = "UPDATE `users` SET " . implode(', ', $fields) . " WHERE `id` = :id";
+            $stmt = $this->db->prepare($sql);
+
+            foreach ($params as $key => $value) {
+                $paramType = $key === ':id' ? PDO::PARAM_INT : PDO::PARAM_STR;
+                $stmt->bindValue($key, $value, $paramType);
+            }
+
+            $stmt->execute();
+
+            return ['success' => true];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => 'Failed to update user.'];
         }
     }
     

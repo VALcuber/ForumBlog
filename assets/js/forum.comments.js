@@ -26,7 +26,7 @@ $(document).ready(function() {
                 // Clean container before show
                 $("#messages").empty();
 
-                // Выводим комментарии из массива items
+                // Render comments from the items array
                 if (response.items && response.items.length > 0) {
                     response.items.forEach(function (item) {
                         $("#messages").append(`
@@ -58,7 +58,7 @@ $(document).ready(function() {
         nav.empty();
         const group = $('<div class="btn-group" role="group"></div>');
 
-        // Кнопка Назад
+        // Previous page button
         const prevBtn = $(`<button class="btn btn-outline-primary ${currentPage <= 1 ? 'disabled' : ''}">Back</button>`);
         prevBtn.on('click', function() {
             if (currentPage > 1) load(currentPage - 1);

@@ -65,7 +65,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h1>Reports and Analytics</h1>
                     <div>
-                        <span class="text-muted me-3">Welcome, Admin</span>
+                        <span class="text-muted me-3">Welcome, <? global $env; echo ucfirst($env['status']); ?></span>
                         <a href="/logout" class="btn btn-outline-danger btn-sm">Logout</a>
                     </div>
                 </div>
@@ -141,23 +141,31 @@
                         <div class="admin-card">
                             <div class="admin-card-header">
                                 <h5><i class="fas fa-users"></i> User Registration Summary</h5>
-                                <small class="text-muted">Real data: Only 2 users registered</small>
+                                <small class="text-muted">Real data from the users table</small>
                             </div>
                             <div class="admin-card-body">
                                 <div class="text-center">
-                                    <h2 class="text-primary">2</h2>
+                                    <h2 class="text-primary"><?= isset($pageData['reports']['total_users']) ? $pageData['reports']['total_users'] : '0' ?></h2>
                                     <p class="mb-0">Total Users</p>
                                     <hr>
                                     <div class="row text-center">
                                         <div class="col-6">
-                                            <h4 class="text-success">1</h4>
-                                            <small>Sviatoslav (Admin)</small>
+                                            <h4 class="text-danger"><?= isset($pageData['reports']['users_by_status']['admin']) ? $pageData['reports']['users_by_status']['admin'] : '0' ?></h4>
+                                            <small>Admin Users</small>
                                         </div>
                                         <div class="col-6">
-                                            <h4 class="text-info">1</h4>
-                                            <small>Kirill (User)</small>
+                                            <h4 class="text-warning"><?= $pageData['reports']['users_by_status']['moderator'] ?></h4>
+                                            <small>Moderators</small>
                                         </div>
                                     </div>
+                                    <?php if (isset($pageData['reports']['users_by_status']['moderator'])): ?>
+                                    <div class="row text-center mt-3">
+                                        <div class="col-12">
+                                            <h4 class="text-success"><?= isset($pageData['reports']['users_by_status']['user']) ? $pageData['reports']['users_by_status']['user'] : '0' ?></h4>
+                                            <small>Regular Users</small>
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -166,58 +174,22 @@
                         <div class="admin-card">
                             <div class="admin-card-header">
                                 <h5><i class="fas fa-file-alt"></i> Content Creation Summary</h5>
-                                <small class="text-muted">Real data: 3 blog posts + 4 forum topics</small>
+                                <small class="text-muted">Real data from the users table</small>
                             </div>
                             <div class="admin-card-body">
                                 <div class="text-center">
-                                    <h2 class="text-primary">7</h2>
+                                    <h2 class="text-primary"><?= isset($pageData['reports']['total_content']) ? $pageData['reports']['total_content'] : '0' ?></h2>
                                     <p class="mb-0">Total Content Items</p>
                                     <hr>
                                     <div class="row text-center">
                                         <div class="col-6">
-                                            <h4 class="text-success">3</h4>
+                                            <h4 class="text-success"><?= isset($pageData['reports']['total_posts']) ? $pageData['reports']['total_posts'] : '0' ?></h4>
                                             <small>Blog Posts</small>
                                         </div>
                                         <div class="col-6">
-                                            <h4 class="text-info">4</h4>
+                                            <h4 class="text-info"><?= isset($pageData['reports']['total_topics']) ? $pageData['reports']['total_topics'] : '0' ?></h4>
                                             <small>Forum Topics</small>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Additional Statistics -->
-                <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="admin-card">
-                            <div class="admin-card-header">
-                                <h5><i class="fas fa-info-circle"></i> Data Source Information</h5>
-                            </div>
-                            <div class="admin-card-body">
- <!--                               <div class="alert alert-info">
-                                    <i class="fas fa-info-circle"></i> <strong>Note:</strong> All data is retrieved directly from your database.
-                                </div>
- -->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h6>User Activity Data:</h6>
-                                        <ul class="list-unstyled">
-                                            <li><strong>Sviatoslav (Admin):</strong> Registered on 2024-01-15</li>
-                                            <li><strong>Kirill (User):</strong> Registered on 2024-01-20</li>
-                                            <li><strong>Total Users:</strong> 2 (as shown in the chart)</li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h6>Content Activity Data:</h6>
-                                        <ul class="list-unstyled">
-                                            <li><strong>Blog Posts:</strong> 3 posts by 2 users</li>
-                                            <li><strong>Forum Topics:</strong> 4 topics by 2 users</li>
-                                            <li><strong>Comments:</strong> 3 comments in forum</li>
-                                            <li><strong>Total Content:</strong> 7 items (as shown in the chart)</li>
-                                        </ul>
                                     </div>
                                 </div>
                             </div>

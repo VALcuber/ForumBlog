@@ -14,6 +14,7 @@ include ("conf/google_oauth.php"); // Include Google OAuth configuration
 
 // Initialisation
 $env['id'] = $_POST['id']?? '';
+$env['status'] = $_POST['status']?? '';
 $env['act'] = $_POST['act']?? '';
 $env['active'] = '';
 $env['all_title'] = '';

@@ -46,7 +46,7 @@
                     $data_users = $this->get_decrypted_post_data();
                     $env['id'] = $data_users['id'];
                     $this->pageData['nickname'] = $data_users['nickname'];
-
+                    $env['status'] = $data_users['status'];
                     $user_logo = $this->model->check_logo($data_users['id']);
 
                     if ($user_logo['logo'] == 'none') {
@@ -469,7 +469,7 @@ EOT;
 
             if (!is_array($user_data)) {
                 echo "encrypting_data() expects array, got: " . gettype($user_data) . "<br>";
-                var_dump($user_data); // покажет что реально пришло
+                var_dump($user_data); // Shows the actual incoming data
                 exit;
             }
 

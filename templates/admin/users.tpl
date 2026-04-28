@@ -98,7 +98,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <button class="btn btn-primary" id="addUserBtn">
+                        <button class="btn btn-primary" id="addUserBtn" type="button" data-bs-toggle="modal" data-bs-target="#addUserModal">
                             <i class="fas fa-plus"></i> Add User
                         </button>
                     </div>
@@ -113,19 +113,25 @@
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
-                                    <tr>
-                                        <th>Avatar</th>
-                                        <th>Name</th>
-                                        <th>Nickname</th>
-                                        <th>Email</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
+                                        <tr>
+                                            <th>Avatar</th>
+                                            <th><button type="button" class="btn btn-link p-0 text-dark text-decoration-none user-sort-btn" data-sort-key="name">Name</button></th>
+                                            <th><button type="button" class="btn btn-link p-0 text-dark text-decoration-none user-sort-btn" data-sort-key="nickname">Nickname</button></th>
+                                            <th><button type="button" class="btn btn-link p-0 text-dark text-decoration-none user-sort-btn" data-sort-key="email">Email</button></th>
+                                            <th><button type="button" class="btn btn-link p-0 text-dark text-decoration-none user-sort-btn" data-sort-key="status">Status</button></th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
                                 <tbody>
                                     <?php if (isset($pageData['users']) && !empty($pageData['users'])): ?>
                                         <?php foreach ($pageData['users'] as $user): ?>
-                                        <tr>
+                                        <tr
+                                            class="user-row"
+                                            data-name="<?= htmlspecialchars(trim($user['first_name'] . ' ' . $user['last_name'])) ?>"
+                                            data-nickname="<?= htmlspecialchars($user['nickname']) ?>"
+                                            data-email="<?= htmlspecialchars($user['email']) ?>"
+                                            data-status="<?= htmlspecialchars($user['status']) ?>"
+                                        >
                                             <td>
                                                 <?php if (!empty($user['logo']) && $user['logo'] !== 'none'): ?>
                                                     <img src="<?= htmlspecialchars($user['logo']) ?>" alt="Avatar" class="rounded-circle" width="40" height="40">
@@ -139,13 +145,24 @@
                                             <td><?= htmlspecialchars($user['nickname']) ?></td>
                                             <td><?= htmlspecialchars($user['email']) ?></td>
                                             <td>
-                                                <span class="badge bg-<?= $user['status'] === 'admin' ? 'danger' : 'success' ?>">
+                                                <span class="badge bg-<?= $user['status'] === 'admin' ? 'danger' : ($user['status'] === 'moderator' ? 'warning text-dark' : 'success') ?>">
                                                     <?= ucfirst($user['status']) ?>
                                                 </span>
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="<?= $user['id'] ?>">
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-sm btn-outline-primary edit-user-btn"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editUserModal"
+                                                        data-user-id="<?= $user['id'] ?>"
+                                                        data-user-first-name="<?= htmlspecialchars($user['first_name']) ?>"
+                                                        data-user-last-name="<?= htmlspecialchars($user['last_name']) ?>"
+                                                        data-user-nickname="<?= htmlspecialchars($user['nickname']) ?>"
+                                                        data-user-email="<?= htmlspecialchars($user['email']) ?>"
+                                                        data-user-status="<?= htmlspecialchars($user['status']) ?>"
+                                                    >
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <?php if ($user['status'] !== 'admin'): ?>
@@ -169,18 +186,8 @@
                 </div>
 
                 <!-- Pagination -->
-                <nav aria-label="User navigation" class="mt-4">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
+                <nav aria-label="User navigation" class="mt-4 d-none" id="usersPaginationNav">
+                    <ul class="pagination justify-content-center" id="usersPagination"></ul>
                 </nav>
             </div>
         </main>
@@ -198,15 +205,19 @@
                     <form id="editUserForm">
                         <div class="mb-3">
                             <label for="editFirstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="editFirstName" required>
+                            <input type="text" class="form-control" id="editFirstName">
                         </div>
                         <div class="mb-3">
                             <label for="editLastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="editLastName" required>
+                            <input type="text" class="form-control" id="editLastName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editNickname" class="form-label">Nickname</label>
+                            <input type="text" class="form-control" id="editNickname">
                         </div>
                         <div class="mb-3">
                             <label for="editEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="editEmail" required>
+                            <input type="email" class="form-control" id="editEmail">
                         </div>
                         <div class="mb-3">
                             <label for="editStatus" class="form-label">Status</label>
@@ -216,6 +227,7 @@
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
+                        <small class="text-muted">Leave fields empty to keep the current values. Only status is always applied.</small>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -243,6 +255,14 @@
                         <div class="mb-3">
                             <label for="addLastName" class="form-label">Last Name</label>
                             <input type="text" class="form-control" id="addLastName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addNickname" class="form-label">Nickname</label>
+                            <input type="text" class="form-control" id="addNickname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addBirthday" class="form-label">Birthday</label>
+                            <input type="date" class="form-control" id="addBirthday" required>
                         </div>
                         <div class="mb-3">
                             <label for="addEmail" class="form-label">Email</label>

@@ -105,13 +105,6 @@ class AdminController extends Controller {
             $this->controller();
             
             $users = $this->model->getAllUsers();
-
-            // Transform field names to match template expectations
-            foreach ($users as &$user) {
-                $user['first_name'] = $user['First name'] ?? '';
-                $user['last_name'] = $user['Last name'] ?? '';
-                $user['nickname'] = $user['Nickname'] ?? '';
-            }
             
             $this->pageData['title'] = "User Management - Admin Panel";
             $this->pageData['users'] = $users;
@@ -216,7 +209,6 @@ class AdminController extends Controller {
         return $news_rows;
     }
 
-
     public function settings() {
         global $env;
         try {
@@ -314,6 +306,38 @@ class AdminController extends Controller {
                     $status = $_POST['status'] ?? '';
                     $result = $this->model->updateUserStatus($userId, $status);
                     echo json_encode(['success' => $result]);
+                    break;
+
+                case 'create_user':
+                    $userData = [
+                        'first_name' => trim($_POST['first_name'] ?? ''),
+                        'last_name' => trim($_POST['last_name'] ?? ''),
+                        'nickname' => trim($_POST['nickname'] ?? ''),
+                        'birthday' => trim($_POST['birthday'] ?? ''),
+                        'email' => trim($_POST['email'] ?? ''),
+                        'password' => trim($_POST['password'] ?? ''),
+                        'status' => trim($_POST['status'] ?? 'user')
+                    ];
+                    $result = $this->model->createUser($userData);
+
+                    if ($result['success']) {
+                        echo json_encode(['success' => true]);
+                    } else {
+                        echo json_encode(['success' => false, 'message' => $result['message']]);
+                    }
+                    break;
+
+                case 'update_user':
+                    $userId = (int) ($_POST['user_id'] ?? 0);
+                    $userData = [
+                        'first_name' => trim($_POST['first_name'] ?? ''),
+                        'last_name' => trim($_POST['last_name'] ?? ''),
+                        'nickname' => trim($_POST['nickname'] ?? ''),
+                        'email' => trim($_POST['email'] ?? ''),
+                        'status' => trim($_POST['status'] ?? 'user')
+                    ];
+                    $result = $this->model->updateUser($userId, $userData);
+                    echo json_encode($result);
                     break;
                     
                 case 'delete_content':

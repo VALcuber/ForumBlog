@@ -1026,7 +1026,7 @@ input:checked + .slider:before {
 }
 
 .list-group-item.active{
-  text-decoration: none;   /* даже при активном состоянии */
+  text-decoration: none;   /* Keep underline disabled even in the active state */
 }
 
 #chatWindow {

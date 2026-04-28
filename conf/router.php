@@ -12,7 +12,7 @@ class Routing {
             $modelName = "IndexModel";
             $action = "index";
 
-            $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); // только /google-callback
+            $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); // Path only, for example /google-callback
             $route = explode("/", $uri);
 
             if (isset($route[1])) {
