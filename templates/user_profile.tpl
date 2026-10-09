@@ -36,7 +36,8 @@
                       <button id="p.b.forum" class="list-group-item">FORUM</button>
                   </li>
                   <li class="user-profile_li">
-                      <button class="list-group-item">FRIENDS</button>
+                      <input type="hidden" id="hiddenfriendsData" value="<?=htmlspecialchars($pageData['user_friends_no_friends'], ENT_QUOTES, 'UTF-8')?>">
+                      <button id="p.b.friends" class="list-group-item">FRIENDS</button>
                   </li>
               </ul>
           </div>

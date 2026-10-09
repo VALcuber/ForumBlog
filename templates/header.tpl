@@ -52,6 +52,8 @@
                 <ul class="nav nav-pills nav-fill" id="categories-list">
                     <?= $pageData['topmenu']?>
 
-    </div>
+        </div>
+
+        <?= $pageData['tree']?>
 
 </header>

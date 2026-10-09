@@ -25,6 +25,7 @@ class User_profileController extends Controller {
         $this->pageData['user_forum_posts'] = $this->user_forum_posts();
         $this->pageData['user_blog_posts'] = $this->user_blog_posts();
         $this->pageData['user_messages_unread_inbox'] = $this->unread_inbox();
+        $this->pageData['user_friends_no_friends'] = $this->no_friends();
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
@@ -135,8 +136,7 @@ EOT;
         }
         else{
             return $user_posts = <<<"EOT"
-        <div class="card" style="width: 500px; height: 250px; overflow-y: auto;">
-          <div class="card-header text-center">Messages</div>
+        <div class="card" style="width: 500px; height: 205px; overflow-y: auto;">
           <ul class="list-group list-group-flush">
             <li class="d-flex list-group-item justify-content-center">Please</li>
             <li class="d-flex list-group-item justify-content-center">start</li>
@@ -150,5 +150,46 @@ EOT;
         }
     }
 
+    public function no_friends(){
+            global $env;
+
+            $friends_inbox = $this->model->users_friends($env['id']);
+            $friends[] = '';
+
+            if ($friends_inbox != NULL){
+                foreach ($friends_inbox as $value) {
+                    $id = ($value['friend1_id'] == $env['id']) ? $value['friend2_id'] : $value['friend1_id'];
+                    $nickname = htmlspecialchars($value['nickname']);
+
+                    $user_posts = <<<"EOT"
+        <div class="card" style="width: 500px; height: 250px; overflow-y: auto;">
+          <div class="card-header text-center">Friends</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" data-user-id="$id" data-user="$nickname" style="cursor:pointer">$nickname</li>
+          </ul>
+          <div class="card-footer text-center">
+            <a href="/user_profile/friends" class="btn btn-sm btn-primary">All friends</a>
+          </div>
+        </div>
+EOT;
+                    $friends[] = $user_posts;
+                }
+                $this->pageData['friends'] = implode("\n", $friends);
+            }
+            else{
+                return $user_posts = <<<"EOT"
+        <div class="card" style="width: 500px; height: 205px; overflow-y: auto;">
+          <ul class="list-group list-group-flush">
+            <li class="d-flex list-group-item justify-content-center">Please</li>
+            <li class="d-flex list-group-item justify-content-center">make</li>
+            <li class="d-flex list-group-item justify-content-center">friends</li>
+          </ul>
+          <div class="card-footer text-center">
+            <a href="/user_profile/friends" class="btn btn-sm btn-primary">All friends</a>
+          </div>
+        </div>
+EOT;
+            }
+        }
 
 }

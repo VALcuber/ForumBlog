@@ -140,6 +140,10 @@
                 $this->pageData['script_conversation'] = '<script src="../assets/js/conversation.js"></script>';
                 $this->pageData['script_profile'] = '';
             }
+            elseif($env['route2'] == 'friends'){
+                $this->pageData['script_conversation'] = '<script src="../assets/js/friends.js"></script>';
+                $this->pageData['script_profile'] = '';
+            }
             else
                 $this->pageData['script_conversation'] = '';
 
@@ -162,6 +166,21 @@
                 $settings_array[$row['name']] = $row['value'];
                 $env['settings_array'] = $settings_array;
             } // Get settings from DB
+
+            if(!empty($env['route2']) && !empty($env['route3']) && !empty($env['route4'])) {
+                if (!empty($env['route2']) && empty($env['route3'])) {
+                    $this->pageData['tree'] = '<a href="/' . $env['route1'] .'">/' . $env['route1'] .'</a>';
+                }
+                elseif (!empty($env['route3']) && empty($env['route4'])) {
+                    $this->pageData['tree'] = '<a href="/' . $env['route1'] . '/' . $env['route2'] . '">/' . $env['route1'] . '/' . $env['route2'] . '</a>';
+                }
+                elseif (!empty($env['route4'])) {
+                    $this->pageData['tree'] = '<a href="/' . $env['route1'] . '/' . $env['route2'] . '/' . $env['route3'] .'">/' . $env['route1'] . '/' . $env['route2'] . '/' . $env['route3'] .'</a>';
+                }
+            }
+            else{
+                $this->pageData['tree'] = '';
+            }
 
             $this->pageData['title'] = "Forum-blog";
             /** @noinspection PhpUndefinedVariableInspection */

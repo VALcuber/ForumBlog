@@ -48,6 +48,10 @@ class Routing {
                 $controllerName = "MessagesController";
                 $modelName = "MessagesModel";
             }
+            elseif (isset($route[1]) && $route[1] === 'user_profile' && isset($route[2]) && $route[2] === 'friends'){
+                $controllerName = "FriendsController";
+                $modelName = "FriendsModel";
+            }
 
             elseif ($route[1] == 'user_profile') {
                 $controllerName = "User_profileController";

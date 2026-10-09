@@ -83,4 +83,22 @@ class User_profileModel extends Model {
         $smtpc->execute();
     }
 
+    public function users_friends($userId){
+        $sql = "SELECT m.friend1_id, m.friend2_id, u.nickname
+                    FROM friends m
+                        /* Connect with NOT ME */
+                        INNER JOIN users u ON u.id = IF(m.friend1_id = :userId, m.friend2_id, m.friend1_id)
+                            INNER JOIN (
+                                SELECT MAX(id) as max_id
+                                    FROM friends
+                                        WHERE friend2_id = :userId OR friend1_id = :userId
+                                            /* Group by ID */
+                                            GROUP BY IF(friend1_id = :userId, friend2_id, friend1_id)
+                                         ) last_msgs ON m.id = last_msgs.max_id
+                                        ORDER BY m.created_at DESC";
+        $smtpc = $this->db->prepare($sql);
+        $smtpc->bindValue(":userId", $userId, PDO::PARAM_STR);
+        $smtpc->execute();
+    }
+
 }

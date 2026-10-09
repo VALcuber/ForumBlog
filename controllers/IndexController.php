@@ -17,6 +17,7 @@ class IndexController extends Controller {
         $this->pageData['blog'] = $this->echo_random_blog_topics();
         $this->pageData['news'] = $this->echo_latest_news();
         $this->pageData['forum'] = $this->echo_random_forum_topics();
+        //$this->pageData['tree'] = '';
 
 		$this->view->render($this->pageTpl, $this->pageData);
 	}
