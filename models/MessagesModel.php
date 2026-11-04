@@ -46,7 +46,7 @@ class MessagesModel extends Model{
                     SET `is_read` = 1
                         WHERE `receiver_id` = :userId
                           AND `sender_id` = :otherId 
-                            AND `is_read` = 0";
+                            AND (`is_read` = 0 OR `is_read` IS NULL)";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);

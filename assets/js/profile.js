@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get hidden input values (data from PHP)
     const blogData = document.getElementById("hiddenblogData").value;
     const forumData = document.getElementById("hiddenforumData").value;
-    const messagesData = document.getElementById("hiddenmessagesData").value;
+    let messagesData = document.getElementById("hiddenmessagesData").value; // let: refreshed by the live update
     const friendsData = document.getElementById("hiddenfriendsData").value;
 
     // Variable to track currently displayed info box
@@ -62,6 +62,45 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleContent('friends', friendsData); // Load real messages data
     });
 
+    // Live update: periodically ask the server for a fresh "Messages" block (PHP builds the HTML)
+    const POLL_INTERVAL_MS = 2000; // how often to check for new messages
+    let pollInFlight = false;
+
+    async function refreshMessages() {
+        // Skip when the tab is hidden or the previous request is still running
+        if (document.hidden || pollInFlight) return;
+        pollInFlight = true;
+
+        try {
+            const response = await fetch('/user_profile?ajax=get_inbox');
+            if (!response.ok) return;
+
+            const data = await response.json();
+            if (data.status !== 'success') return;
+
+            // Nothing changed since the last check: do not touch the DOM
+            if (data.html === messagesData) return;
+
+            messagesData = data.html;
+
+            // If the Messages box is open right now, redraw it
+            if (currentBox && currentBox.dataset.type === 'messages') {
+                currentBox.innerHTML = messagesData;
+            }
+        } catch (err) {
+            console.error('Messages refresh error:', err);
+        } finally {
+            pollInFlight = false;
+        }
+    }
+
+    setInterval(refreshMessages, POLL_INTERVAL_MS);
+
+    // Check right away when the user returns to this tab
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) refreshMessages();
+    });
+
     // Close info box when clicking outside of it
     document.addEventListener('click', function (event) {
         if (currentBox && !infoContainer.contains(event.target) && event.target !== blogButton && event.target !== forumButton && event.target !== messagesButton && event.target !== friendssButton) {
@@ -70,24 +109,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        var adminToggle = document.getElementById('adminPanelToggle');
-        if (adminToggle) {
-            // Set slider state from cookie
-            var matches = document.cookie.match(/(?:^|; )admin_panel=([^;]*)/);
-            if (matches && matches[1] === '1') {
-                adminToggle.checked = true;
-            } else {
-                adminToggle.checked = false;
-            }
-            // Save state to cookie when changed
-            adminToggle.addEventListener('change', function() {
-                // You can add reload if needed: location.reload();
-                if (this.checked) {
-                    showPanel();
-                } else {
-                    hidePanel();
-                }
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    var adminToggle = document.getElementById('adminPanelToggle');
+    if (adminToggle) {
+        // Set slider state from cookie
+        var matches = document.cookie.match(/(?:^|; )admin_panel=([^;]*)/);
+        if (matches && matches[1] === '1') {
+            adminToggle.checked = true;
+        } else {
+            adminToggle.checked = false;
         }
+        // Save state to cookie when changed
+        adminToggle.addEventListener('change', function() {
+            // You can add reload if needed: location.reload();
+            if (this.checked) {
+                showPanel();
+            } else {
+                hidePanel();
+            }
+        });
+    }
 });

@@ -99,16 +99,20 @@ HTML;
         $friends_list = $this->model->getFriends($env['id']);
         $friends = [];
 
+        // Friend chosen on the profile page (?friend=ID). It is marked only if he really is my friend.
+        $selectedId = (int)($_GET['friend'] ?? 0);
+
         foreach($friends_list as $value) {
 
             $id = ($value['friend1_id'] == $env['id']) ? $value['friend2_id'] : $value['friend1_id'];
             $friends_nickname = htmlspecialchars($value['nickname']);
             $friends_logo = htmlspecialchars($value['logo']);
             $friends_info = '';
+            $selectedAttr = ($selectedId > 0 && (int)$id === $selectedId) ? ' data-selected="1"' : '';
 
             // Added data-friend-id attribute here
             $li_friends_list = <<<"EOT"
-            <li class="d-flex list-group-item user-item" data-user-id="$id" data-user="$friends_nickname" style="cursor:pointer">
+            <li class="d-flex list-group-item user-item" data-user-id="$id" data-user="$friends_nickname"$selectedAttr style="cursor:pointer">
                 <div class="d-flex flex-column align-items-center justify-content-center"">
                     <img src="$friends_logo" class="header__profile d-none d-sm-block rounded-circle mb-1" width="40">
                     <span class="text-muted text-center">

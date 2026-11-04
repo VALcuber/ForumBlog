@@ -2,17 +2,23 @@
 /** @used-by Router */
 class User_profileController extends Controller {
 
-	private $pageTpl = '/templates/user_profile.tpl';
+    private $pageTpl = '/templates/user_profile.tpl';
 
-	public function __construct() {
+    public function __construct() {
         parent::__construct();
-		$this->model = new User_profileModel();
-		$this->view = new View();
-	}
+        $this->model = new User_profileModel();
+        $this->view = new View();
+    }
 
-	public function index() {
+    public function index() {
 
         $this->controller();
+
+        // AJAX: fresh "Messages" block for live updates (unread dots)
+        if (isset($_GET['ajax']) && $_GET['ajax'] === 'get_inbox') {
+            $this->inboxJson();
+            return;
+        }
 
         if(isset($_FILES['image'])){
             $id = $this->get_decrypted_post_data();
@@ -24,13 +30,13 @@ class User_profileController extends Controller {
         $this->pageData['script_profile'] = '<script src="../assets/js/profile.js"></script>';
         $this->pageData['user_forum_posts'] = $this->user_forum_posts();
         $this->pageData['user_blog_posts'] = $this->user_blog_posts();
-        $this->pageData['user_messages_unread_inbox'] = $this->unread_inbox();
-        $this->pageData['user_friends_no_friends'] = $this->no_friends();
+        $this->pageData['user_messages_unread_inbox'] = $this->inbox();
+        $this->pageData['user_friends_no_friends'] = $this->friends();
 
-		$this->view->render($this->pageTpl, $this->pageData);
-	}
+        $this->view->render($this->pageTpl, $this->pageData);
+    }
 
-	private function image_upload(){
+    private function image_upload(){
 
         $id = $this->get_decrypted_post_data();
         // Checking for sending file
@@ -71,16 +77,18 @@ class User_profileController extends Controller {
 
         $result_forum_HTML = '';
 
-	    $user_posts_array = $this->model->user_forum_posts($id['id']);
+        $user_posts_array = $this->model->user_forum_posts($id['id']);
         $count_user_posts = count($user_posts_array);
 
         for ($i = 0; $i < $count_user_posts; $i++) {
-            $user_posts_category_from_bd = $user_posts_array[$i]['Category'];
-            $user_posts_description_from_bd = $user_posts_array[$i]['Description'];
             $user_posts_part_from_bd = $user_posts_array[$i]['Part'];
+            $user_posts_category_from_bd = $user_posts_array[$i]['Category'];
+            $user_posts_subcategory_from_bd = $user_posts_array[$i]['Subcategory'];
+            $user_posts_description_from_bd = $user_posts_array[$i]['Description'];
+
 
             $user_posts = <<<"EOT"
-<a href="/$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
+<a href="/$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_subcategory_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
 EOT;
             $result_forum_HTML .= $user_posts;
         }
@@ -90,49 +98,78 @@ EOT;
 
         $id = $this->get_decrypted_post_data();
 
-	    $result_blog_HTML = '';
+        $result_blog_HTML = '';
 
         $user_posts_array = $this->model->user_blog_posts($id['id']);
         $count_user_posts = count($user_posts_array);
 
         for ($i = 0; $i < $count_user_posts; $i++) {
             $user_posts_category_from_bd = $user_posts_array[$i]['Category'];
+            $user_posts_subcategory_from_bd = $user_posts_array[$i]['Subcategory'];
             $user_posts_description_from_bd = $user_posts_array[$i]['Description'];
             $user_posts_part_from_bd = $user_posts_array[$i]['Part'];
 
             $user_posts = <<<"EOT"
-<a href="/$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
+<a href="/$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_subcategory_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
 EOT;
             $result_blog_HTML .= $user_posts;
         }
 
         return $result_blog_HTML;
     }
-    public function unread_inbox(){
+
+    /** AJAX: returns the freshly rendered "Messages" block as JSON */
+    private function inboxJson(){
+        if (ob_get_length()) ob_clean();
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+            'status' => 'success',
+            'html' => $this->inbox()
+        ]);
+
+        exit;
+    }
+
+    public function inbox(){
         global $env;
 
         $users_inbox = $this->model->users_inbox($env['id']);
-        $senders[] = '';
 
         if ($users_inbox != NULL){
+            $items = [];
+
             foreach ($users_inbox as $value) {
-                $id = ($value['sender_id'] == $env['id']) ? $value['receiver_id'] : $value['sender_id'];
+                $id = (int)(($value['sender_id'] == $env['id']) ? $value['receiver_id'] : $value['sender_id']);
                 $nickname = htmlspecialchars($value['nickname']);
 
-                $user_posts = <<<"EOT"
-        <div class="card" style="width: 500px; height: 250px; overflow-y: auto;">
+                // Unread for ME: I am the receiver and the message is not read yet (0 or NULL)
+                $unreadDot = ($value['receiver_id'] == $env['id'] && empty($value['is_read']))
+                    ? '<span class="new-message-dot ms-2 d-inline-block rounded-circle bg-danger" style="width:10px;height:10px;" title="New message"></span>'
+                    : '';
+
+                $items[] = <<<"EOT"
+            <li class="list-group-item d-flex justify-content-between align-items-center position-relative" data-user-id="$id" data-user="$nickname" style="cursor:pointer">
+                <a href="/user_profile/messages?chat=$id" class="stretched-link text-decoration-none text-reset">$nickname</a>$unreadDot
+            </li>
+EOT;
+            }
+
+            // The model returns at most 3 freshest conversations, they are shown in ONE card
+            $list = implode("\n", $items);
+
+            return $this->pageData['senders'] = <<<"EOT"
+        <div class="card" style="width: 500px; height: auto; max-height: 250px; overflow-y: auto;">
           <div class="card-header text-center">Messages</div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item" data-user-id="$id" data-user="$nickname" style="cursor:pointer">$nickname</li>
+$list
           </ul>
           <div class="card-footer text-center">
             <a href="/user_profile/messages" class="btn btn-sm btn-primary">All messages</a>
           </div>
         </div>
 EOT;
-                $senders[] = $user_posts;
-            }
-            $this->pageData['senders'] = implode("\n", $senders);
         }
         else{
             return $user_posts = <<<"EOT"
@@ -150,34 +187,43 @@ EOT;
         }
     }
 
-    public function no_friends(){
-            global $env;
+    public function friends(){
+        global $env;
 
-            $friends_inbox = $this->model->users_friends($env['id']);
-            $friends[] = '';
+        $friends_inbox = $this->model->users_friends($env['id']);
 
-            if ($friends_inbox != NULL){
-                foreach ($friends_inbox as $value) {
-                    $id = ($value['friend1_id'] == $env['id']) ? $value['friend2_id'] : $value['friend1_id'];
-                    $nickname = htmlspecialchars($value['nickname']);
+        if ($friends_inbox != NULL){
+            $items = [];
 
-                    $user_posts = <<<"EOT"
-        <div class="card" style="width: 500px; height: 250px; overflow-y: auto;">
+            foreach ($friends_inbox as $value) {
+                $id = (int)(($value['friend1_id'] == $env['id']) ? $value['friend2_id'] : $value['friend1_id']);
+                $nickname = htmlspecialchars($value['nickname']);
+
+                // The whole row is a link to the friends page with this friend preselected
+                $items[] = <<<"EOT"
+            <li class="list-group-item position-relative" data-user-id="$id" data-user="$nickname" style="cursor:pointer">
+                <a href="/user_profile/friends?friend=$id" class="stretched-link text-decoration-none text-reset">$nickname</a>
+            </li>
+EOT;
+            }
+
+            // All friends are shown in ONE card
+            $list = implode("\n", $items);
+
+            return $this->pageData['friends'] = <<<"EOT"
+        <div class="card" style="width: 500px; height: auto; max-height: 250px; overflow-y: auto;">
           <div class="card-header text-center">Friends</div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item" data-user-id="$id" data-user="$nickname" style="cursor:pointer">$nickname</li>
+$list
           </ul>
           <div class="card-footer text-center">
             <a href="/user_profile/friends" class="btn btn-sm btn-primary">All friends</a>
           </div>
         </div>
 EOT;
-                    $friends[] = $user_posts;
-                }
-                $this->pageData['friends'] = implode("\n", $friends);
-            }
-            else{
-                return $user_posts = <<<"EOT"
+        }
+        else{
+            return $user_posts = <<<"EOT"
         <div class="card" style="width: 500px; height: 205px; overflow-y: auto;">
           <ul class="list-group list-group-flush">
             <li class="d-flex list-group-item justify-content-center">Please</li>
@@ -189,7 +235,7 @@ EOT;
           </div>
         </div>
 EOT;
-            }
         }
+    }
 
 }

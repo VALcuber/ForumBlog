@@ -27,6 +27,12 @@ class MessagesController extends Controller{
         }
 
 
+        // AJAX: Get a freshly rendered inbox list (live update of the unread dots)
+        if (isset($_GET['ajax']) && $_GET['ajax'] === 'get_inbox') {
+            $this->inboxJson();
+            return;
+        }
+
         $this->inbox();
 
 
@@ -74,15 +80,37 @@ class MessagesController extends Controller{
     }
 
     public function inbox() {
-        global $env;
-        $inbox = $this->model->getInbox($env['id']);
-        $senders = [];
-
         // Handle message sending via POST AJAX
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'send_message') {
             $this->sendMessage();
             return;
         }
+
+        $this->pageData['senders'] = $this->buildInboxHtml();
+    }
+
+    /** AJAX: returns the freshly rendered inbox list as JSON */
+    private function inboxJson() {
+        if (ob_get_length()) ob_clean();
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+            'status' => 'success',
+            'html' => $this->buildInboxHtml()
+        ]);
+
+        exit;
+    }
+
+    /** Builds the HTML of the inbox list (used for the page and for live updates) */
+    private function buildInboxHtml() {
+        global $env;
+        $inbox = $this->model->getInbox($env['id']);
+        $senders = [];
+
+        // Conversation chosen on the profile page (?chat=ID). It is marked only if it is in my inbox.
+        $selectedId = (int)($_GET['chat'] ?? 0);
 
         foreach($inbox as $value) {
 
@@ -90,6 +118,7 @@ class MessagesController extends Controller{
             $nickname = htmlspecialchars($value['nickname']);
             $logo = htmlspecialchars($value['logo']);
             $message = htmlspecialchars($value['content']);
+            $selectedAttr = ($selectedId > 0 && (int)$id === $selectedId) ? ' data-selected="1"' : '';
 
             // A message is "unread" for ME only if:
             // 1. I am the receiver (receiver_id == userId)
@@ -100,13 +129,14 @@ class MessagesController extends Controller{
             if ($isUnreadForMe) {
                 $openTag = '<strong>';
                 $closeTag = '</strong>';
+                $unreadDot = '<span class="new-message-dot ms-2 d-inline-block rounded-circle bg-danger" style="width:10px;height:10px;" title="New message"></span>';
             } else {
-                $openTag = $closeTag = '';
+                $openTag = $closeTag = $unreadDot = '';
             }
 
             // Added data-user-id attribute here
             $li_inbox = <<<"EOT"
-            <li class="d-flex list-group-item user-item" data-user-id="$id" data-user="$nickname" style="cursor:pointer">
+            <li class="d-flex list-group-item user-item" data-user-id="$id" data-user="$nickname"$selectedAttr style="cursor:pointer">
                 <div class="d-flex flex-column align-items-center justify-content-center"">
                     <img src="$logo" class="header__profile d-none d-sm-block rounded-circle mb-1" width="40">
                     <span class="text-muted text-center">
@@ -120,11 +150,15 @@ class MessagesController extends Controller{
                         </h3>
                     </div>
 
+                    <!-- "New message" dot, pressed to the right edge of the row -->
+                    <div class="d-flex align-items-center">$unreadDot</div>
+
             </li>
 EOT;
             $senders[] = $li_inbox;
         }
-        $this->pageData['senders'] = implode("\n", $senders);
+
+        return implode("\n", $senders);
     }
 
 }

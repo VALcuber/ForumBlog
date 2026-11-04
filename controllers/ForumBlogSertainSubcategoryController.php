@@ -11,8 +11,7 @@ class ForumBlogSertainSubcategoryController extends ForumBlogController{
         $this->view = new View();
     }
 
-    public function index()
-    {
+    public function index(){
         global $env;
 
         $this->controller();

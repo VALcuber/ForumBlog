@@ -71,4 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
             defaultMessage.style.display = ''; // restore the display style defined by the CSS classes
         }
     });
+
+    // Opened from the profile page: select the friend marked by PHP (data-selected="1")
+    const preselected = document.querySelector('.user-item[data-selected="1"]');
+    if (preselected) {
+        preselected.click();
+    }
 });

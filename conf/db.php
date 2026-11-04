@@ -18,7 +18,7 @@ class DB{
 
         try {
             // Initial connection to create database if not exists
-            $conn = new PDO("mysql:host=$host", $user, $pass);
+            $conn = new PDO("mysql:host=$host;port=3306", $user, $pass);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             $conn->query("CREATE DATABASE IF NOT EXISTS `$db` CHARACTER SET $charset COLLATE utf8mb4_general_ci");

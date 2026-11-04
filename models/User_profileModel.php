@@ -2,7 +2,7 @@
 
 class User_profileModel extends Model {
 
-	public function user_profile_logo($file_name, $id){
+    public function user_profile_logo($file_name, $id){
 
         $sql = "UPDATE `users` SET `logo`='/assets/uploads/$file_name' WHERE  `id`='$id'";
 
@@ -22,51 +22,50 @@ class User_profileModel extends Model {
         else{
             return $resr;
         }
-	}
+    }
 
     public function user_forum_posts($id){
 
-        $sql = "SELECT `forum`.`Category` AS `Category`, 
-                       `forum_category`.`Description` AS `Description`,
-                       'forum' AS `Part`
-                                        FROM `forum_category`
-                                            JOIN `forum` ON `forum_category`.`Category` = `forum`.`id`
-                                                WHERE `forum_category`.`user_id` = :user_id";
+        $sql = "SELECT `forum`.`Category` AS `Category`,
+                   `forum_category`.`Subcategory` AS `Subcategory`,
+                   `forum_category`.`Description` AS `Description`,
+                   'forum' AS `Part`
+              FROM `forum_category`
+              JOIN `forum` ON `forum_category`.`Category` = `forum`.`id`
+             WHERE `forum_category`.`user_id` = :user_id
+               AND `forum_category`.`Description` IS NOT NULL
+               AND `forum_category`.`Description` <> ''
+             ORDER BY `forum_category`.`id` DESC";
 
         $smtppage = $this->db->prepare($sql);
-
-        $smtppage->bindValue(":user_id", $id, PDO::PARAM_STR);
-
+        $smtppage->bindValue(":user_id", $id, PDO::PARAM_INT);
         $smtppage->execute();
 
-        $user_forum_posts = $smtppage->fetchall(PDO::FETCH_ASSOC);
-
-
-        return ($user_forum_posts);
+        return $smtppage->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function user_blog_posts($id){
 
-        $sql = "SELECT `blog`.`Category` AS `Category`, 
-                       `blog_category`.`Description` AS `Description`,
-                       'blog' AS `Part`
-                                        FROM `blog_category`
-                                            JOIN `blog` ON `blog_category`.`Category` = `blog`.`id`
-                                                WHERE `blog_category`.`user_id` = :user_id";
+        $sql = "SELECT `blog`.`Category` AS `Category`,
+                   `blog_category`.`Subcategory` AS `Subcategory`,
+                   `blog_category`.`Description` AS `Description`,
+                   'blog' AS `Part`
+              FROM `blog_category`
+              JOIN `blog` ON `blog_category`.`Category` = `blog`.`id`
+             WHERE `blog_category`.`user_id` = :user_id
+               AND `blog_category`.`Description` IS NOT NULL
+               AND `blog_category`.`Description` <> ''
+             ORDER BY `blog_category`.`id` DESC";
 
         $smtppage = $this->db->prepare($sql);
-
-        $smtppage->bindValue(":user_id", $id, PDO::PARAM_STR);
-
+        $smtppage->bindValue(":user_id", $id, PDO::PARAM_INT);
         $smtppage->execute();
 
-        $user_blog_posts = $smtppage->fetchall(PDO::FETCH_ASSOC);
-
-        return ($user_blog_posts);
+        return $smtppage->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function users_inbox($userId){
-        $sql = "SELECT m.sender_id, m.receiver_id, u.nickname
+        $sql = "SELECT m.sender_id, m.receiver_id, m.is_read, u.nickname
                     FROM messages m
                         /* Connect with NOT ME */
                         INNER JOIN users u ON u.id = IF(m.sender_id = :userId, m.receiver_id, m.sender_id)
@@ -77,28 +76,43 @@ class User_profileModel extends Model {
                                             /* Group by ID */
                                             GROUP BY IF(sender_id = :userId, receiver_id, sender_id)
                                          ) last_msgs ON m.id = last_msgs.max_id
-                                        ORDER BY m.created_at DESC";
+                                        ORDER BY m.created_at DESC, m.id DESC
+                                        LIMIT 3";
         $smtpc = $this->db->prepare($sql);
         $smtpc->bindValue(":userId", $userId, PDO::PARAM_STR);
         $smtpc->execute();
+
+        $result = $smtpc->fetchall(PDO::FETCH_ASSOC);
+
+        if(empty($result)){
+            return NULL;
+        }
+        else{
+            return $result;
+        }
     }
 
     public function users_friends($userId){
-        $sql = "SELECT m.friend1_id, m.friend2_id, u.nickname
-                    FROM friends m
+        // Nicknames of my 3 newest friends (the freshest friendship first)
+        $sql = "SELECT f.friend1_id, f.friend2_id, u.nickname
+                    FROM friends f
                         /* Connect with NOT ME */
-                        INNER JOIN users u ON u.id = IF(m.friend1_id = :userId, m.friend2_id, m.friend1_id)
-                            INNER JOIN (
-                                SELECT MAX(id) as max_id
-                                    FROM friends
-                                        WHERE friend2_id = :userId OR friend1_id = :userId
-                                            /* Group by ID */
-                                            GROUP BY IF(friend1_id = :userId, friend2_id, friend1_id)
-                                         ) last_msgs ON m.id = last_msgs.max_id
-                                        ORDER BY m.created_at DESC";
+                        INNER JOIN users u ON u.id = IF(f.friend1_id = :userId, f.friend2_id, f.friend1_id)
+                            WHERE f.friend1_id = :userId OR f.friend2_id = :userId
+                                ORDER BY f.friends_from DESC
+                                    LIMIT 3";
         $smtpc = $this->db->prepare($sql);
         $smtpc->bindValue(":userId", $userId, PDO::PARAM_STR);
         $smtpc->execute();
+
+        $result = $smtpc->fetchall(PDO::FETCH_ASSOC);
+
+        if(empty($result)){
+            return NULL;
+        }
+        else{
+            return $result;
+        }
     }
 
 }
