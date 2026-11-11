@@ -1,12 +1,12 @@
 <?php
 
 class AdminController extends Controller {
-    
+
     public function __construct() {
         parent::__construct();
         $this->model = new AdminModel();
     }
-    
+
     public function index() {
         try {
             $this->controller();
@@ -20,7 +20,7 @@ class AdminController extends Controller {
                 'total_news' => 0,
                 'total_categories' => 0
             ];
-            
+
             // Get statistics
             $stats = $this->model->getDashboardStats($stats);
 
@@ -33,16 +33,16 @@ class AdminController extends Controller {
 
             // Get recent activities
             $recentActivities = $this->model->getRecentActivities($activities);
-            
+
             // Get system information
             $systemInfo = $this->model->getSystemInfo();
-            
+
             $this->pageData['title'] = "Administrative Panel - Forum-blog";
             $this->pageData['stats'] = $stats;
             $this->pageData['recent_activities'] = $recentActivities;
             $this->pageData['system_info'] = $systemInfo;
             $this->pageData['admin_page'] = true;
-            
+
             $this->view->render('admin/dashboard', $this->pageData);
         } catch (Exception $e) {
             // Log error and show user-friendly message
@@ -51,7 +51,7 @@ class AdminController extends Controller {
             $this->view->render('admin/dashboard', $this->pageData);
         }
     }
-    
+
     public function content() {
         try {
             $this->controller();
@@ -99,17 +99,17 @@ class AdminController extends Controller {
             $this->view->render('admin/content', $this->pageData);
         }
     }
-    
+
     public function users() {
         try {
             $this->controller();
-            
+
             $users = $this->model->getAllUsers();
-            
+
             $this->pageData['title'] = "User Management - Admin Panel";
             $this->pageData['users'] = $users;
             $this->pageData['admin_page'] = true;
-            
+
             $this->view->render('admin/users', $this->pageData);
         } catch (Exception $e) {
             error_log("Admin users error: " . $e->getMessage());
@@ -209,11 +209,35 @@ class AdminController extends Controller {
         return $news_rows;
     }
 
+    /**
+     * Cleans the raw blacklist from the settings form: names are separated by commas
+     * (a new line works too); empty items and duplicates (ignoring case/spaces) are removed,
+     * sane limits applied. The result is stored as "name1, name2, name3".
+     */
+    private function clean_category_blacklist($raw) {
+        $lines = [];
+        $parts = preg_split('/[,\r\n]+/u', (string)$raw);
+
+        foreach (($parts === false ? [] : $parts) as $line) {
+            $line = trim((string)preg_replace('/[\s\p{Z}]+/u', ' ', $line));
+            if ($line === '') {
+                continue;
+            }
+            $line = Model::cutString($line, 100);
+            $key = Model::normalizeCategoryName($line);
+            if (!isset($lines[$key])) {
+                $lines[$key] = $line; // keep the original spelling for the admin
+            }
+        }
+
+        return implode(', ', array_slice(array_values($lines), 0, 500));
+    }
+
     public function settings() {
         global $env;
         try {
             $this->controller();
-            
+
             if ($env['act'] == 'settings' ) {
                 $data = [
                     'title'               => $_POST['site_name'] ?? '',
@@ -222,24 +246,25 @@ class AdminController extends Controller {
                     'admin_email'         => $_POST['email'] ?? '',
                     'posts_per_page'      => $_POST['posts_per_page'] ?? '',
                     'max_upload_size'     => $_POST['max_upload_size'] ?? '0',
-                    'allowed_file_types'  => $_POST['allowed_file_types'] ?? ''
+                    'allowed_file_types'  => $_POST['allowed_file_types'] ?? '',
+                    'category_blacklist'  => $this->clean_category_blacklist($_POST['category_blacklist'] ?? '')
                 ];
-                    if ($this->model->updateSettings($data)) {
-                        $this->pageData['success_message'] = "Settings updated successfully";
+                if ($this->model->updateSettings($data)) {
+                    $this->pageData['success_message'] = "Settings updated successfully";
 
-                        // Refreshing data in pageData to show new values in the form
-                        // Assuming method to get settings is named getSettings()
-                        $settings = $this->model->getSettings();
-                        $settings_array = [];
+                    // Refreshing data in pageData to show new values in the form
+                    // Assuming method to get settings is named getSettings()
+                    $settings = $this->model->getSettings();
+                    $settings_array = [];
 
-                        foreach ($settings as $row) {
-                            $settings_array[$row['name']] = $row['value'];
-                            $env['settings_array'] = $settings_array;
-                        }
+                    foreach ($settings as $row) {
+                        $settings_array[$row['name']] = $row['value'];
+                        $env['settings_array'] = $settings_array;
                     }
-                    else {
-                        $this->pageData['error_message'] = "An error occurred while update settings. Please try again.";
-                    }
+                }
+                else {
+                    $this->pageData['error_message'] = "An error occurred while update settings. Please try again.";
+                }
             }
 
             $this->pageData['title'] = "Site Settings - Admin Panel";
@@ -258,7 +283,7 @@ class AdminController extends Controller {
             $this->view->render('admin/settings', $this->pageData);
         }
     }
-    
+
     public function reports() {
         try {
             $this->controller();
@@ -275,11 +300,11 @@ class AdminController extends Controller {
             ];
 
             $reports = $this->model->getReports($reports);
-            
+
             $this->pageData['title'] = "Reports and Analytics - Admin Panel";
             $this->pageData['reports'] = $reports;
             $this->pageData['admin_page'] = true;
-            
+
             $this->view->render('admin/reports', $this->pageData);
         } catch (Exception $e) {
             error_log("Admin reports error: " . $e->getMessage());
@@ -287,20 +312,20 @@ class AdminController extends Controller {
             $this->view->render('admin/reports', $this->pageData);
         }
     }
-    
+
     public function ajax() {
         try {
             $this->controller();
-            
+
             $action = $_POST['action'] ?? '';
-            
+
             switch ($action) {
                 case 'delete_user':
                     $userId = $_POST['user_id'] ?? 0;
                     $result = $this->model->deleteUser($userId);
                     echo json_encode(['success' => $result]);
                     break;
-                    
+
                 case 'update_user_status':
                     $userId = $_POST['user_id'] ?? 0;
                     $status = $_POST['status'] ?? '';
@@ -339,14 +364,14 @@ class AdminController extends Controller {
                     $result = $this->model->updateUser($userId, $userData);
                     echo json_encode($result);
                     break;
-                    
+
                 case 'delete_content':
                     $contentId = $_POST['content_id'] ?? 0;
                     $contentType = $_POST['content_type'] ?? '';
                     $result = $this->model->deleteContent($contentId, $contentType);
                     echo json_encode(['success' => $result]);
                     break;
-                    
+
                 case 'get_content':
                     $contentId = $_POST['content_id'] ?? 0;
                     $contentType = $_POST['content_type'] ?? '';
@@ -359,7 +384,7 @@ class AdminController extends Controller {
                     }
                     echo json_encode(['success' => true, 'content' => $content, "categories" => $categories, "type" => $contentType]);
                     break;
-                    
+
                 case 'update_content':
                     $contentId = $_POST['content_id'] ?? 0;
                     $contentType = $_POST['content_type'] ?? '';
@@ -368,7 +393,7 @@ class AdminController extends Controller {
                     $result = $this->model->updateContent($contentId, $contentType, $title, $content);
                     echo json_encode(['success' => $result]);
                     break;
-                    
+
                 default:
                     echo json_encode(['success' => false, 'message' => 'Invalid action']);
             }

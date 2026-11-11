@@ -281,7 +281,11 @@
 
                         <div class="container-fluid">
 
-                            <form method="post">
+                            <?php if (!empty($pageData['category_error'])): ?>
+                                <div class="alert alert-danger" role="alert"><?= htmlspecialchars($pageData['category_error']) ?></div>
+                            <?php endif; ?>
+
+                            <form method="post" id="category-form" data-category-blacklist="<?= htmlspecialchars(json_encode($pageData['category_blacklist'] ?? [], JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>">
 
                                 <div class="form-group row">
                                     <label for="category-select" class="col-3 col-form-label">Category</label>
@@ -406,11 +410,46 @@
 
             <script src="/assets/js/index.js"></script>
 
+            <script src="/assets/js/category_blacklist.js"></script>
+
             <?= $pageData['script_page_all'] ?>
             <?= $pageData['script_category'] ?>
             <?= $pageData['script_profile'] ?>
             <?= $pageData['script_conversation'] ?>
             <?= $pageData['script_page_pagination'] ?>
+
+            <?php if (!empty($pageData['category_error'])): ?>
+            <script>
+                // The server rejected the category name: reopen the form and put the typed values back.
+                // Plain DOMContentLoaded (not $(fn)) so that it runs after the handlers registered in index.js
+                document.addEventListener('DOMContentLoaded', function () {
+                    var data = <?= json_encode($pageData['category_form_data'] ?? new stdClass(), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+                    var modal = $('#forum_blog_formModal');
+                    var trigger = $('[data-act]').filter(function () {
+                        return $(this).data('act') === data.target;
+                    })[0];
+
+                    if (!trigger) { return; }
+
+                    modal.one('shown.bs.modal', function () {
+                        var fields = {
+                            'category-input': data.Category,
+                            'category-desc-input': data.Category_Description,
+                            'subcategory-input': data.Subcategory,
+                            'description-input': data.Description
+                        };
+                        Object.keys(fields).forEach(function (id) {
+                            var el = document.getElementById(id);
+                            if (el) { el.value = fields[id] || ''; }
+                        });
+                        var nameInput = document.getElementById('category-input');
+                        if (nameInput) { nameInput.dispatchEvent(new Event('input')); }
+                    });
+
+                    modal.modal('show', trigger);
+                });
+            </script>
+            <?php endif; ?>
 
         </footer>
     </body>

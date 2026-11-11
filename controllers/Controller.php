@@ -167,6 +167,9 @@
                 $env['settings_array'] = $settings_array;
             } // Get settings from DB
 
+            // Forbidden category names, used by the client-side check in the "add content" form
+            $this->pageData['category_blacklist'] = Model::parseCategoryBlacklist($settings_array['category_blacklist'] ?? '');
+
             if(!empty($env['route2']) && !empty($env['route3']) && !empty($env['route4'])) {
                 if (!empty($env['route2']) && empty($env['route3'])) {
                     $this->pageData['tree'] = '<a href="/' . $env['route1'] .'">/' . $env['route1'] .'</a>';

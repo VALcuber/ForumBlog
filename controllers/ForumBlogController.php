@@ -17,7 +17,7 @@ class ForumBlogController extends Controller {
 
         // Handle post request
         if ($env['act']  === 'Post') {
-            $this->model->add_ForumBlog_content($_POST['target'] ?? '');
+            $this->handle_post_content();
         }
 
         // Prepare raw data for the view
@@ -41,6 +41,28 @@ class ForumBlogController extends Controller {
         $this->pageData['latest_posts_list'] = $latest ?? [];
 
         $this->view->render($this->pageTpl, $this->pageData);
+    }
+
+    /**
+     * Saves a new category / subcategory / post from the modal form.
+     * If the category name is forbidden nothing is saved and the form is shown again with an error.
+     * Used by this controller and by its three children.
+     */
+    protected function handle_post_content() {
+        $result = $this->model->add_ForumBlog_content($_POST['target'] ?? '');
+
+        if ($result === 'category_blacklisted') {
+            $target = (string)($_POST['target'] ?? '');
+
+            $this->pageData['category_error'] = 'This category name is not allowed. Please choose another one.';
+            $this->pageData['category_form_data'] = [
+                'target'               => in_array($target, ['blog', 'forum'], true) ? $target : '',
+                'Category'             => (string)($_POST['Category'] ?? ''),
+                'Category_Description' => (string)($_POST['Category_Description'] ?? ''),
+                'Subcategory'          => (string)($_POST['Subcategory'] ?? ''),
+                'Description'          => (string)($_POST['Description'] ?? ''),
+            ];
+        }
     }
 
     protected function echo_page_pagination($route1) {
@@ -201,11 +223,21 @@ class ForumBlogController extends Controller {
                 }
             }
 
-        // 2. Now, iterate through grouped categories and keep only the LAST 4 posts
+        // 2. Now, iterate through grouped categories and keep only the LAST 4 UNIQUE posts
         foreach ($grouped as &$item) {
-            // array_slice with -4 takes elements from the end of the array
-            // This ensures we get the most recently added posts in the list
-                $item['posts'] = array_reverse(array_slice($item['posts'], -4));
+            $seen = [];
+            $unique = [];
+
+            // Newest first; a title that was already taken is skipped (the DB may hold several rows with the same title)
+            foreach (array_reverse($item['posts']) as $post) {
+                if (isset($seen[$post['title']])) {
+                    continue;
+                }
+                $seen[$post['title']] = true;
+                $unique[] = $post;
+            }
+
+            $item['posts'] = array_slice($unique, 0, 4);
         }
 
         return array_values($grouped);

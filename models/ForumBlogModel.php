@@ -7,8 +7,7 @@ class ForumBlogModel extends Model{
 
         $result_page_all = array();
 
-        if((!empty($env['route1']) && ($env['route1'] === 'blog' || $env['route1'] === 'forum') && empty($env['route2'])) ||
-           (!empty($env['route1']) && ($env['route1'] != 'blog' || $env['route1'] != 'forum') && empty($env['route2']))){
+        if((!empty($env['route1']) && ($env['route1'] === 'blog' || $env['route1'] === 'forum') && empty($env['route2']))){
 
             $sql = "SELECT `structure`, `Category`
                     FROM forum
@@ -19,6 +18,20 @@ class ForumBlogModel extends Model{
                     FROM blog
                         WHERE `structure` = :route
                             ORDER BY structure)";
+        }
+
+        elseif(!empty($env['route1']) && ($env['route1'] != 'blog' || $env['route1'] != 'forum') && empty($env['route2'])){
+            $sql = "SELECT f.structure, f.Category, fc.id, fc.Subcategory, fc.Description, fc.user_id
+                    FROM forum_category fc
+                        JOIN forum f ON fc.Category = f.id
+                            WHERE f.Category = :route
+                 UNION(
+                     
+                 SELECT b.structure, b.Category, bc.id, bc.Subcategory, bc.Description, bc.user_id
+                    FROM blog_category bc
+                        JOIN blog b ON bc.Category = b.id
+                            WHERE b.Category = :route)
+                                ORDER BY structure, Category, Subcategory, Description";
         }
 
         elseif(!empty($env['route1']) && ($env['route1'] === 'blog' || $env['route1'] === 'forum') && !empty($env['route2']) && empty($env['route3'])){
@@ -118,6 +131,11 @@ class ForumBlogModel extends Model{
             $smtps->bindValue(":topic", $forumblog_topic, PDO::PARAM_STR);
             $smtps->execute();
             $existingCategory = $smtps->fetch(PDO::FETCH_ASSOC);
+
+            // Blacklist: a NEW category can not be created with a forbidden name
+            if (empty($existingCategory) && $this->isCategoryBlacklisted($forumblog_topic)) {
+                return 'category_blacklisted';
+            }
 
             $this->db->beginTransaction();
 

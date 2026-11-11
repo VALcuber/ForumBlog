@@ -17,7 +17,7 @@ class ForumBlogSubcategoryController extends ForumBlogController{
 
         // Handle post request
         if ($env['act']  === 'Post') {
-            $this->model->add_ForumBlog_content($_POST['target'] ?? '');
+            $this->handle_post_content();
         }
 
         // Prepare raw data for the view

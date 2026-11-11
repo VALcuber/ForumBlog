@@ -164,5 +164,82 @@ class Model{
         return $smtpt->fetchall(PDO::FETCH_ASSOC);
     }
 
-}
+    /**
+     * Lower-cases a UTF-8 string. Uses the mbstring extension when it is enabled; otherwise falls back
+     * to ASCII + Cyrillic (Russian and Ukrainian) letters, so the blacklist works without mbstring.
+     */
+    public static function lowerCase($str) {
+        if (function_exists('mb_strtolower')) {
+            return mb_strtolower($str, 'UTF-8');
+        }
 
+        static $map = null;
+        if ($map === null) {
+            $map = [];
+            // Not strtolower(): before PHP 8.2 it depends on the locale and could damage UTF-8 bytes
+            foreach (range('A', 'Z') as $letter) {
+                $map[$letter] = strtolower($letter);
+            }
+            // U+0410..U+042F (cyrillic capital A..YA) -> U+0430..U+044F
+            for ($cp = 0x0410; $cp <= 0x042F; $cp++) {
+                $map[html_entity_decode('&#' . $cp . ';', ENT_NOQUOTES, 'UTF-8')] = html_entity_decode('&#' . ($cp + 0x20) . ';', ENT_NOQUOTES, 'UTF-8');
+            }
+            // U+0400..U+040F (cyrillic capital IE with grave, YO, ... DZHE) -> U+0450..U+045F
+            for ($cp = 0x0400; $cp <= 0x040F; $cp++) {
+                $map[html_entity_decode('&#' . $cp . ';', ENT_NOQUOTES, 'UTF-8')] = html_entity_decode('&#' . ($cp + 0x50) . ';', ENT_NOQUOTES, 'UTF-8');
+            }
+            // Ukrainian GHE WITH UPTURN: U+0490 -> U+0491
+            $map[html_entity_decode('&#1168;', ENT_NOQUOTES, 'UTF-8')] = html_entity_decode('&#1169;', ENT_NOQUOTES, 'UTF-8');
+        }
+
+        return strtr($str, $map);
+    }
+
+    /**
+     * Cuts a UTF-8 string to $length characters (works without the mbstring extension).
+     */
+    public static function cutString($str, $length) {
+        return preg_match('/^.{0,' . (int)$length . '}/us', $str, $m) ? $m[0] : $str;
+    }
+
+    /**
+     * Brings a category name to one form for comparison: lower case, "yo" = "e",
+     * any whitespace collapsed to a single space, trimmed.
+     * Must stay identical to normalizeName() in assets/js/category_blacklist.js
+     */
+    public static function normalizeCategoryName($name) {
+        $name = self::lowerCase((string)$name);
+        $name = str_replace("\u{0451}", "\u{0435}", $name); // cyrillic yo -> ye
+        $name = (string)preg_replace('/[\s\p{Z}]+/u', ' ', $name);
+        return trim($name);
+    }
+
+    /**
+     * Turns the raw settings value (names separated by commas and/or new lines)
+     * into a list of normalized unique names.
+     */
+    public static function parseCategoryBlacklist($raw) {
+        $list = [];
+        $lines = preg_split('/[,\r\n]+/u', (string)$raw);
+        if ($lines === false) {
+            return $list;
+        }
+        foreach ($lines as $line) {
+            $line = self::normalizeCategoryName($line);
+            if ($line !== '') {
+                $list[] = $line;
+            }
+        }
+        return array_values(array_unique($list));
+    }
+
+    /**
+     * True if the name is in the category blacklist (Admin panel -> Settings).
+     */
+    public function isCategoryBlacklisted($name) {
+        global $env;
+        $raw = $env['settings_array']['category_blacklist'] ?? '';
+        return in_array(self::normalizeCategoryName($name), self::parseCategoryBlacklist($raw), true);
+    }
+
+}

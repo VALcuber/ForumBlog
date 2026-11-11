@@ -216,9 +216,10 @@ class AdminModel extends Model {
                     WHEN 'posts_per_page'     THEN :posts_per_page
                     WHEN 'max_upload_size'    THEN :max_upload_size
                     WHEN 'allowed_file_types' THEN :allowed_file_types
+                    WHEN 'category_blacklist' THEN :category_blacklist
                     ELSE `value`
                 END
-                WHERE `name` IN ('title', 'description','help', 'admin_email', 'posts_per_page', 'max_upload_size', 'allowed_file_types')";
+                WHERE `name` IN ('title', 'description','help', 'admin_email', 'posts_per_page', 'max_upload_size', 'allowed_file_types', 'category_blacklist')";
 
             $stmt = $this->db->prepare($sql);
 
@@ -231,6 +232,7 @@ class AdminModel extends Model {
             $stmt->bindValue(':posts_per_page',     $d['posts_per_page'], PDO::PARAM_STR);
             $stmt->bindValue(':max_upload_size',    $d['max_upload_size'], PDO::PARAM_STR);
             $stmt->bindValue(':allowed_file_types', $d['allowed_file_types'], PDO::PARAM_STR);
+            $stmt->bindValue(':category_blacklist', $d['category_blacklist'] ?? '', PDO::PARAM_STR);
             return $stmt->execute();
         } catch (Exception $e) {
             return false;

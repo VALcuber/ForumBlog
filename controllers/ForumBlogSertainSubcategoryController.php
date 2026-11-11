@@ -11,14 +11,15 @@ class ForumBlogSertainSubcategoryController extends ForumBlogController{
         $this->view = new View();
     }
 
-    public function index(){
+    public function index()
+    {
         global $env;
 
         $this->controller();
 
         // Handle post request
         if ($env['act'] === 'Post') {
-            $this->model->add_ForumBlog_content($_POST['target'] ?? '');
+            $this->handle_post_content();
         }
 
         // Prepare raw data for the view
