@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Find the button
+    const user_settingsButton = document.querySelector('#p\\.b\\.user_settings');
     const blogButton = document.querySelector('#p\\.b\\.blog');
     const forumButton = document.querySelector('#p\\.b\\.forum');
     const messagesButton = document.querySelector('#p\\.b\\.messages');
@@ -9,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const infoContainer = document.getElementById('infoContainer');
 
     // Get hidden input values (data from PHP)
+    const user_settingsData = document.getElementById("hiddenuser_settingsData").value;
     const blogData = document.getElementById("hiddenblogData").value;
     const forumData = document.getElementById("hiddenforumData").value;
     let messagesData = document.getElementById("hiddenmessagesData").value; // let: refreshed by the live update
@@ -42,6 +44,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Event listeners for buttons
+    user_settingsButton.addEventListener('click', function (event) {
+        event.stopPropagation(); // Prevent event from bubbling up
+        toggleContent('user_settings', user_settingsData); // Load real blog data
+    });
+
     blogButton.addEventListener('click', function (event) {
         event.stopPropagation(); // Prevent event from bubbling up
         toggleContent('blog', blogData); // Load real blog data
@@ -88,11 +95,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 currentBox.innerHTML = messagesData;
             }
         } catch (err) {
-            console.error('Messages refresh error:', err);
+            //console.error('Messages refresh error:', err);
         } finally {
             pollInFlight = false;
         }
-    }
+    } // Messages
 
     setInterval(refreshMessages, POLL_INTERVAL_MS);
 
@@ -129,4 +136,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-});
+}); //Admin panel

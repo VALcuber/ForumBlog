@@ -2,23 +2,23 @@
 
 class DB{
 
-	const USER = "root";
-	const PASS = "123456";
-	const HOST = '127.0.0.1';
-	const DB   = 'epiz_27717656_forumblog';
-	const CHARSET = "utf8mb4";
+    const USER = "root";
+    const PASS = "123456";
+    const HOST = '127.0.0.1';
+    const DB   = 'epiz_27717656_forumblog';
+    const CHARSET = "utf8mb4";
 
-	public static function connToDB() {
+    public static function connToDB() {
 
-		$user = self::USER;
-		$pass = self::PASS;
-		$host = self::HOST;
-		$db   = self::DB;
-		$charset = self::CHARSET;
+        $user = self::USER;
+        $pass = self::PASS;
+        $host = self::HOST;
+        $db   = self::DB;
+        $charset = self::CHARSET;
 
         try {
             // Initial connection to create database if not exists
-            $conn = new PDO("mysql:host=$host;port=3306", $user, $pass);
+            $conn = new PDO("mysql:host=$host", $user, $pass);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             $conn->query("CREATE DATABASE IF NOT EXISTS `$db` CHARACTER SET $charset COLLATE utf8mb4_general_ci");
@@ -132,6 +132,8 @@ class DB{
 
                 "user_settings" => "CREATE TABLE IF NOT EXISTS `user_settings` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `user_id` int(11) NOT NULL,
+                    `theme` VARCHAR(5) NOT NULL DEFAULT 'dark',
                     PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB"
             ];
@@ -140,13 +142,12 @@ class DB{
             foreach ($queries as $name => $sql) {
                 $conn->exec($sql);
             }
-
             return $conn;
 
         } catch (PDOException $e) {
             die("Database Error: " . $e->getMessage());
         }
-	}
+    }
 }
 
 /*

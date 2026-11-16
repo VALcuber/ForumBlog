@@ -1,0 +1,207 @@
+/*
+ * Dark theme. Active when <html data-theme="dark"> (set in templates/head.tpl from users.theme).
+ * The light theme is the normal look of the site: nothing here applies to it.
+ * Colors are variables at the top, change them here to tune the whole theme.
+ */
+html[data-theme="dark"] {
+    color-scheme: dark; /* dark scrollbars and native form controls */
+
+    --dt-bg: #121212;
+    --dt-surface: #1e1e1e;
+    --dt-surface-2: #262626;
+    --dt-surface-3: #333333;
+    --dt-border: #3d3d3d;
+    --dt-text: #e6e6e6;
+    --dt-muted: #a0a4a8;
+    --dt-link: #6ea8fe;
+}
+
+/* ---------- Base ---------- */
+html[data-theme="dark"] body {
+    background-color: var(--dt-bg);
+    color: var(--dt-text);
+}
+
+html[data-theme="dark"] a:not([class]) { color: var(--dt-link); }
+html[data-theme="dark"] a:not([class]):hover { color: #9ec5fe; }
+html[data-theme="dark"] hr { border-top-color: var(--dt-border); }
+html[data-theme="dark"] pre { color: var(--dt-text); }
+
+/* ---------- Bootstrap utility classes used in the templates (they carry !important) ---------- */
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .bg-light { background-color: var(--dt-surface) !important; }
+html[data-theme="dark"] .text-dark,
+html[data-theme="dark"] .text-body { color: var(--dt-text) !important; }
+html[data-theme="dark"] .text-muted { color: var(--dt-muted) !important; }
+html[data-theme="dark"] .border,
+html[data-theme="dark"] .border-dark,
+html[data-theme="dark"] .border-top,
+html[data-theme="dark"] .border-bottom { border-color: var(--dt-border) !important; }
+
+/* ---------- Bootstrap components ---------- */
+html[data-theme="dark"] .card {
+    background-color: var(--dt-surface);
+    border-color: var(--dt-border);
+}
+html[data-theme="dark"] .card-header,
+html[data-theme="dark"] .card-footer {
+    background-color: var(--dt-surface-2);
+    border-color: var(--dt-border);
+}
+
+html[data-theme="dark"] .modal-content {
+    background-color: var(--dt-surface);
+    border-color: var(--dt-border);
+    color: var(--dt-text);
+}
+html[data-theme="dark"] .modal-header,
+html[data-theme="dark"] .modal-footer { border-color: var(--dt-border); }
+html[data-theme="dark"] .close {
+    color: var(--dt-text);
+    text-shadow: none;
+}
+html[data-theme="dark"] .close:hover { color: #ffffff; }
+
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .custom-select,
+html[data-theme="dark"] .input-group-text {
+    background-color: var(--dt-surface-2);
+    border-color: var(--dt-border);
+    color: var(--dt-text);
+}
+html[data-theme="dark"] .form-control::placeholder { color: var(--dt-muted); }
+html[data-theme="dark"] .form-control:focus,
+html[data-theme="dark"] .custom-select:focus {
+    background-color: var(--dt-surface-2);
+    color: var(--dt-text);
+    border-color: var(--dt-link);
+}
+html[data-theme="dark"] .form-control:disabled,
+html[data-theme="dark"] .form-control[readonly] { background-color: var(--dt-surface); }
+
+html[data-theme="dark"] .dropdown-menu {
+    background-color: var(--dt-surface-2);
+    border-color: var(--dt-border);
+}
+html[data-theme="dark"] .dropdown-item { color: var(--dt-text); }
+html[data-theme="dark"] .dropdown-item:hover,
+html[data-theme="dark"] .dropdown-item:focus { background-color: var(--dt-surface-3); color: #ffffff; }
+
+html[data-theme="dark"] .list-group-item {
+    background-color: transparent;
+    border-color: var(--dt-border);
+    color: var(--dt-text);
+}
+html[data-theme="dark"] .list-group-item-action:hover,
+html[data-theme="dark"] .list-group-item-action:focus { background-color: var(--dt-surface-3); color: #ffffff; }
+
+html[data-theme="dark"] .table { color: var(--dt-text); }
+html[data-theme="dark"] .table th,
+html[data-theme="dark"] .table td,
+html[data-theme="dark"] .table thead th { border-color: var(--dt-border); }
+html[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) { background-color: rgba(255, 255, 255, 0.04); }
+html[data-theme="dark"] .table-hover tbody tr:hover { background-color: rgba(255, 255, 255, 0.07); color: var(--dt-text); }
+
+html[data-theme="dark"] .btn-light {
+    background-color: var(--dt-surface-3);
+    border-color: var(--dt-surface-3);
+    color: var(--dt-text);
+}
+html[data-theme="dark"] .btn-outline-dark {
+    border-color: var(--dt-muted);
+    color: var(--dt-text);
+}
+html[data-theme="dark"] .btn-outline-dark:hover { background-color: var(--dt-surface-3); }
+
+html[data-theme="dark"] .navbar-light .navbar-brand,
+html[data-theme="dark"] .navbar-light .navbar-nav .nav-link { color: rgba(255, 255, 255, 0.75); }
+html[data-theme="dark"] .navbar-light .navbar-nav .nav-link:hover { color: #ffffff; }
+
+html[data-theme="dark"] .page-link {
+    background-color: var(--dt-surface);
+    border-color: var(--dt-border);
+    color: var(--dt-link);
+}
+html[data-theme="dark"] .page-item.disabled .page-link {
+    background-color: var(--dt-surface);
+    border-color: var(--dt-border);
+}
+html[data-theme="dark"] .breadcrumb { background-color: var(--dt-surface-2); }
+
+/* ---------- Site specific (colors that are hard-coded in style.css) ---------- */
+/* header: search field and profile button */
+html[data-theme="dark"] .header__search {
+    background-color: var(--dt-surface-3);
+    color: var(--dt-text);
+}
+html[data-theme="dark"] .header__search::placeholder { color: var(--dt-muted); }
+html[data-theme="dark"] .header__profile,
+html[data-theme="dark"] button.header__profile {
+    background-color: var(--dt-surface-3);
+    color: var(--dt-text);
+}
+html[data-theme="dark"] .header__profile:hover { color: #ffffff; }
+
+/* "add content" popup with TO BLOG / TO FORUM */
+html[data-theme="dark"] .add-article-menu,
+html[data-theme="dark"] .add-article-menu.add-article-menu_open {
+    background-color: var(--dt-surface-2);
+    border-color: var(--dt-border);
+}
+html[data-theme="dark"] .add-article-menu__separator { background-color: var(--dt-border); }
+
+/* modal windows, news form fields */
+html[data-theme="dark"] div#usersModal { border-color: var(--dt-border); }
+html[data-theme="dark"] #title,
+html[data-theme="dark"] #description {
+    background-color: var(--dt-surface-3);
+    color: var(--dt-text);
+}
+
+/* profile: lists of own posts */
+html[data-theme="dark"] .info-box-forum a,
+html[data-theme="dark"] .info-box-blog a {
+    background-color: var(--dt-surface-2);
+    color: var(--dt-text);
+}
+html[data-theme="dark"] .info-box-forum a:hover,
+html[data-theme="dark"] .info-box-blog a:hover { background-color: var(--dt-surface-3); }
+
+/* error page, admin switch label */
+html[data-theme="dark"] .errors pre { background-color: var(--dt-surface-2); }
+html[data-theme="dark"] .errors_note { color: var(--dt-text); }
+html[data-theme="dark"] .admin-toggle { background-color: var(--dt-surface-2); }
+html[data-theme="dark"] .toggle-label { color: var(--dt-text); }
+
+/* live search dropdown */
+html[data-theme="dark"] .search-dropdown {
+    background-color: var(--dt-surface-2);
+    border-color: var(--dt-border);
+}
+html[data-theme="dark"] .search-result-item,
+html[data-theme="dark"] .search-dropdown a {
+    color: var(--dt-text);
+    border-bottom-color: var(--dt-border);
+}
+html[data-theme="dark"] .search-result-item:hover,
+html[data-theme="dark"] .search-dropdown a:hover { background-color: var(--dt-surface-3); }
+html[data-theme="dark"] .search-dropdown::-webkit-scrollbar-track { background-color: var(--dt-surface-2); }
+html[data-theme="dark"] .search-dropdown::-webkit-scrollbar-thumb { background-color: var(--dt-border); }
+
+/* search results page */
+html[data-theme="dark"] .search-header,
+html[data-theme="dark"] .no-results-container,
+html[data-theme="dark"] .result-card { background-color: var(--dt-surface-2); }
+html[data-theme="dark"] .search-box input {
+    background-color: var(--dt-surface-3);
+    border-color: var(--dt-border);
+    color: var(--dt-text);
+}
+html[data-theme="dark"] .results-info,
+html[data-theme="dark"] .no-results-text { color: var(--dt-muted); }
+html[data-theme="dark"] .results-info strong,
+html[data-theme="dark"] .result-title { color: var(--dt-text); }
+
+/* messages: list of users */
+html[data-theme="dark"] .user-item:hover { background-color: var(--dt-surface-3); }
+html[data-theme="dark"] .user-item.active { background-color: #1f3a5c; color: var(--dt-text); }

@@ -165,6 +165,37 @@ class Model{
     }
 
     /**
+     * Theme of the user: 'dark' (default) or 'light'.
+     */
+    public function get_user_theme($id) {
+        try {
+            $stmt = $this->db->prepare("SELECT `theme` FROM `user_settings` WHERE `user_id` = :id");
+            $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchColumn() === 'light' ? 'light' : 'dark';
+        } catch (Exception $e) {
+            return 'dark';
+        }
+    }
+
+    /**
+     * Saves the theme of the user. Only 'dark' and 'light' are accepted.
+     */
+    public function set_user_theme($id, $theme) {
+        if (!in_array($theme, ['dark', 'light'], true)) {
+            return false;
+        }
+        try {
+            $stmt = $this->db->prepare("UPDATE `user_settings` SET `theme` = :theme WHERE `user_id` = :id");
+            $stmt->bindValue(':theme', $theme, PDO::PARAM_STR);
+            $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    /**
      * Lower-cases a UTF-8 string. Uses the mbstring extension when it is enabled; otherwise falls back
      * to ASCII + Cyrillic (Russian and Ukrainian) letters, so the blacklist works without mbstring.
      */

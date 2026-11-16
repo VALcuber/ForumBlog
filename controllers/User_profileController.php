@@ -14,10 +14,8 @@ class User_profileController extends Controller {
 
         $this->controller();
 
-        // AJAX: fresh "Messages" block for live updates (unread dots)
-        if (isset($_GET['ajax']) && $_GET['ajax'] === 'get_inbox') {
-            $this->inboxJson();
-            return;
+        if (($_POST['act'] ?? '') === 'Set theme') {
+            $this->save_theme(); // answers with JSON and stops
         }
 
         if(isset($_FILES['image'])){
@@ -27,13 +25,36 @@ class User_profileController extends Controller {
             $this->setLogo($logo);
         }
 
-        $this->pageData['script_profile'] = '<script src="../assets/js/profile.js"></script>';
+        $this->pageData['script_profile'] = '<script src="../assets/js/profile.js"></script><script src="../assets/js/dark_theme.js"></script>';
         $this->pageData['user_forum_posts'] = $this->user_forum_posts();
         $this->pageData['user_blog_posts'] = $this->user_blog_posts();
-        $this->pageData['user_messages_unread_inbox'] = $this->inbox();
-        $this->pageData['user_friends_no_friends'] = $this->friends();
+        $this->pageData['user_messages_unread_inbox'] = $this->unread_inbox();
+        $this->pageData['user_friends_no_friends'] = $this->no_friends();
+        $this->pageData['user_settings'] = $this->user_settings();
 
         $this->view->render($this->pageTpl, $this->pageData);
+    }
+
+    /**
+     * Saves the theme chosen in the profile (AJAX). Works only for a logged-in user.
+     */
+    private function save_theme() {
+        global $env;
+
+        header('Content-Type: application/json; charset=utf-8');
+
+        $theme = $_POST['theme'] ?? '';
+
+        if (empty($env['id']) || !in_array($theme, ['dark', 'light'], true)) {
+            http_response_code(400);
+            echo json_encode(['ok' => false]);
+            exit;
+        }
+
+        $saved = $this->model->set_user_theme((int)$env['id'], $theme);
+
+        echo json_encode(['ok' => (bool)$saved, 'theme' => $theme]);
+        exit;
     }
 
     private function image_upload(){
@@ -71,6 +92,7 @@ class User_profileController extends Controller {
         }
 
     }
+
     private function user_forum_posts(){
 
         $id = $this->get_decrypted_post_data();
@@ -81,19 +103,18 @@ class User_profileController extends Controller {
         $count_user_posts = count($user_posts_array);
 
         for ($i = 0; $i < $count_user_posts; $i++) {
-            $user_posts_part_from_bd = $user_posts_array[$i]['Part'];
             $user_posts_category_from_bd = $user_posts_array[$i]['Category'];
-            $user_posts_subcategory_from_bd = $user_posts_array[$i]['Subcategory'];
             $user_posts_description_from_bd = $user_posts_array[$i]['Description'];
-
+            $user_posts_part_from_bd = $user_posts_array[$i]['Part'];
 
             $user_posts = <<<"EOT"
-<a href="/$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_subcategory_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
+<a href="/$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
 EOT;
             $result_forum_HTML .= $user_posts;
         }
         return $result_forum_HTML;
     }
+
     private function user_blog_posts(){
 
         $id = $this->get_decrypted_post_data();
@@ -105,12 +126,11 @@ EOT;
 
         for ($i = 0; $i < $count_user_posts; $i++) {
             $user_posts_category_from_bd = $user_posts_array[$i]['Category'];
-            $user_posts_subcategory_from_bd = $user_posts_array[$i]['Subcategory'];
             $user_posts_description_from_bd = $user_posts_array[$i]['Description'];
             $user_posts_part_from_bd = $user_posts_array[$i]['Part'];
 
             $user_posts = <<<"EOT"
-<a href="/$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_subcategory_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
+<a href="/$user_posts_part_from_bd/$user_posts_category_from_bd/$user_posts_description_from_bd">$user_posts_description_from_bd</a>
 EOT;
             $result_blog_HTML .= $user_posts;
         }
@@ -118,58 +138,31 @@ EOT;
         return $result_blog_HTML;
     }
 
-    /** AJAX: returns the freshly rendered "Messages" block as JSON */
-    private function inboxJson(){
-        if (ob_get_length()) ob_clean();
-
-        header('Content-Type: application/json');
-
-        echo json_encode([
-            'status' => 'success',
-            'html' => $this->inbox()
-        ]);
-
-        exit;
-    }
-
-    public function inbox(){
+    public function unread_inbox(){
         global $env;
 
         $users_inbox = $this->model->users_inbox($env['id']);
+        $senders[] = '';
 
         if ($users_inbox != NULL){
-            $items = [];
-
             foreach ($users_inbox as $value) {
-                $id = (int)(($value['sender_id'] == $env['id']) ? $value['receiver_id'] : $value['sender_id']);
+                $id = ($value['sender_id'] == $env['id']) ? $value['receiver_id'] : $value['sender_id'];
                 $nickname = htmlspecialchars($value['nickname']);
 
-                // Unread for ME: I am the receiver and the message is not read yet (0 or NULL)
-                $unreadDot = ($value['receiver_id'] == $env['id'] && empty($value['is_read']))
-                    ? '<span class="new-message-dot ms-2 d-inline-block rounded-circle bg-danger" style="width:10px;height:10px;" title="New message"></span>'
-                    : '';
-
-                $items[] = <<<"EOT"
-            <li class="list-group-item d-flex justify-content-between align-items-center position-relative" data-user-id="$id" data-user="$nickname" style="cursor:pointer">
-                <a href="/user_profile/messages?chat=$id" class="stretched-link text-decoration-none text-reset">$nickname</a>$unreadDot
-            </li>
-EOT;
-            }
-
-            // The model returns at most 3 freshest conversations, they are shown in ONE card
-            $list = implode("\n", $items);
-
-            return $this->pageData['senders'] = <<<"EOT"
-        <div class="card" style="width: 500px; height: auto; max-height: 250px; overflow-y: auto;">
+                $user_posts = <<<"EOT"
+        <div class="card" style="width: 500px; height: 250px; overflow-y: auto;">
           <div class="card-header text-center">Messages</div>
           <ul class="list-group list-group-flush">
-$list
+            <li class="list-group-item" data-user-id="$id" data-user="$nickname" style="cursor:pointer">$nickname</li>
           </ul>
           <div class="card-footer text-center">
             <a href="/user_profile/messages" class="btn btn-sm btn-primary">All messages</a>
           </div>
         </div>
 EOT;
+                $senders[] = $user_posts;
+            }
+            $this->pageData['senders'] = implode("\n", $senders);
         }
         else{
             return $user_posts = <<<"EOT"
@@ -187,40 +180,31 @@ EOT;
         }
     }
 
-    public function friends(){
+    public function no_friends(){
         global $env;
 
         $friends_inbox = $this->model->users_friends($env['id']);
+        $friends[] = '';
 
         if ($friends_inbox != NULL){
-            $items = [];
-
             foreach ($friends_inbox as $value) {
-                $id = (int)(($value['friend1_id'] == $env['id']) ? $value['friend2_id'] : $value['friend1_id']);
+                $id = ($value['friend1_id'] == $env['id']) ? $value['friend2_id'] : $value['friend1_id'];
                 $nickname = htmlspecialchars($value['nickname']);
 
-                // The whole row is a link to the friends page with this friend preselected
-                $items[] = <<<"EOT"
-            <li class="list-group-item position-relative" data-user-id="$id" data-user="$nickname" style="cursor:pointer">
-                <a href="/user_profile/friends?friend=$id" class="stretched-link text-decoration-none text-reset">$nickname</a>
-            </li>
-EOT;
-            }
-
-            // All friends are shown in ONE card
-            $list = implode("\n", $items);
-
-            return $this->pageData['friends'] = <<<"EOT"
-        <div class="card" style="width: 500px; height: auto; max-height: 250px; overflow-y: auto;">
+                $user_posts = <<<"EOT"
+        <div class="card" style="width: 500px; max-height: 250px; overflow-y: auto;">
           <div class="card-header text-center">Friends</div>
           <ul class="list-group list-group-flush">
-$list
+            <li class="list-group-item" data-user-id="$id" data-user="$nickname" style="cursor:pointer">$nickname</li>
           </ul>
           <div class="card-footer text-center">
             <a href="/user_profile/friends" class="btn btn-sm btn-primary">All friends</a>
           </div>
         </div>
 EOT;
+                $friends[] = $user_posts;
+            }
+            return $this->pageData['friends'] = implode("\n", $friends);
         }
         else{
             return $user_posts = <<<"EOT"
@@ -236,6 +220,18 @@ EOT;
         </div>
 EOT;
         }
+    }
+
+    public function user_settings(){
+        return '<div id="themeSwitch" class="theme-switch text-center" data-current="<?= htmlspecialchars($pageData[\'theme\'] ?? \'dark\', ENT_QUOTES, \'UTF-8\') ?>">
+                    <div class="small mb-1">Theme</div>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Theme">
+                        <button type="button" class="btn btn-outline-secondary theme-btn" data-theme="dark">Dark</button>
+                        <button type="button" class="btn btn-outline-secondary theme-btn" data-theme="light">Light</button>
+                    </div>
+                    <div class="theme-status small text-muted mt-1" aria-live="polite"></div>
+                </div>';
+
     }
 
 }
