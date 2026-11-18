@@ -24,7 +24,8 @@
 
             <a href="/" class="header__logo mx-3">
 
-                <img src="/assets/img/logo.png" alt="logo img">
+                <img src="/assets/img/logo-light-70.png" class="logo-light">
+                <img src="/assets/img/logo-dark-70.png" class="logo-dark">
 
             </a>
 

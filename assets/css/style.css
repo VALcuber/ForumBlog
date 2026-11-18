@@ -173,7 +173,10 @@ html{
 
 .footer{
 
-height: 7.9vh;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  margin: 0;
 
 }
 
@@ -1060,4 +1063,24 @@ input:checked + .slider:before {
   width: 1px;
   height: 40px;
   background-color: #000;
+}
+
+
+[data-theme="light"] .logo-dark,
+:root:not([data-theme="dark"]) .logo-dark {
+  display: none;
+}
+
+[data-theme="light"] .logo-light,
+:root:not([data-theme="dark"]) .logo-light {
+  display: block;
+}
+
+/* Когда тема темная, скрываем светлый и показываем темный */
+[data-theme="dark"] .logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .logo-dark {
+  display: block;
 }
